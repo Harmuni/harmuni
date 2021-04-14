@@ -1,0 +1,24 @@
+{
+  "name": "harmuni-starter",
+  "version": "1.0.0",
+  "main": "src/index.js",
+  "author": "Jean-Baptiste Sanchez",
+  "license": "MIT",
+  "devDependencies": {
+    "snowpack": "^3.2.2",
+    "standard": "^16.0.3"
+  },
+  "scripts": {
+    "start": "snowpack dev",
+    "build": "snowpack build",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "@snowpack/plugin-postcss": "^1.2.2",
+    "@snowpack/plugin-sass": "^1.4.0",
+    "cssnano": "^5.0.0",
+    "postcss": "^8.2.10",
+    "postcss-preset-env": "^6.7.0",
+    "three": "^0.127.0"
+  }
+}
