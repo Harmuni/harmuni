@@ -49,6 +49,7 @@ export default class Player {
           clip: clip,
           action: action
         }
+        console.log(this._animations)
       }
 
       const loader = new FBXLoader(this._manager)

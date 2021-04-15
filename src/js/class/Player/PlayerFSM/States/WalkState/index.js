@@ -11,9 +11,9 @@ export default class WalkState extends State {
   }
 
   enter (prevState) {
-    const curAction = this._parent._proxy._animations.walk.action;
+    const curAction = this._parent._proxy._animations.walk.action
     if (prevState) {
-      const prevAction = this._parent._proxy._animations[prevState.Name].action
+      const prevAction = this._parent._proxy._animations[prevState.name].action
       curAction.enabled = true
 
       if (prevState.Name === 'run') {
@@ -37,11 +37,11 @@ export default class WalkState extends State {
   update (timeElapsed, input) {
     if (input._keys.forward || input._keys.backward) {
       if (input._keys.shift) {
-        this._parent.SetState('run')
+        this._parent.setState('run')
       }
       return
     }
 
-    this._parent.SetState('idle')
+    this._parent.setState('idle')
   }
 }

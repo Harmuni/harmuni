@@ -11,8 +11,8 @@ export default class DanceState extends State {
   }
 
   _finished () {
-    this._Cleanup()
-    this._parent.SetState('idle')
+    this._cleanup()
+    this._parent.setState('idle')
   }
 
   _cleanup () {
@@ -31,9 +31,9 @@ export default class DanceState extends State {
     mixer.addEventListener('finished', this._FinishedCallback)
 
     if (prevState) {
-      const prevAction = this._parent._proxy._animations[prevState.Name].action
+      const prevAction = this._parent._proxy._animations[prevState.name].action
 
-      curAction.reset();
+      curAction.reset()
       curAction.setLoop(LoopOnce, 1)
       curAction.clampWhenFinished = true
       curAction.crossFadeFrom(prevAction, 0.2, true)
@@ -44,7 +44,7 @@ export default class DanceState extends State {
   }
 
   exit () {
-    this._Cleanup()
+    this._cleanup()
   }
 
   update (_) {}

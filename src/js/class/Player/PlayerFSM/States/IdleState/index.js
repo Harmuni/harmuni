@@ -13,7 +13,7 @@ export default class IdleState extends State {
   enter (prevState) {
     const idleAction = this._parent._proxy._animations.idle.action
     if (prevState) {
-      const prevAction = this._parent._proxy._animations[prevState.Name].action
+      const prevAction = this._parent._proxy._animations[prevState.name].action
       idleAction.time = 0.0
       idleAction.enabled = true
       idleAction.setEffectiveTimeScale(1.0)
@@ -29,9 +29,9 @@ export default class IdleState extends State {
 
   update (_, input) {
     if (input._keys.forward || input._keys.backward) {
-      this._parent.SetState('walk')
+      this._parent.setState('walk')
     } else if (input._keys.space) {
-      this._parent.SetState('dance')
+      this._parent.setState('dance')
     }
   }
 }
