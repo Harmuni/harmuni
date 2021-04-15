@@ -1,5 +1,5 @@
-export default class Controller {
-  constructor () {
+export default class ControllerInput {
+  constructor (options) {
     this._keys = {
       forward: false,
       backward: false,
@@ -8,8 +8,8 @@ export default class Controller {
       space: false,
       shift: false
     }
-    document.addEventListener('keydown', (e) => this._onKeyDown(e), false)
-    document.addEventListener('keyup', (e) => this._onKeyUp(e), false)
+    window.addEventListener('keydown', (e) => this._onKeyDown(e), false)
+    window.addEventListener('keyup', (e) => this._onKeyUp(e), false)
   }
 
   _onKeyDown (event) {

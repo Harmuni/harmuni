@@ -25,29 +25,29 @@ export default class App {
     const orbitControls = camera.orbitControls
 
     const player = new Player({ scene })
-    console.log('test', player)
 
-    const raycaster = new THREE.Raycaster()
-    const clock = new THREE.Clock()
+    // const raycaster = new THREE.Raycaster()
+    // const clock = new THREE.Clock()
     const render = () => {
       window.requestAnimationFrame(render)
-      const elapsedTime = clock.getElapsedTime()
-
-      // Raycaster mesh position
-      const rayOrigin = new THREE.Vector3(player._position.x, player._position.y, player._position.z)
-      const rayDirection = new THREE.Vector3(0, -1, 0)
-      rayDirection.normalize()
-      raycaster.set(rayOrigin, rayDirection)
-
-      if (terrain) {
-        const intersects = raycaster.intersectObjects(scene.children, true)
-        for (const intersect of intersects) {
-          player._position.set(intersect.point.x, intersect.point.y + 0.8, intersect.point.z)
-        }
-      }
-
       orbitControls.update()
       renderer.render(scene, myCamera)
+      
+      // this.loop(t - this._previousRAF)
+      // const elapsedTime = clock.getElapsedTime()
+
+      // Raycaster mesh position
+      // const rayOrigin = new THREE.Vector3(player._position.x, player._position.y, player._position.z)
+      // const rayDirection = new THREE.Vector3(0, -1, 0)
+      // rayDirection.normalize()
+      // raycaster.set(rayOrigin, rayDirection)
+
+      // if (terrain) {
+      //   const intersects = raycaster.intersectObjects(scene.children, true)
+      //   for (const intersect of intersects) {
+      //     player._position.set(intersect.point.x, intersect.point.y + 0.8, intersect.point.z)
+      //   }
+      // }
     }
     return render
   }
@@ -62,5 +62,18 @@ export default class App {
     renderer.setSize(sizes.width, sizes.height)
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
     return renderer
+  }
+
+  loop (timeElapsed) {
+    const timeElapsedS = timeElapsed * 0.001
+    if (this._mixers) {
+      this._mixers.map(m => m.update(timeElapsedS))
+    }
+
+    if (this._controls) {
+      this._controls.update(timeElapsedS)
+    }
+
+    // this._thirdPersonCamera.update(timeElapsedS)
   }
 }

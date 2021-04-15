@@ -1,5 +1,8 @@
-import { BoxGeometry, MeshPhongMaterial, Mesh, Vector3, AnimationMixer, LoadingManager, Quaternion } from 'three'
+import { AnimationMixer, LoadingManager, Quaternion, Vector3 } from 'three'
 import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader.js'
+import PlayerAnimationProxy from './PlayerAnimationProxy/index'
+import PlayerFSM from './PlayerFSM/index'
+import ControllerInput from '../ControllerInput/index'
 
 export default class Player {
   constructor (options) {
@@ -9,8 +12,8 @@ export default class Player {
     this._velocity = new Vector3(0, 0, 0)
     this._position = new Vector3(0, 0, 0)
     this._animations = {}
-    // this._input = new BasicCharacterControllerInput()
-    // this._stateMachine = new CharacterFSM(new BasicCharacterControllerProxy(this._animations))
+    this._input = new ControllerInput()
+    this._stateMachine = new PlayerFSM(new PlayerAnimationProxy(this._animations))
     this._loadModels({ meshScale: 0.02 })
 
     // const geometry = new BoxGeometry(1, 1, 1)
@@ -18,7 +21,6 @@ export default class Player {
     // const player = new Mesh(geometry, material)
     // player.position.set(0, 0, 0)
     // options.scene.add(player)
-
     // this._controlPlayer({ player })
     return this._playerModel
   }
@@ -29,15 +31,14 @@ export default class Player {
       fbx.scale.setScalar(meshScale)
       fbx.traverse(c => { c.castShadow = true })
 
-      this._playerModel = fbx.children
-      console.log(this._playerModel)
       this._target = fbx
+      this._playerModel = fbx.children
       this._options.scene.add(fbx)
       this._mixer = new AnimationMixer(fbx)
       this._manager = new LoadingManager()
-      // this._manager.onLoad = () => {
-      //   this._stateMachine.SetState('idle')
-      // }
+      this._manager.onLoad = () => {
+        this._stateMachine.setState('idle')
+      }
 
       const _animationLoad = (animName, anim) => {
         const clip = anim.animations[0]
@@ -66,10 +67,6 @@ export default class Player {
     })
   }
 
-  _controlPlayer ({ player }) {
-    console.log('playerControl', player)
-  }
-
   get playerModel () {
     return this._playerModel
   }
@@ -84,15 +81,15 @@ export default class Player {
       return
     }
 
-    this._stateMachine.Update(timeInSeconds, this._input)
+    this._stateMachine.update(timeInSeconds, this._input)
 
-    const velocity = this._velocity;
+    const velocity = this._velocity
     const frameDecceleration = new Vector3(
       velocity.x * this._decceleration.x,
       velocity.y * this._decceleration.y,
       velocity.z * this._decceleration.z
     )
-    frameDecceleration.multiplyScalar(timeInSeconds);
+    frameDecceleration.multiplyScalar(timeInSeconds)
     frameDecceleration.z = Math.sign(frameDecceleration.z) * Math.min(
       Math.abs(frameDecceleration.z), Math.abs(velocity.z))
 
