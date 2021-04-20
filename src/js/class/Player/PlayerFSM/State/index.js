@@ -1,6 +1,6 @@
 export default class State {
-  constructor (parent) {
-    this._parent = parent
+  constructor ({ parent }) {
+    this.parent = parent
   }
 
   enter () {}

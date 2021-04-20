@@ -1,6 +1,6 @@
 export default class ControllerInput {
-  constructor (options) {
-    this._keys = {
+  constructor () {
+    this.keys = {
       forward: false,
       backward: false,
       left: false,
@@ -8,52 +8,52 @@ export default class ControllerInput {
       space: false,
       shift: false
     }
-    window.addEventListener('keydown', (e) => this._onKeyDown(e), false)
-    window.addEventListener('keyup', (e) => this._onKeyUp(e), false)
+    window.addEventListener('keydown', (e) => this.onKeyDown(e), false)
+    window.addEventListener('keyup', (e) => this.onKeyUp(e), false)
   }
 
-  _onKeyDown (event) {
+  onKeyDown (event) {
     switch (event.keyCode) {
       case 90: // z
-        this._keys.forward = true
+        this.keys.forward = true
         break
       case 81: // q
-        this._keys.left = true
+        this.keys.left = true
         break
       case 83: // s
-        this._keys.backward = true
+        this.keys.backward = true
         break
       case 68: // d
-        this._keys.right = true
+        this.keys.right = true
         break
       case 32: // SPACE
-        this._keys.space = true
+        this.keys.space = true
         break
       case 16: // SHIFT
-        this._keys.shift = true
+        this.keys.shift = true
         break
     }
   }
 
-  _onKeyUp (event) {
+  onKeyUp (event) {
     switch (event.keyCode) {
       case 90: // z
-        this._keys.forward = false
+        this.keys.forward = false
         break
       case 81: // q
-        this._keys.left = false
-        break;
+        this.keys.left = false
+        break
       case 83: // s
-        this._keys.backward = false
+        this.keys.backward = false
         break
       case 68: // d
-        this._keys.right = false
-        break;
+        this.keys.right = false
+        break
       case 32: // SPACE
-        this._keys.space = false
+        this.keys.space = false
         break
       case 16: // SHIFT
-        this._keys.shift = false
+        this.keys.shift = false
         break
     }
   }

@@ -2,22 +2,22 @@ import State from '../../State/index'
 
 export default class RunState extends State {
   constructor (parent) {
-    super(parent)
-    this._name = 'run'
+    super({ parent })
+    this.name = 'run'
   }
 
-  get name () {
-    return this._name
+  get Name () {
+    return this.name
   }
 
   enter (prevState) {
-    const curAction = this._parent._proxy._animations.run.action
+    const curAction = this.parent.proxy.animations.run.action
     if (prevState) {
-      const prevAction = this._parent._proxy._animations[prevState.name].action
+      const prevAction = this.parent.proxy.animations[prevState.name].action
 
       curAction.enabled = true
 
-      if (prevState.Name === 'walk') {
+      if (prevState.name === 'walk') {
         const ratio = curAction.getClip().duration / prevAction.getClip().duration
         curAction.time = prevAction.time * ratio
       } else {
@@ -36,13 +36,13 @@ export default class RunState extends State {
   exit () {}
 
   update (timeElapsed, input) {
-    if (input._keys.forward || input._keys.backward) {
-      if (!input._keys.shift) {
-        this._parent.setState('walk')
+    if (input.keys.forward || input.keys.backward) {
+      if (!input.keys.shift) {
+        this.parent.setState('walk')
       }
       return
     }
 
-    this._parent.setState('idle')
+    this.parent.setState('idle')
   }
 }

@@ -9,13 +9,12 @@ import RunState from './States/RunState/index'
  * FSM = Final State Machine
  */
 export default class PlayerFSM extends FiniteStateMachine {
-  constructor (proxy) {
+  constructor ({ proxy }) {
     super()
-    this._proxy = proxy
-    this._addState('idle', IdleState)
-    this._addState('walk', WalkState)
-    this._addState('run', RunState)
-    this._addState('dance', DanceState)
-    console.log('fsm init', proxy)
+    this.proxy = proxy
+    this.addState('idle', IdleState)
+    this.addState('walk', WalkState)
+    this.addState('run', RunState)
+    this.addState('dance', DanceState)
   }
 }

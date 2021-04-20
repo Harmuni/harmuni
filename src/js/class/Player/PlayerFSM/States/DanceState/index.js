@@ -3,35 +3,36 @@ import { LoopOnce } from 'three'
 
 export default class DanceState extends State {
   constructor (parent) {
-    super(parent)
+    super({ parent })
+    this.name = 'dance'
 
-    this._finishedCallback = () => {
-      this._finished()
+    this.finishedCallback = () => {
+      this.finished()
     }
   }
 
-  _finished () {
-    this._cleanup()
-    this._parent.setState('idle')
+  finished () {
+    this.cleanup()
+    this.parent.setState('idle')
   }
 
-  _cleanup () {
-    const action = this._parent._proxy._animations.dance.action
-    action.getMixer().removeEventListener('finished', this._CleanupCallback)
+  cleanup () {
+    const action = this.parent.proxy.animations.dance.action
+    action.getMixer().removeEventListener('finished', this.cleanupCallback)
   }
 
-  get name () {
-    return 'dance'
+  get Name () {
+    return this.name
   }
 
   enter (prevState) {
     console.log('enter dance')
-    const curAction = this._parent._proxy._animations.dance.action
+    const curAction = this.parent.proxy.animations.dance.action
     const mixer = curAction.getMixer()
-    mixer.addEventListener('finished', this._FinishedCallback)
+    mixer.addEventListener('finished', this.finishedCallback)
 
     if (prevState) {
-      const prevAction = this._parent._proxy._animations[prevState.name].action
+      const prevAction = this.parent.proxy.animations[prevState.name].action
 
       curAction.reset()
       curAction.setLoop(LoopOnce, 1)
@@ -44,7 +45,7 @@ export default class DanceState extends State {
   }
 
   exit () {
-    this._cleanup()
+    this.cleanup()
   }
 
   update (_) {}

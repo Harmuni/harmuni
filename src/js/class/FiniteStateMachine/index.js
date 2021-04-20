@@ -4,13 +4,13 @@
  * https://medium.com/@venkatperi/javascript-state-machines-a-tutorial-972863e37825
  */
 export default class FiniteStateMachine {
-  constructor (options) {
-    this._states = {}
-    this._currentState = null
+  constructor () {
+    this.states = {}
+    this.currentState = null
   }
 
-  _addState (name, type) {
-    this._states[name] = type
+  addState (name, type) {
+    this.states[name] = type
   }
 
   /**
@@ -18,16 +18,16 @@ export default class FiniteStateMachine {
    * @param {*} name
    */
   setState (name) {
-    const prevState = this._currentState
+    const prevState = this.currentState
 
     if (prevState) {
-      if (prevState.Name === name) return
+      if (prevState.name === name) return
       prevState.exit()
     }
 
-    const state = new this._states[name](this)
+    const state = new this.states[name](this)
 
-    this._currentState = state
+    this.currentState = state
     state.enter(prevState)
   }
 
@@ -37,8 +37,8 @@ export default class FiniteStateMachine {
    * @param {*} input
    */
   update (timeElapsed, input) {
-    if (this._currentState) {
-      this._currentState.update(timeElapsed, input)
+    if (this.currentState) {
+      this.currentState.update(timeElapsed, input)
     }
   }
 }

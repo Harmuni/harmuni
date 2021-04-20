@@ -2,18 +2,18 @@ import State from '../../State/index'
 
 export default class IdleState extends State {
   constructor (parent) {
-    super(parent)
-    this._name = 'idle'
+    super({ parent })
+    this.name = 'idle'
   }
 
-  get name () {
-    return this._name
+  get Name () {
+    return this.name
   }
 
   enter (prevState) {
-    const idleAction = this._parent._proxy._animations.idle.action
+    const idleAction = this.parent.proxy.animations.idle.action
     if (prevState) {
-      const prevAction = this._parent._proxy._animations[prevState.name].action
+      const prevAction = this.parent.proxy.animations[prevState.name].action
       idleAction.time = 0.0
       idleAction.enabled = true
       idleAction.setEffectiveTimeScale(1.0)
@@ -28,10 +28,10 @@ export default class IdleState extends State {
   exit () {}
 
   update (_, input) {
-    if (input._keys.forward || input._keys.backward) {
-      this._parent.setState('walk')
-    } else if (input._keys.space) {
-      this._parent.setState('dance')
+    if (input.keys.forward || input.keys.backward) {
+      this.parent.setState('walk')
+    } else if (input.keys.space) {
+      this.parent.setState('dance')
     }
   }
 }
