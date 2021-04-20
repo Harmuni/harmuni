@@ -21,18 +21,17 @@ export default class DanceState extends State {
     action.getMixer().removeEventListener('finished', this.cleanupCallback)
   }
 
-  get Name () {
+  getName () {
     return this.name
   }
 
   enter (prevState) {
-    console.log('enter dance')
     const curAction = this.parent.proxy.animations.dance.action
     const mixer = curAction.getMixer()
     mixer.addEventListener('finished', this.finishedCallback)
 
     if (prevState) {
-      const prevAction = this.parent.proxy.animations[prevState.name].action
+      const prevAction = this.parent.proxy.animations[prevState.getName()].action
 
       curAction.reset()
       curAction.setLoop(LoopOnce, 1)

@@ -14,20 +14,12 @@ export default class Player {
     this.input = new ControllerInput()
     this.manager = {}
     this.mixer = {}
-    this.playerModel = null
     this.position = new Vector3(0, 0, 0)
+    this.rotation = new Quaternion(0, 0, 0, 0)
     this.stateMachine = new PlayerFSM({ proxy: new PlayerAnimationsProxy({ animations: this.animations }) })
-    this.target = {}
+    this.target = null
     this.velocity = new Vector3(0, 0, 0)
-    this.loadModels({ meshScale: 0.02 })
-
-    // const geometry = new BoxGeometry(1, 1, 1)
-    // const material = new MeshPhongMaterial({ color: 'green' })
-    // const player = new Mesh(geometry, material)
-    // player.position.set(0, 0, 0)
-    // options.scene.add(player)
-    // this._controlPlayer({ player })
-    return this.playerModel
+    this.loadModels({ meshScale: 0.1 })
   }
 
   loadModels ({ meshScale = 1 }) {
@@ -37,7 +29,6 @@ export default class Player {
       fbx.traverse(c => { c.castShadow = true })
 
       this.target = fbx
-      this.playerModel = fbx.children
       this.scene.add(fbx)
       this.mixer = new AnimationMixer(fbx)
       this.manager = new LoadingManager()
@@ -54,7 +45,6 @@ export default class Player {
           clip: clip,
           action: action
         }
-        console.log(this.animations)
       }
 
       const loader = new FBXLoader(this.manager)
@@ -73,13 +63,15 @@ export default class Player {
     })
   }
 
-  get PlayerModel () {
-    return this.playerModel
+  getPosition () {
+    return this.position
   }
 
-  set PlayerModel (newValue) {
-    this.playerModel = newValue
-    return this.playerModel
+  getRotation () {
+    if (!this.target) {
+      return new Quaternion()
+    }
+    return this.target.quaternion
   }
 
   update (timeInSeconds) {
@@ -87,7 +79,7 @@ export default class Player {
       return
     }
 
-    this.stateMachine.update(timeInSeconds, this.input)
+    this.stateMachine.update({ timeElapsed: timeInSeconds, input: this.input })
 
     const velocity = this.velocity
     const frameDecceleration = new Vector3(
@@ -101,10 +93,9 @@ export default class Player {
 
     velocity.add(frameDecceleration)
 
-    const controlObject = this.target
     const _Q = new Quaternion()
     const _A = new Vector3()
-    const _R = controlObject.quaternion.clone()
+    const _R = this.target.quaternion.clone()
 
     const acc = this.acceleration.clone()
     if (this.input.keys.shift) {
@@ -132,26 +123,26 @@ export default class Player {
       _R.multiply(_Q)
     }
 
-    controlObject.quaternion.copy(_R)
+    this.target.quaternion.copy(_R)
 
     const oldPosition = new Vector3()
-    oldPosition.copy(controlObject.position)
+    oldPosition.copy(this.target.position)
 
     const forward = new Vector3(0, 0, 1)
-    forward.applyQuaternion(controlObject.quaternion)
+    forward.applyQuaternion(this.target.quaternion)
     forward.normalize()
 
     const sideways = new Vector3(1, 0, 0)
-    sideways.applyQuaternion(controlObject.quaternion)
+    sideways.applyQuaternion(this.target.quaternion)
     sideways.normalize()
 
     sideways.multiplyScalar(velocity.x * timeInSeconds)
     forward.multiplyScalar(velocity.z * timeInSeconds)
 
-    controlObject.position.add(forward)
-    controlObject.position.add(sideways)
+    this.target.position.add(forward)
+    this.target.position.add(sideways)
 
-    this.position.copy(controlObject.position)
+    this.position.copy(this.target.position)
 
     if (this.mixer) {
       this.mixer.update(timeInSeconds)

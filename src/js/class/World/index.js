@@ -10,11 +10,12 @@ export default class World {
     const light = new THREE.DirectionalLight('#ffffff')
     light.position.set(0, 5, 5)
     scene.add(light)
-
     const ambientLight = new THREE.AmbientLight('#ffffff', 0.25)
     scene.add(ambientLight)
 
+    // Terrain
     const terrain = this.generateTerrain(scene)
+
     return { scene, terrain }
   }
 
@@ -26,7 +27,7 @@ export default class World {
       'mountain.glb',
       function (gltf) {
         terrain = gltf.scene.children[4]
-        terrain.scale.set(15, -15, 15)
+        terrain.scale.set(150, -150, 150)
         terrain.position.set(0, 0, 0)
         terrain.name = 'Landscape'
 

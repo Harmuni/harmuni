@@ -36,7 +36,7 @@ export default class FiniteStateMachine {
    * @param {*} timeElapsed
    * @param {*} input
    */
-  update (timeElapsed, input) {
+  update ({ timeElapsed, input }) {
     if (this.currentState) {
       this.currentState.update(timeElapsed, input)
     }

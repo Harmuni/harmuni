@@ -6,14 +6,14 @@ export default class IdleState extends State {
     this.name = 'idle'
   }
 
-  get Name () {
+  getName () {
     return this.name
   }
 
   enter (prevState) {
     const idleAction = this.parent.proxy.animations.idle.action
     if (prevState) {
-      const prevAction = this.parent.proxy.animations[prevState.name].action
+      const prevAction = this.parent.proxy.animations[prevState.getName()].action
       idleAction.time = 0.0
       idleAction.enabled = true
       idleAction.setEffectiveTimeScale(1.0)

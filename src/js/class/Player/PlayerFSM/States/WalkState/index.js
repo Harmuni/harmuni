@@ -6,14 +6,14 @@ export default class WalkState extends State {
     this.name = 'walk'
   }
 
-  get Name () {
+  getName () {
     return this.name
   }
 
   enter (prevState) {
     const curAction = this.parent.proxy.animations.walk.action
     if (prevState) {
-      const prevAction = this.parent.proxy.animations[prevState.name].action
+      const prevAction = this.parent.proxy.animations[prevState.getName()].action
       curAction.enabled = true
 
       if (prevState.name === 'run') {

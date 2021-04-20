@@ -6,14 +6,14 @@ export default class RunState extends State {
     this.name = 'run'
   }
 
-  get Name () {
+  getName () {
     return this.name
   }
 
   enter (prevState) {
     const curAction = this.parent.proxy.animations.run.action
     if (prevState) {
-      const prevAction = this.parent.proxy.animations[prevState.name].action
+      const prevAction = this.parent.proxy.animations[prevState.getName()].action
 
       curAction.enabled = true
 

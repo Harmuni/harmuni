@@ -16,7 +16,7 @@ export default class App {
       width: window.innerWidth,
       height: window.innerHeight
     }
-
+    this.renderer = {}
 
     // Create app
     const app = this.renderApp()
@@ -31,18 +31,18 @@ export default class App {
 
     // Instance world, camera and player
     this.world = new World()
-    this.camera = new Camera({
-      scene: this.world.scene,
-      sizes: this.sizes,
-      renderer
-    })
     this.player = new Player({
       scene: this.world.scene
     })
+    this.camera = new Camera({
+      scene: this.world.scene,
+      sizes: this.sizes,
+      renderer,
+      player: this.player,
+      typeOfCamera: 'thirdPersonView'
+    })
 
-    const raycaster = new THREE.Raycaster()
     const clock = new THREE.Clock()
-
     const render = () => {
       window.requestAnimationFrame(render)
       const deltaTime = clock.getDelta()
@@ -50,29 +50,9 @@ export default class App {
       // Update of instance
       this.mixers?.map(m => m.update(deltaTime))
       this.player?.update(deltaTime)
-      this.camera.orbitControls?.update()
-      // Implement third person camera
-      // this.thirdPersonCamera = null
-      // this.thirdPersonCamera?.update(elapsedTimeSc)
+      this.camera?.update(deltaTime)
 
-      renderer.render(this.world.scene, this.camera.camera)
-
-      // Raycaster update mesh position
-      const rayOrigin = new THREE.Vector3(
-        this.player.position.x,
-        this.player.position.y,
-        this.player.position.z
-      )
-      const rayDirection = new THREE.Vector3(0, -1, 0)
-      rayDirection.normalize()
-      raycaster.set(rayOrigin, rayDirection)
-
-      if (this.world.terrain) {
-        const intersects = raycaster.intersectObjects(this.world.scene.children, true)
-        for (const intersect of intersects) {
-          this.player.position.set(intersect.point.x, intersect.point.y + 0.8, intersect.point.z)
-        }
-      }
+      renderer.render(this.world.scene, this.camera.threeCamera)
     }
     return render
   }
