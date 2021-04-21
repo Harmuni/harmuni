@@ -18,19 +18,22 @@ export default class Camera {
     this.near = {}
     this.far = {}
     this.selectCamera()
+    this.onWindowResize()
   }
 
   update (timeElapsed) {
-    const idealOffset = this.calculateIdealOffset()
-    const idealLookat = this.calculateIdealLookat()
+    if (this.typeOfCamera === 'thirdPersonView') {
+      const idealOffset = this.calculateIdealOffset()
+      const idealLookat = this.calculateIdealLookat()
 
-    const t = 1.0 - Math.pow(0.001, timeElapsed)
+      const t = 1.0 - Math.pow(0.001, timeElapsed)
 
-    this.currentPosition.lerp(idealOffset, t)
-    this.currentLookat.lerp(idealLookat, t)
+      this.currentPosition.lerp(idealOffset, t)
+      this.currentLookat.lerp(idealLookat, t)
 
-    this.threeCamera.position.copy(this.currentPosition)
-    this.threeCamera.lookAt(this.currentLookat)
+      this.threeCamera.position.copy(this.currentPosition)
+      this.threeCamera.lookAt(this.currentLookat)
+    }
   }
 
   selectCamera () {
@@ -62,13 +65,11 @@ export default class Camera {
       this.far
     )
     this.threeCamera.position.set(0, 0, 3)
-    this.scene.add(this.camcameraModelera)
+    this.scene.add(this.threeCamera)
 
     // Orbit Controls
     this.orbitControls = new OrbitControls(this.threeCamera, this.renderer.domElement)
     this.orbitControls.enableDamping = true
-
-    this.windowResizing()
   }
 
   generateThirdPersonCamera () {
@@ -84,11 +85,9 @@ export default class Camera {
     )
     this.threeCamera.position.set(25, 10, 25)
     this.scene.add(this.threeCamera)
-
+    // Position Controls
     this.currentPosition = new THREE.Vector3()
     this.currentLookat = new THREE.Vector3()
-
-    this.windowResizing()
   }
 
   calculateIdealOffset () {
@@ -105,7 +104,7 @@ export default class Camera {
     return idealLookat
   }
 
-  windowResizing () {
+  onWindowResize () {
     // Handle window resizing
     window.addEventListener('resize', () => {
       // Update dimensions

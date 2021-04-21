@@ -8,8 +8,8 @@ export default class ControllerInput {
       space: false,
       shift: false
     }
-    window.addEventListener('keydown', (e) => this.onKeyDown(e), false)
-    window.addEventListener('keyup', (e) => this.onKeyUp(e), false)
+    window.addEventListener('keydown', (event) => this.onKeyDown(event), false)
+    window.addEventListener('keyup', (event) => this.onKeyUp(event), false)
   }
 
   onKeyDown (event) {

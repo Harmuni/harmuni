@@ -2,12 +2,22 @@ import * as THREE from 'three'
 import Camera from './Camera/index'
 import Player from './Player/index'
 import World from './World/index'
+import { GUI } from 'three/examples/jsm/libs/dat.gui.module'
+import { Sky } from 'three/examples/jsm/objects/Sky'
 
+/**
+ * @author Harmuni Developer Team
+ * @license ?
+ * @version 1.0
+ * @class App
+ */
 export default class App {
-  /*
-   * Constructor of app
+  /**
+   * @constructor of App
+   * @returns {void}
    */
-  constructor (options) {
+  constructor () {
+    this.renderer = {}
     this.world = {}
     this.camera = {}
     this.player = {}
@@ -16,18 +26,19 @@ export default class App {
       width: window.innerWidth,
       height: window.innerHeight
     }
-    this.renderer = {}
-
-    // Create app
-    const app = this.renderApp()
-    window.requestAnimationFrame(app)
+    // Rendering app
+    const app = this.main()
+    app
+      ? window.requestAnimationFrame(app)
+      : console.error('Error rendering app')
   }
 
   /**
-   * Render & Animation
+   * Main of app, render app and refresh animations
+   * @returns {void}
    */
-  renderApp () {
-    const renderer = this.setScene()
+  main () {
+    this.renderer = this.setScene()
 
     // Instance world, camera and player
     this.world = new World()
@@ -37,28 +48,31 @@ export default class App {
     this.camera = new Camera({
       scene: this.world.scene,
       sizes: this.sizes,
-      renderer,
+      renderer: this.renderer,
       player: this.player,
       typeOfCamera: 'thirdPersonView'
     })
+    this.setSky()
 
+    // Clock use to get second
+    /// Three clock use perfomance.now and date.now
     const clock = new THREE.Clock()
-    const render = () => {
-      window.requestAnimationFrame(render)
+    const appLoop = () => {
+      // Refresh animation
+      window.requestAnimationFrame(appLoop)
       const deltaTime = clock.getDelta()
-
       // Update of instance
       this.mixers?.map(m => m.update(deltaTime))
       this.player?.update(deltaTime)
       this.camera?.update(deltaTime)
-
-      renderer.render(this.world.scene, this.camera.threeCamera)
+      // Render
+      this.renderer?.render(this.world.scene, this.camera.threeCamera)
     }
-    return render
+    return appLoop
   }
 
   /**
-   * Method to set scene with creation of canvas html and three renderer
+   * Method to set scene, create canvas html and three renderer
    * @returns {object} renderer
    */
   setScene () {
@@ -70,5 +84,58 @@ export default class App {
     renderer.setSize(this.sizes.width, this.sizes.height)
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
     return renderer
+  }
+
+  /**
+   * Method to set sky shader
+   * @returns {void}
+   */
+  setSky () {
+    // Instance Sky
+    const sky = new Sky()
+    sky.scale.setScalar(450000)
+    this.world.scene.add(sky)
+
+    const sun = new THREE.Vector3()
+
+    /// GUI CONTROLLERS SKY PARAMETERS
+    const effectController = {
+      turbidity: 10,
+      rayleigh: 3,
+      mieCoefficient: 0.005,
+      mieDirectionalG: 0.7,
+      inclination: 0.49, // elevation / inclination
+      azimuth: 0.25, // Facing front,
+      exposure: this.renderer.toneMappingExposure
+    }
+
+    const guiChanged = () => {
+      const uniforms = sky.material.uniforms
+      uniforms.turbidity.value = effectController.turbidity
+      uniforms.rayleigh.value = effectController.rayleigh
+      uniforms.mieCoefficient.value = effectController.mieCoefficient
+      uniforms.mieDirectionalG.value = effectController.mieDirectionalG
+
+      const theta = Math.PI * (effectController.inclination - 0.5 )
+      const phi = 2 * Math.PI * (effectController.azimuth - 0.5 )
+
+      sun.x = Math.cos(phi)
+      sun.y = Math.sin(phi) * Math.sin(theta)
+      sun.z = Math.sin(phi) * Math.cos(theta)
+
+      uniforms.sunPosition.value.copy(sun)
+      this.renderer.toneMappingExposure = effectController.exposure
+    }
+
+    const gui = new GUI()
+    gui.add(effectController, 'turbidity', 0.0, 20.0, 0.1).onChange(guiChanged)
+    gui.add(effectController, 'rayleigh', 0.0, 4, 0.001).onChange(guiChanged)
+    gui.add(effectController, 'mieCoefficient', 0.0, 0.1, 0.001).onChange(guiChanged)
+    gui.add(effectController, 'mieDirectionalG', 0.0, 1, 0.001).onChange(guiChanged)
+    gui.add(effectController, 'inclination', 0, 1, 0.0001).onChange(guiChanged)
+    gui.add(effectController, 'azimuth', 0, 1, 0.0001).onChange(guiChanged)
+    gui.add(effectController, 'exposure', 0, 1, 0.0001).onChange(guiChanged)
+
+    guiChanged()
   }
 }
