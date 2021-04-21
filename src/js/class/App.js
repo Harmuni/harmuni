@@ -58,15 +58,15 @@ export default class App {
     /// Three clock use perfomance.now and date.now
     const clock = new THREE.Clock()
     const appLoop = () => {
-      // Refresh animation
-      window.requestAnimationFrame(appLoop)
       const deltaTime = clock.getDelta()
       // Update of instance
       this.mixers?.map(m => m.update(deltaTime))
       this.player?.update(deltaTime)
       this.camera?.update(deltaTime)
-      // Render
+
+      // Render and refresh animation
       this.renderer?.render(this.world.scene, this.camera.threeCamera)
+      window.requestAnimationFrame(appLoop)
     }
     return appLoop
   }
