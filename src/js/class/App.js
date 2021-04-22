@@ -84,11 +84,4 @@ export default class App {
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
     return renderer
   }
-
-  /**
-   * Method to set sky shader
-   * @returns {void}
-   */
-  setSky () {
-  }
 }

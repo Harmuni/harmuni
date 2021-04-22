@@ -1,11 +1,13 @@
 import * as THREE from 'three'
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
-import { ImprovedNoise } from 'three/examples/jsm/math/ImprovedNoise'
-import { fogParsVert, fogVert, fogParsFrag, fogFrag } from '../../../assets/shaders/FogReplace'
 import { GUI } from 'three/examples/jsm/libs/dat.gui.module'
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import { Sky } from 'three/examples/jsm/objects/Sky'
 
 export default class World {
+  /**
+   * @constructor of World
+   * @returns {Object} {scene: scene}
+   */
   constructor ({ renderer }) {
     this.renderer = renderer
     // Instance scene and generate light and terrain with
@@ -19,6 +21,7 @@ export default class World {
 
   /**
    * Generate lights
+   * @returns {void}
    */
   generateLight ({ scene }) {
     const light = new THREE.DirectionalLight('#ffffff')
@@ -34,6 +37,7 @@ export default class World {
 
   /**
    * Generate terrain mesh
+   * @returns {void}
    */
   generateTerrain ({ scene }) {
     const terrainLoader = new GLTFLoader()
@@ -62,6 +66,7 @@ export default class World {
 
   /**
    * Generate and select a type of skybox
+   * @returns {void}
    */
   generateSkybox ({ scene, renderer, typeOfSkybox }) {
     switch (typeOfSkybox) {
@@ -77,6 +82,10 @@ export default class World {
     }
   }
 
+  /**
+   * Method to set sky shader for skybox
+   * @returns {void}
+   */
   setSkyShader ({ scene, renderer }) {
     // Instance Sky
     const sky = new Sky()
@@ -126,6 +135,10 @@ export default class World {
     guiChanged()
   }
 
+  /**
+   * Method to set sky texture for skybox
+   * @returns {void}
+   */
   setSkyTexture ({ scene }) {
     const loader = new THREE.CubeTextureLoader()
     const texture = loader?.load([
