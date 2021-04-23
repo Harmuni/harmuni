@@ -43,7 +43,8 @@ export default class App {
     // Instance world, camera and player
     this.world = new World()
     this.player = new Player({
-      scene: this.world.scene
+      scene: this.world.scene, 
+      terrain: this.world.terrain
     })
     this.camera = new Camera({
       scene: this.world.scene,
@@ -60,8 +61,8 @@ export default class App {
     const appLoop = () => {
       const deltaTime = clock.getDelta()
       // Update of instance
-      this.mixers?.map(m => m.update(deltaTime))
-      this.player?.update(deltaTime)
+      this.mixers?.map(m => m.update(deltaTime, this._world))
+      this.player?.update(deltaTime, this._world)
       this.camera?.update(deltaTime)
 
       // Render and refresh animation
