@@ -50,7 +50,7 @@ export default class App {
       sizes: this.sizes,
       renderer: this.renderer,
       player: this.player,
-      typeOfCamera: 'freeView'
+      typeOfCamera: 'thirdPersonView'
     })
     // this.setSky()
 
