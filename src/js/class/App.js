@@ -2,8 +2,7 @@ import * as THREE from 'three'
 import Camera from './Camera/index'
 import Player from './Player/index'
 import World from './World/index'
-import { GUI } from 'three/examples/jsm/libs/dat.gui.module'
-import { Sky } from 'three/examples/jsm/objects/Sky'
+import { Entity, EntityManager } from './EntityComponent/index'
 
 /**
  * @author Harmuni Developer Team
@@ -18,19 +17,17 @@ export default class App {
    */
   constructor () {
     this.renderer = {}
-    this.world = {}
     this.camera = {}
-    this.player = {}
-    this.mixers = []
+    this.scene = {}
     this.sizes = {
       width: window.innerWidth,
       height: window.innerHeight
     }
-    // Rendering app
+
+    this.entityManager = {}
+
     const app = this.main()
-    app
-      ? window.requestAnimationFrame(app)
-      : console.error('Error rendering app')
+    app !== 1 && console.error('Error rendering app')
   }
 
   /**
@@ -38,43 +35,54 @@ export default class App {
    * @returns {void}
    */
   main () {
-    this.renderer = this.setScene()
-    // Instance world, camera and player
-    this.world = new World({ renderer: this.renderer })
-    this.player = new Player({
-      scene: this.world.scene
-    })
-    this.camera = new Camera({
-      scene: this.world.scene,
+    // Set render of app, default property of scene and default property of camera for threejs
+    this.renderer = this.setRender()
+    this.scene = this.setDefaultScene()
+    this.camera = this.setDefaultCamera()
+
+    // Instance entity manager with entity of game
+    this.entityManager = new EntityManager()
+
+    const worldEntity = new Entity()
+    const playerEntity = new Entity()
+    const cameraEntity = new Entity()
+
+    worldEntity.addComponent(new World({
+      renderer: this.renderer,
+      scene: this.scene
+    }))
+    playerEntity.addComponent(new Player({
+      scene: this.scene
+    }))
+    cameraEntity.addComponent(new Camera({
+      scene: this.scene,
       sizes: this.sizes,
       renderer: this.renderer,
-      player: this.player,
-      typeOfCamera: 'freeView'
-    })
-    this.setSky()
+      targetToFollow: playerEntity,
+      typeOfCamera: 'thirdPersonView'
+    }))
 
-    // Clock use to get second
-    /// Three clock use perfomance.now and date.now
-    const clock = new THREE.Clock()
-    const appLoop = () => {
-      const deltaTime = clock.getDelta()
-      // Update of instance
-      this.mixers?.map(m => m.update(deltaTime))
-      this.player?.update(deltaTime)
-      this.camera?.update(deltaTime)
+    this.entityManager.add(worldEntity, 'worldEntity')
+    this.entityManager.add(playerEntity, 'playerEntity')
+    this.entityManager.add(cameraEntity, 'cameraEntity')
 
-      // Render and refresh animation
-      this.renderer?.render(this.world.scene, this.camera.threeCamera)
-      window.requestAnimationFrame(appLoop)
-    }
-    return appLoop
+    console.log(worldEntity)
+    console.log(playerEntity)
+    console.log(cameraEntity)
+
+    // Affect new camera entity
+    this.camera = cameraEntity.components.Camera.threeCamera
+
+    // Clock use to get second and Three clock use perfomance.now and date.now
+    const gameLoop = this.gameLoop({ clock: new THREE.Clock() })
+    return gameLoop
   }
 
   /**
-   * Method to set scene, create canvas html and three renderer
-   * @returns {object} renderer
+   * Method to set render, create canvas html and three renderer
+   * @returns {Object} renderer
    */
-  setScene () {
+  setRender () {
     const canvas = document.querySelector('#webgl')
     const renderer = new THREE.WebGLRenderer({
       canvas: canvas,
@@ -83,5 +91,38 @@ export default class App {
     renderer.setSize(this.sizes.width, this.sizes.height)
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
     return renderer
+  }
+
+  setDefaultCamera () {
+    const fov = 60
+    const aspect = 1920 / 1080
+    const near = 1.0
+    const far = 1000.0
+    const camera = new THREE.PerspectiveCamera(fov, aspect, near, far)
+    camera.position.set(75, 20, 0)
+    camera.lookAt(0, 20, 0)
+    return camera
+  }
+
+  setDefaultScene () {
+    const scene = new THREE.Scene()
+    scene.background = new THREE.Color(0xFFFFFF)
+    scene.fog = new THREE.FogExp2(0x89b2eb, 0.002)
+    return scene
+  }
+
+  gameLoop ({ clock }) {
+    // Render and refresh animation
+    const deltaTime = clock.getDelta()
+    return window.requestAnimationFrame((t) => {
+      this.gameLoop({ clock })
+      this.renderer?.render(this.scene, this.camera)
+      this.step({ deltaTime })
+    })
+  }
+
+  step ({ deltaTime }) {
+    // Update of entities
+    this.entityManager.update(deltaTime)
   }
 }

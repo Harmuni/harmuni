@@ -3,7 +3,7 @@ export default class PlayerAnimationsProxy {
     this.animations = animations
   }
 
-  get Animations () {
+  getAnimations () {
     return this.animations
   }
 }

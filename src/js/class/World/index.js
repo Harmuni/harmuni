@@ -2,25 +2,75 @@ import * as THREE from 'three'
 import { GUI } from 'three/examples/jsm/libs/dat.gui.module'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import { Sky } from 'three/examples/jsm/objects/Sky'
-
-export default class World {
+import { ImprovedNoise } from 'three/examples/jsm/math/ImprovedNoise'
+import { fogParsVert, fogVert, fogParsFrag, fogFrag } from '../../../assets/shaders/FogReplace'
+import { Component } from '../EntityComponent'
+export default class World extends Component {
   /**
    * @constructor of World
-   * @returns {Object} {scene: scene}
+   * @param {Object} {{Object} renderer}
+   * @returns {Object} {scene: {Object}scene}
    */
-  constructor ({ renderer }) {
+  constructor ({ renderer, scene }) {
+    super()
     this.renderer = renderer
-    // Instance scene and generate light and terrain with
-    this.scene = new THREE.Scene()
+    this.scene = scene
+
+    // Generate light and terrain with
     this.generateLight({ scene: this.scene })
     this.generateTerrain({ scene: this.scene })
     this.generateSkybox({ scene: this.scene, renderer: this.renderer, typeOfSkybox: 'skyShader' })
 
-    return { scene: this.scene }
+    // // Fog
+    // const worldWidth = 56
+    // const worldDepth = 56
+    // const data = this.generateHeight(worldWidth, worldDepth)
+    // const geometry = new THREE.PlaneBufferGeometry(
+    //   7500,
+    //   7500,
+    //   worldWidth - 1,
+    //   worldDepth - 1
+    // )
+    // geometry.rotateX(-Math.PI / 2)
+    // const vertices = geometry.attributes.position.array;
+    // for (let i = 0, j = 0, l = vertices.length; i < l; i++, j += 3) {
+    //   vertices[j + 1] = data[i] * 10
+    // }
+
+    // const params = {
+    //   fogNearColor: 0xfc4848,
+    //   fogHorizonColor: 0xe4dcff,
+    //   fogDensity: 0.0025,
+    //   fogNoiseSpeed: 100,
+    //   fogNoiseFreq: 0.0012,
+    //   fogNoiseImpact: 0.5
+    // }
+    // scene.fog = new THREE.FogExp2(params.fogHorizonColor, params.fogDensity)
+    // const mesh = new THREE.Mesh(
+    //   geometry,
+    //   new THREE.MeshBasicMaterial({ color: new THREE.Color(0xefd1b5) })
+    // )
+    // mesh.material.onBeforeCompile = shader => {
+    //   shader.vertexShader = shader.vertexShader.replace('#include <fog_pars_vertex>', fogParsVert)
+    //   shader.vertexShader = shader.vertexShader.replace('#include <fog_vertex>', fogVert)
+    //   shader.fragmentShader = shader.fragmentShader.replace('#include <fog_pars_fragment>', fogParsFrag)
+    //   shader.fragmentShader = shader.fragmentShader.replace('#include <fog_fragment>', fogFrag)
+    //   const uniforms = {
+    //     fogNearColor: { value: new THREE.Color(params.fogNearColor) },
+    //     fogNoiseFreq: { value: params.fogNoiseFreq },
+    //     fogNoiseSpeed: { value: params.fogNoiseSpeed },
+    //     fogNoiseImpact: { value: params.fogNoiseImpact },
+    //     time: { value: 0 }
+    //   }
+    //   shader.uniforms = THREE.UniformsUtils.merge([shader.uniforms, uniforms])
+    //   let terrainShader = shader
+    // }
+    // scene.add(mesh)
   }
 
   /**
    * Generate lights
+   * @param {Object} {{Object} scene}
    * @returns {void}
    */
   generateLight ({ scene }) {
@@ -37,6 +87,7 @@ export default class World {
 
   /**
    * Generate terrain mesh
+   * @param {Object} {{Object} scene}
    * @returns {void}
    */
   generateTerrain ({ scene }) {
@@ -66,6 +117,7 @@ export default class World {
 
   /**
    * Generate and select a type of skybox
+   * @param {Object} {{Object} scene, {Object} renderer, {Object} typeOfSkybox}
    * @returns {void}
    */
   generateSkybox ({ scene, renderer, typeOfSkybox }) {
@@ -84,6 +136,7 @@ export default class World {
 
   /**
    * Method to set sky shader for skybox
+   * @param {Object} {{Object} scene, {Object} renderer}
    * @returns {void}
    */
   setSkyShader ({ scene, renderer }) {
@@ -137,6 +190,7 @@ export default class World {
 
   /**
    * Method to set sky texture for skybox
+   * @param {Object} {{Object} scene}
    * @returns {void}
    */
   setSkyTexture ({ scene }) {
@@ -152,4 +206,30 @@ export default class World {
     texture.encoding = THREE.sRGBEncoding
     scene.background = texture
   }
+
+  // generateHeight (width, height) {
+  //   let seed = Math.PI / 4
+  //   window.Math.random = function () {
+  //     const x = Math.sin(seed++) * 10000
+  //     return x - Math.floor(x)
+  //   }
+
+  //   const size = width * height
+  //   const data = new Uint8Array(size)
+  //   const perlin = new ImprovedNoise()
+  //   let quality = 1
+  //   const z = Math.random() * 100
+
+  //   for (let j = 0; j < 4; j++) {
+  //     for (let i = 0; i < size; i++) {
+  //       const x = i % width
+  //       const y = ~~(i / width)
+  //       data[i] += Math.abs(
+  //         perlin.noise(x / quality, y / quality, z) * quality * 1.75
+  //       )
+  //     }
+  //     quality *= 5
+  //   }
+  //   return data
+  // }
 }

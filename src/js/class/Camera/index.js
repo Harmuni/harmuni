@@ -1,12 +1,14 @@
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
+import { Component } from '../EntityComponent'
 
-export default class Camera {
-  constructor ({ scene, sizes, renderer, player, typeOfCamera }) {
+export default class Camera extends Component {
+  constructor ({ scene, sizes, renderer, targetToFollow, typeOfCamera }) {
+    super()
     this.scene = scene
     this.sizes = sizes
     this.renderer = renderer
-    this.targetToFollow = player
+    this.targetToFollow = targetToFollow
     this.typeOfCamera = typeOfCamera
 
     this.threeCamera = {}
@@ -92,15 +94,15 @@ export default class Camera {
 
   calculateIdealOffset () {
     const idealOffset = new THREE.Vector3(0, 20, -35)
-    idealOffset.applyQuaternion(this.targetToFollow.getRotation())
-    idealOffset.add(this.targetToFollow.getPosition())
+    idealOffset.applyQuaternion(this.targetToFollow.rotation)
+    idealOffset.add(this.targetToFollow.position)
     return idealOffset
   }
 
   calculateIdealLookat () {
     const idealLookat = new THREE.Vector3(0, 10, 50)
-    idealLookat.applyQuaternion(this.targetToFollow.getRotation())
-    idealLookat.add(this.targetToFollow.getPosition())
+    idealLookat.applyQuaternion(this.targetToFollow.rotation)
+    idealLookat.add(this.targetToFollow.position)
     return idealLookat
   }
 
