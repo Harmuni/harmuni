@@ -18,7 +18,6 @@ export default class World extends Component {
 
     // Generate light and terrain with
     this.generateLight({ scene: this.scene })
-    this.generateTerrain({ scene: this.scene })
     this.generateSkybox({ scene: this.scene, renderer: this.renderer, typeOfSkybox: 'skyShader' })
 
     // // Fog
@@ -86,27 +85,92 @@ export default class World extends Component {
   }
 
   /**
-   * Generate terrain mesh
-   * @param {Object} {{Object} scene}
-   * @returns {void}
-   */
-  generateTerrain ({ scene }) {
-    const terrainLoader = new GLTFLoader()
-    terrainLoader.load(
-      'mountain.glb',
+   * Generate ground mesh
+   **/
+  generateGround (GlbLoader, terrain) {
+    GlbLoader.load(
+      'scène_terrain.glb',
       function (gltf) {
-        const terrain = gltf.scene.children[4]
-        terrain.scale.set(150, -150, 150)
-        terrain.position.set(0, 0, 0)
-        terrain.name = 'Landscape'
+        gltf.scene.scale.set(6, 6, 6)
+        gltf.scene.name = 'Ground'
+        terrain.add(gltf.scene)
+      },
+      undefined,
+      function (error) {
+        console.error(error)
+      }
+    )
+  }
 
-        terrain.traverse((node) => {
-          if (!node.isMesh) return null
-          node.material.wireframe = true
-          node.material.doubleSided = true
-        })
+    /**
+   * Generate environment meshes
+   **/
+  generateEnvironment (GlbLoader, terrain) {
+    GlbLoader.load(
+      'scène_colonne.glb',
+      function (gltf) {
+        gltf.scene.scale.set(6, 6, 6)
+        gltf.scene.name = 'Colonne'
 
-        scene.add(terrain)
+        const column1 = gltf.scene.clone()
+        column1.position.set(60, 0, 0)
+
+        const column3 = gltf.scene.clone()
+        column3.position.set(120, 0, 60)
+
+        const column4 = gltf.scene.clone()
+        column4.position.set(-60, 0, 60)
+
+        terrain.add(gltf.scene, column1, column3, column4)
+      },
+      undefined,
+      function (error) {
+        console.error(error)
+      }
+    )
+
+    GlbLoader.load(
+      'scène_arbre.glb',
+      function (gltf) {
+        gltf.scene.scale.set(6, 6, 6)
+        gltf.scene.name = 'Arbre'
+
+        const arbre1 = gltf.scene.clone()
+        arbre1.position.set(60, 0, 0)
+
+        const arbre3 = gltf.scene.clone()
+        arbre3.position.set(120, 0, 60)
+
+        const arbre4 = gltf.scene.clone()
+        arbre4.position.set(-60, 0, 60)
+
+        terrain.add(gltf.scene, arbre1, arbre3, arbre4)
+      },
+      undefined,
+      function (error) {
+        console.error(error)
+      }
+    )
+
+    GlbLoader.load(
+      'scène_arche.glb',
+      function (gltf) {
+        gltf.scene.scale.set(6, 6, 6)
+        gltf.scene.name = 'Arche'
+        terrain.add(gltf.scene)
+      },
+      undefined,
+      function (error) {
+        console.error(error)
+      }
+    )
+
+    GlbLoader.load(
+      'scène_plaque.glb',
+      function (gltf) {
+        gltf.scene.scale.set(6,6,6)
+        gltf.scene.name = 'Stèle'
+        terrain.add(gltf.scene)
       },
       undefined,
       function (error) {
