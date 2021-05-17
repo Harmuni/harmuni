@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-import { AnimationMixer, LoadingManager, Quaternion, sRGBEncoding, Vector3 } from 'three'
-=======
-import { AnimationMixer, LoadingManager, Quaternion, Vector3, Raycaster } from 'three'
->>>>>>> 59ddbeefdfa920fca6435d26f666e7f2b5947703
+import { AnimationMixer, LoadingManager, Quaternion, sRGBEncoding, Vector3, Raycaster } from 'three'
 import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader.js'
 import PlayerAnimationsProxy from './PlayerAnimationsProxy/index'
 import PlayerFSM from './PlayerFSM/index'
@@ -10,7 +6,7 @@ import ControllerInput from '../ControllerInput/index'
 import { Component } from '../EntityComponent/index'
 
 export default class Player extends Component {
-  constructor ({ scene }) {
+  constructor ({ scene, terrain }) {
     super()
     this.scene = scene
     this.terrain = terrain
@@ -85,7 +81,7 @@ export default class Player extends Component {
         animationLoad({ animationName: 'idle', fbxAnimation })
       })
       loader.load('/zombie/dance.fbx', (fbxAnimation) => {
-        animationLoad({animationName: 'dance', fbxAnimation })
+        animationLoad({ animationName: 'dance', fbxAnimation })
       })
     })
   }
@@ -118,7 +114,7 @@ export default class Player extends Component {
       return
     }
 
-    const velocity = this.velocity;
+    const velocity = this.velocity
     const frameDecceleration = new Vector3(
       velocity.x * this.decceleration.x,
       velocity.y * this.decceleration.y,
@@ -140,37 +136,37 @@ export default class Player extends Component {
       acc.multiplyScalar(2.0)
     }
 
+    const raycaster = new Raycaster()
     if (this.input.keys.forward) {
       velocity.z += acc.z * timeInSeconds
-      
+
       const rayOrigin = new Vector3(
         this.target.position.x,
         this.target.position.y + 0.1,
         this.target.position.z
-        )
-        const rayDirection = new Vector3(0, -1, 0.1)
-        rayDirection.normalize()
-        raycaster.set(rayOrigin, rayDirection)
-        
-        if (this.terrain) {
-          const intersects = raycaster.intersectObjects(this.terrain.children, true)
-          for (const intersect of intersects) {
-            this.target.position.y = intersect.point.y + 0.1
-          }
-          // const distance = (x1, y1, x2, y2) => {
-          //   const xDist = x2 - x1
-          //   const yDist = y2 - y1
+      )
 
-          //   return Math.sqrt(Math.pow(xDist, 2) + Math.pow(yDist, 2))
-          // }
+      const rayDirection = new Vector3(0, -1, 0.1)
+      rayDirection.normalize()
+      raycaster.set(rayOrigin, rayDirection)
+      if (this.terrain) {
+        const intersects = raycaster.intersectObjects(this.terrain.children, true)
+        for (const intersect of intersects) {
+          this.target.position.y = intersect.point.y + 0.1
+        }
+        // const distance = (x1, y1, x2, y2) => {
+        //   const xDist = x2 - x1
+        //   const yDist = y2 - y1
 
-          // let distanceToObj = distance(controlObject.position.x, controlObject.position.z, poteau.position.x, poteau.position.z)
-          // if (distanceToObj <= 1.5) {
-          //   console.log("jetouche")
-          //   velocity.z = 0
-          // }
+        //   return Math.sqrt(Math.pow(xDist, 2) + Math.pow(yDist, 2))
+        // }
+
+        // let distanceToObj = distance(controlObject.position.x, controlObject.position.z, poteau.position.x, poteau.position.z)
+        // if (distanceToObj <= 1.5) {
+        //   console.log("jetouche")
+        //   velocity.z = 0
+        // }
       }
-
     }
 
     if (this.input.keys.backward) {

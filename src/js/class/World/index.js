@@ -1,9 +1,7 @@
-import * as THREE from 'three'
+import { AmbientLight, CubeTextureLoader, DirectionalLight, Group, HemisphereLight, LoadingManager, sRGBEncoding, Vector3 } from 'three'
 import { GUI } from 'three/examples/jsm/libs/dat.gui.module'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import { Sky } from 'three/examples/jsm/objects/Sky'
-import { ImprovedNoise } from 'three/examples/jsm/math/ImprovedNoise'
-import { fogParsVert, fogVert, fogParsFrag, fogFrag } from '../../../assets/shaders/FogReplace'
 import { Component } from '../EntityComponent'
 export default class World extends Component {
   /**
@@ -16,55 +14,20 @@ export default class World extends Component {
     this.renderer = renderer
     this.scene = scene
 
+    // Loaders
+    const loaderManager = new LoadingManager()
+    const GlbLoader = new GLTFLoader(loaderManager)
+
     // Generate light and terrain with
     this.generateLight({ scene: this.scene })
     this.generateSkybox({ scene: this.scene, renderer: this.renderer, typeOfSkybox: 'skyShader' })
 
-    // // Fog
-    // const worldWidth = 56
-    // const worldDepth = 56
-    // const data = this.generateHeight(worldWidth, worldDepth)
-    // const geometry = new THREE.PlaneBufferGeometry(
-    //   7500,
-    //   7500,
-    //   worldWidth - 1,
-    //   worldDepth - 1
-    // )
-    // geometry.rotateX(-Math.PI / 2)
-    // const vertices = geometry.attributes.position.array;
-    // for (let i = 0, j = 0, l = vertices.length; i < l; i++, j += 3) {
-    //   vertices[j + 1] = data[i] * 10
-    // }
-
-    // const params = {
-    //   fogNearColor: 0xfc4848,
-    //   fogHorizonColor: 0xe4dcff,
-    //   fogDensity: 0.0025,
-    //   fogNoiseSpeed: 100,
-    //   fogNoiseFreq: 0.0012,
-    //   fogNoiseImpact: 0.5
-    // }
-    // scene.fog = new THREE.FogExp2(params.fogHorizonColor, params.fogDensity)
-    // const mesh = new THREE.Mesh(
-    //   geometry,
-    //   new THREE.MeshBasicMaterial({ color: new THREE.Color(0xefd1b5) })
-    // )
-    // mesh.material.onBeforeCompile = shader => {
-    //   shader.vertexShader = shader.vertexShader.replace('#include <fog_pars_vertex>', fogParsVert)
-    //   shader.vertexShader = shader.vertexShader.replace('#include <fog_vertex>', fogVert)
-    //   shader.fragmentShader = shader.fragmentShader.replace('#include <fog_pars_fragment>', fogParsFrag)
-    //   shader.fragmentShader = shader.fragmentShader.replace('#include <fog_fragment>', fogFrag)
-    //   const uniforms = {
-    //     fogNearColor: { value: new THREE.Color(params.fogNearColor) },
-    //     fogNoiseFreq: { value: params.fogNoiseFreq },
-    //     fogNoiseSpeed: { value: params.fogNoiseSpeed },
-    //     fogNoiseImpact: { value: params.fogNoiseImpact },
-    //     time: { value: 0 }
-    //   }
-    //   shader.uniforms = THREE.UniformsUtils.merge([shader.uniforms, uniforms])
-    //   let terrainShader = shader
-    // }
-    // scene.add(mesh)
+    // Terrain
+    this.terrain = new Group()
+    this.terrain.name = 'Terrain'
+    this.scene.add(this.terrain)
+    this.generateGround({ GlbLoader, terrain: this.terrain })
+    this.generateEnvironment({ GlbLoader, terrain: this.terrain })
   }
 
   /**
@@ -73,9 +36,9 @@ export default class World extends Component {
    * @returns {void}
    */
   generateLight ({ scene }) {
-    const light = new THREE.DirectionalLight('#ffffff')
-    const ambientLight = new THREE.AmbientLight('#ffffff', 0.5)
-    const hemiLight = new THREE.HemisphereLight('0x0000ff', '0x00ff00', 0.6)
+    const light = new DirectionalLight('#ffffff')
+    const ambientLight = new AmbientLight('#ffffff', 0.5)
+    const hemiLight = new HemisphereLight('0x0000ff', '0x00ff00', 0.6)
 
     light.position.set(0, 5, 5)
 
@@ -87,7 +50,7 @@ export default class World extends Component {
   /**
    * Generate ground mesh
    **/
-  generateGround (GlbLoader, terrain) {
+  generateGround ({ GlbLoader, terrain }) {
     GlbLoader.load(
       'scène_terrain.glb',
       function (gltf) {
@@ -102,10 +65,10 @@ export default class World extends Component {
     )
   }
 
-    /**
+  /**
    * Generate environment meshes
    **/
-  generateEnvironment (GlbLoader, terrain) {
+  generateEnvironment ({ GlbLoader, terrain }) {
     GlbLoader.load(
       'scène_colonne.glb',
       function (gltf) {
@@ -168,7 +131,7 @@ export default class World extends Component {
     GlbLoader.load(
       'scène_plaque.glb',
       function (gltf) {
-        gltf.scene.scale.set(6,6,6)
+        gltf.scene.scale.set(6, 6, 6)
         gltf.scene.name = 'Stèle'
         terrain.add(gltf.scene)
       },
@@ -209,7 +172,7 @@ export default class World extends Component {
     sky.scale.setScalar(450000)
     scene.add(sky)
 
-    const sun = new THREE.Vector3()
+    const sun = new Vector3()
 
     /// GUI CONTROLLERS SKY PARAMETERS
     const effectController = {
@@ -229,8 +192,8 @@ export default class World extends Component {
       uniforms.mieCoefficient.value = effectController.mieCoefficient
       uniforms.mieDirectionalG.value = effectController.mieDirectionalG
 
-      const theta = Math.PI * (effectController.inclination - 0.5 )
-      const phi = 2 * Math.PI * (effectController.azimuth - 0.5 )
+      const theta = Math.PI * (effectController.inclination - 0.5)
+      const phi = 2 * Math.PI * (effectController.azimuth - 0.5)
 
       sun.x = Math.cos(phi)
       sun.y = Math.sin(phi) * Math.sin(theta)
@@ -258,7 +221,7 @@ export default class World extends Component {
    * @returns {void}
    */
   setSkyTexture ({ scene }) {
-    const loader = new THREE.CubeTextureLoader()
+    const loader = new CubeTextureLoader()
     const texture = loader?.load([
       '/skybox/front_face.jpg',
       '/skybox/back_face.jpg',
@@ -267,33 +230,7 @@ export default class World extends Component {
       '/skybox/left_face.jpg',
       '/skybox/right_face.jpg'
     ])
-    texture.encoding = THREE.sRGBEncoding
+    texture.encoding = sRGBEncoding
     scene.background = texture
   }
-
-  // generateHeight (width, height) {
-  //   let seed = Math.PI / 4
-  //   window.Math.random = function () {
-  //     const x = Math.sin(seed++) * 10000
-  //     return x - Math.floor(x)
-  //   }
-
-  //   const size = width * height
-  //   const data = new Uint8Array(size)
-  //   const perlin = new ImprovedNoise()
-  //   let quality = 1
-  //   const z = Math.random() * 100
-
-  //   for (let j = 0; j < 4; j++) {
-  //     for (let i = 0; i < size; i++) {
-  //       const x = i % width
-  //       const y = ~~(i / width)
-  //       data[i] += Math.abs(
-  //         perlin.noise(x / quality, y / quality, z) * quality * 1.75
-  //       )
-  //     }
-  //     quality *= 5
-  //   }
-  //   return data
-  // }
 }

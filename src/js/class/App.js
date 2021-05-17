@@ -52,7 +52,8 @@ export default class App {
       scene: this.scene
     }))
     playerEntity.addComponent(new Player({
-      scene: this.scene
+      scene: this.scene,
+      terrain: worldEntity.components.World.terrain
     }))
     cameraEntity.addComponent(new Camera({
       scene: this.scene,
