@@ -3,6 +3,7 @@ import Camera from './Camera/index'
 import Player from './Player/index'
 import World from './World/index'
 import { Entity, EntityManager } from './EntityComponent/index'
+import Pause from './Pause'
 
 /**
  * @author Harmuni Developer Team
@@ -46,6 +47,7 @@ export default class App {
     const worldEntity = new Entity()
     const playerEntity = new Entity()
     const cameraEntity = new Entity()
+    const pauseEntity = new Entity()
 
     worldEntity.addComponent(new World({
       renderer: this.renderer,
@@ -62,16 +64,19 @@ export default class App {
       targetToFollow: playerEntity,
       typeOfCamera: 'thirdPersonView'
     }))
+    pauseEntity.addComponent(new Pause())
 
     this.entityManager.add(worldEntity, 'worldEntity')
     this.entityManager.add(playerEntity, 'playerEntity')
     this.entityManager.add(cameraEntity, 'cameraEntity')
+    this.entityManager.add(pauseEntity, 'pauseEntity')
 
     console.log(worldEntity)
     console.log(playerEntity)
     console.log(cameraEntity)
+    console.log(pauseEntity)
 
-    // Affect new camera entity
+    // Affect alias for new camera entity
     this.camera = cameraEntity.components.Camera.threeCamera
 
     // Clock use to get second and Three clock use perfomance.now and date.now

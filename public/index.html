@@ -3,14 +3,28 @@
   <head>
     <meta charset="utf-8" />
     <link rel="icon" href="/favicon.ico" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="Web site starter for Harmuni project" />
-    <link rel="stylesheet" type="text/css" href="/index.css" />
-    <title>Harmuni Starter</title>
+    <meta name="description" content="Web site for Harmuni project" />
+    <link rel="stylesheet" href="./css/main.css">
+    <link rel="stylesheet" href="./css/startscreen.css">
+    <title>Harmuni</title>
   </head>
   <body>
-    <canvas id="webgl"></canvas>
-    <noscript>You need to enable JavaScript to run this app.</noscript>
-    <script type="module" src="/dist/index.js"></script>
+    <div class="startmenu">
+      <video autoplay muted loop class="startmenu__video-background">
+        <source src="assets/videos/particle_bg.mp4" type="video/mp4">
+        Your browser does not support HTML5 video.
+      </video>
+      <div class="startmenu__menu">
+        <img src="./assets/images/logo_harmuni.svg" alt="Logo Harmuni">
+        <ul class="menu">
+            <li class="menu__item"><a href="./game">Commencer une partie</a></li>
+            <li class="menu__item"><a href="./game">Rejoindre une partie</a></li>
+            <li class="menu__item"><a href="./game">Rejoindre un lobby</a></li>
+            <li class="menu__item"><a href="./game">Paramétres</a></li>
+        </ul>
+      </div>
+    </div>
   </body>
 </html>

@@ -4,6 +4,7 @@ import PlayerAnimationsProxy from './PlayerAnimationsProxy/index'
 import PlayerFSM from './PlayerFSM/index'
 import ControllerInput from '../ControllerInput/index'
 import { Component } from '../EntityComponent/index'
+import { LumaCharacter, LumaIdle, LumaRun, LumaWalk } from '../../../assets/meshes'
 
 export default class Player extends Component {
   constructor ({ scene, terrain }) {
@@ -15,7 +16,6 @@ export default class Player extends Component {
     this.animations = {}
     this.decceleration = new Vector3(-0.0005, -0.0001, -5.0)
     this.input = new ControllerInput()
-    console.log(this.input)
     this.manager = {}
     this.mixer = {}
     this.position = new Vector3(0, 0, 0)
@@ -24,12 +24,13 @@ export default class Player extends Component {
     this.velocity = new Vector3(0, 0, 0)
     this.bones = {}
 
-    this.loadModels({ meshScale: 0.1 })
+    this.loadModels({ meshScale: 0.03 })
   }
 
   loadModels ({ meshScale = 1 }) {
     const loader = new FBXLoader()
-    loader.load('/zombie/zombie.fbx', (fbx) => {
+    loader.load(LumaCharacter, (fbx) => {
+      console.log('fbx test', fbx)
       this.target = fbx
 
       this.target.scale.setScalar(meshScale)
@@ -71,17 +72,14 @@ export default class Player extends Component {
       }
 
       const loader = new FBXLoader(this.manager)
-      loader.load('/zombie/walk.fbx', (fbxAnimation) => {
+      loader.load(LumaWalk, (fbxAnimation) => {
         animationLoad({ animationName: 'walk', fbxAnimation })
       })
-      loader.load('/zombie/run.fbx', (fbxAnimation) => {
+      loader.load(LumaRun, (fbxAnimation) => {
         animationLoad({ animationName: 'run', fbxAnimation })
       })
-      loader.load('/zombie/idle.fbx', (fbxAnimation) => {
+      loader.load(LumaIdle, (fbxAnimation) => {
         animationLoad({ animationName: 'idle', fbxAnimation })
-      })
-      loader.load('/zombie/dance.fbx', (fbxAnimation) => {
-        animationLoad({ animationName: 'dance', fbxAnimation })
       })
     })
   }

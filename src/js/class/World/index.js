@@ -3,6 +3,7 @@ import { GUI } from 'three/examples/jsm/libs/dat.gui.module'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import { Sky } from 'three/examples/jsm/objects/Sky'
 import { Component } from '../EntityComponent'
+import { ArchModel, ColumnModel, PlateModel, TerrainModel, TreeModel } from '../../../assets/meshes'
 export default class World extends Component {
   /**
    * @constructor of World
@@ -21,8 +22,6 @@ export default class World extends Component {
     // Generate light and terrain with
     this.generateLight({ scene: this.scene })
     this.generateSkybox({ scene: this.scene, renderer: this.renderer, typeOfSkybox: 'skyShader' })
-
-    // Terrain
     this.terrain = new Group()
     this.terrain.name = 'Terrain'
     this.scene.add(this.terrain)
@@ -52,7 +51,7 @@ export default class World extends Component {
    **/
   generateGround ({ GlbLoader, terrain }) {
     GlbLoader.load(
-      'scène_terrain.glb',
+      TerrainModel,
       function (gltf) {
         gltf.scene.scale.set(6, 6, 6)
         gltf.scene.name = 'Ground'
@@ -70,7 +69,7 @@ export default class World extends Component {
    **/
   generateEnvironment ({ GlbLoader, terrain }) {
     GlbLoader.load(
-      'scène_colonne.glb',
+      ColumnModel,
       function (gltf) {
         gltf.scene.scale.set(6, 6, 6)
         gltf.scene.name = 'Colonne'
@@ -93,21 +92,21 @@ export default class World extends Component {
     )
 
     GlbLoader.load(
-      'scène_arbre.glb',
+      TreeModel,
       function (gltf) {
         gltf.scene.scale.set(6, 6, 6)
-        gltf.scene.name = 'Arbre'
+        gltf.scene.name = 'Tree'
 
-        const arbre1 = gltf.scene.clone()
-        arbre1.position.set(60, 0, 0)
+        const tree1 = gltf.scene.clone()
+        tree1.position.set(60, 0, 0)
 
-        const arbre3 = gltf.scene.clone()
-        arbre3.position.set(120, 0, 60)
+        const tree2 = gltf.scene.clone()
+        tree2.position.set(120, 0, 60)
 
-        const arbre4 = gltf.scene.clone()
-        arbre4.position.set(-60, 0, 60)
+        const tree3 = gltf.scene.clone()
+        tree3.position.set(-60, 0, 60)
 
-        terrain.add(gltf.scene, arbre1, arbre3, arbre4)
+        terrain.add(gltf.scene, tree1, tree2, tree3)
       },
       undefined,
       function (error) {
@@ -116,10 +115,10 @@ export default class World extends Component {
     )
 
     GlbLoader.load(
-      'scène_arche.glb',
+      ArchModel,
       function (gltf) {
         gltf.scene.scale.set(6, 6, 6)
-        gltf.scene.name = 'Arche'
+        gltf.scene.name = 'Arch'
         terrain.add(gltf.scene)
       },
       undefined,
@@ -129,10 +128,10 @@ export default class World extends Component {
     )
 
     GlbLoader.load(
-      'scène_plaque.glb',
+      PlateModel,
       function (gltf) {
         gltf.scene.scale.set(6, 6, 6)
-        gltf.scene.name = 'Stèle'
+        gltf.scene.name = 'Plate'
         terrain.add(gltf.scene)
       },
       undefined,
@@ -140,6 +139,19 @@ export default class World extends Component {
         console.error(error)
       }
     )
+
+    // GlbLoader.load(
+    //   AppleModel,
+    //   function (gltf) {
+    //     gltf.scene.scale.set(40, 40, 40)
+    //     gltf.scene.name = 'Apple'
+    //     terrain.add(gltf.scene)
+    //   },
+    //   undefined,
+    //   function (error) {
+    //     console.error(error)
+    //   }
+    // )
   }
 
   /**
@@ -223,12 +235,12 @@ export default class World extends Component {
   setSkyTexture ({ scene }) {
     const loader = new CubeTextureLoader()
     const texture = loader?.load([
-      '/skybox/front_face.jpg',
-      '/skybox/back_face.jpg',
-      '/skybox/up_face.jpg',
-      '/skybox/down_face.jpg',
-      '/skybox/left_face.jpg',
-      '/skybox/right_face.jpg'
+      './skybox/front_face.jpg',
+      './skybox/back_face.jpg',
+      './skybox/up_face.jpg',
+      './skybox/down_face.jpg',
+      './skybox/left_face.jpg',
+      './skybox/right_face.jpg'
     ])
     texture.encoding = sRGBEncoding
     scene.background = texture

@@ -1,0 +1,88 @@
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    background: url('../assets/images/bg.png') no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+
+.pause-window__decoration {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.pause-window__decoration.pause-window__decoration--top {
+    width: 80%;
+}
+
+.pause-window__decoration.pause-window__decoration--bottom {
+    width: 10%;
+}
+
+.pause-window {
+    height: 100%;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 999;
+    background-color: rgba(0, 0, 0, 0.6);
+    color: white;
+
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-direction: column;
+}
+
+.pause-window__menu {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+    /* border: orange solid 1px; */
+}
+
+.menu__decoration img {
+    height: 60px;
+}
+
+.menu {
+    padding-left: 0;
+    /* border: greenyellow solid 1px; */
+    width: 100%;
+}
+
+.menu .menu__item {
+    list-style: none;
+    text-align: center;
+    /* border: cyan dotted 1px; */
+}
+
+.menu .menu__item button {
+    background: none;
+    border: none;
+    text-align: center;
+    font-family: 'Laila', sans-serif;
+    font-size: 40px;
+    color: white;
+    text-decoration: none;
+    margin-left: 20px;
+    margin-right: 20px;
+    width: 100%;
+}

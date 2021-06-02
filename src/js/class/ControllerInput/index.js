@@ -6,7 +6,8 @@ export default class ControllerInput {
       left: false,
       right: false,
       space: false,
-      shift: false
+      shift: false,
+      escape: false
     }
     window.addEventListener('keydown', (event) => this.onKeyDown(event), false)
     window.addEventListener('keyup', (event) => this.onKeyUp(event), false)
@@ -31,6 +32,11 @@ export default class ControllerInput {
         break
       case 16: // SHIFT
         this.keys.shift = true
+        break
+      case 27: // ESCAPE
+        this.keys.escape
+          ? this.keys.escape = false
+          : this.keys.escape = true
         break
     }
   }
