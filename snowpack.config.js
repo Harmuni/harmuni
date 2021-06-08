@@ -8,9 +8,9 @@ module.exports = {
   },
   routes: [
     /* Enable an SPA Fallback in development: */
-    // { match: 'routes', src: '.*', dest: '/index.html' },
-    { match: 'all', src: 'index.html', dest: '/index' },
-    { match: 'all', src: 'game.html', dest: '/game' }
+    { match: 'routes', src: '.*', dest: '/index.html' }
+    // { match: 'all', src: 'index.html', dest: '/index' },
+    // { match: 'all', src: 'game.html', dest: '/game' }
   ],
   optimize: {
     /* Example: Bundle your final build: */
