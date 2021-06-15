@@ -2,9 +2,10 @@ import { AmbientLight, CubeTextureLoader, DirectionalLight, Group, HemisphereLig
 import { GUI } from 'three/examples/jsm/libs/dat.gui.module'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import { Sky } from 'three/examples/jsm/objects/Sky'
+import { LandscapeModel } from '../../../assets/meshes'
+import { BackFace, DownFace, FrontFace, LeftFace, RightFace, UpFace } from '../../../assets/skybox'
+import WorldConfiguration from '../../constants/WorldConfiguration'
 import { Component } from '../EntityComponent'
-import { ArchModel, ColumnModel, PlateModel, TerrainModel, TreeModel, StoneModel } from '../../../assets/meshes'
-import { BackFace, DownFace, UpFace, FrontFace, LeftFace, RightFace } from '../../../assets/skybox'
 export default class World extends Component {
   /**
    * @constructor of World
@@ -16,18 +17,87 @@ export default class World extends Component {
     this.renderer = renderer
     this.scene = scene
 
-    // Loaders
-    const loaderManager = new LoadingManager()
-    const GlbLoader = new GLTFLoader(loaderManager)
-
-    // Generate light and terrain with
-    this.generateLight({ scene: this.scene })
-    this.generateSkybox({ scene: this.scene, renderer: this.renderer, typeOfSkybox: 'skyShader' })
     this.terrain = new Group()
     this.terrain.name = 'Terrain'
     this.scene.add(this.terrain)
-    this.generateGround({ GlbLoader, terrain: this.terrain })
-    this.generateEnvironment({ GlbLoader, terrain: this.terrain })
+
+    // Loaders
+    const loaderManager = new LoadingManager()
+    const glbLoader = new GLTFLoader(loaderManager)
+
+    // Generate light and terrain
+    this.generateLight({ scene: this.scene })
+    this.generateSkybox({ scene: this.scene, renderer: this.renderer, typeOfSkybox: 'skyShader' })
+    this.generateLandscape({ glbLoader, terrain: this.terrain })
+    this.generateEnvironment({ glbLoader, terrain: this.terrain })
+  }
+
+  invokeModel ({ glbLoader, terrain, model }) {
+    glbLoader.load(
+      model.mesh,
+      (gltf) => {
+        if (model.scaleRatio.x && model.scaleRatio.y && model.scaleRatio.z) {
+          gltf.scene.scale.set(model.scaleRatio.x, model.scaleRatio.y, model.scaleRatio.z)
+        } else if (model.scaleRatio) {
+          gltf.scene.scale.setScalar(model.scaleRatio)
+        }
+
+        gltf.scene.position.set(model.position.x, model.position.y, model.position.z)
+        gltf.scene.name = model.name
+        terrain.add(gltf.scene)
+
+        if (model.clones) {
+          this.clonesModel({
+            clones: model.clones,
+            terrain,
+            gltf
+          })
+        }
+
+        return 1
+      },
+      undefined,
+      (error) => {
+        console.error(error)
+        return -1
+      }
+    )
+  }
+
+  invokesModels ({ glbLoader, terrain, models }) {
+    Object.keys(models).map((model, id) => {
+      return this.invokeModel({
+        glbLoader,
+        terrain,
+        model: models[model]
+      })
+    })
+  }
+
+  clonesModel ({ clones, terrain, gltf }) {
+    Object.keys(clones).map((clone, id) => {
+      const toClone = gltf.scene.clone()
+      toClone.name = toClone.name + '-' + (id + 1)
+      toClone.position.set(
+        clones[clone].position.x,
+        clones[clone].position.y,
+        clones[clone].position.z
+      )
+      if (clones[clone].scale) {
+        if (clones[clone].scaleRatio.x && clones[clone].scaleRatio.y && clones[clone].scaleRatio.z) {
+          console.log(clones[clone])
+          toClone.scale.set(
+            clones[clone].scaleRatio.x,
+            clones[clone].scaleRatio.y,
+            clones[clone].scaleRatio.z
+          )
+        } else if (clones[clone].scale === Number) {
+          toClone.scale.setScalar(clones[clone].scaleRatio)
+        }
+      }
+      terrain.add(toClone)
+      return toClone
+    })
   }
 
   /**
@@ -45,116 +115,6 @@ export default class World extends Component {
     scene.add(light)
     scene.add(ambientLight)
     scene.add(hemiLight)
-  }
-
-  /**
-   * Generate ground mesh
-   **/
-  generateGround ({ GlbLoader, terrain }) {
-    GlbLoader.load(
-      TerrainModel,
-      function (gltf) {
-        gltf.scene.scale.set(6, 6, 6)
-        gltf.scene.name = 'Ground'
-        terrain.add(gltf.scene)
-      },
-      undefined,
-      function (error) {
-        console.error(error)
-      }
-    )
-  }
-
-  /**
-   * Generate environment meshes
-   **/
-  generateEnvironment ({ GlbLoader, terrain }) {
-    GlbLoader.load(
-      ColumnModel,
-      function (gltf) {
-        gltf.scene.scale.set(6, 6, 6)
-        gltf.scene.name = 'Colonne'
-
-        const column1 = gltf.scene.clone()
-        column1.position.set(60, 0, 0)
-
-        const column3 = gltf.scene.clone()
-        column3.position.set(120, 0, 60)
-
-        const column4 = gltf.scene.clone()
-        column4.position.set(-60, 0, 60)
-
-        terrain.add(gltf.scene, column1, column3, column4)
-      },
-      undefined,
-      function (error) {
-        console.error(error)
-      }
-    )
-
-    GlbLoader.load(
-      TreeModel,
-      function (gltf) {
-        gltf.scene.scale.set(6, 6, 6)
-        gltf.scene.name = 'Tree'
-
-        const tree1 = gltf.scene.clone()
-        tree1.position.set(60, 0, 0)
-
-        const tree2 = gltf.scene.clone()
-        tree2.position.set(120, 0, 60)
-
-        const tree3 = gltf.scene.clone()
-        tree3.position.set(-60, 0, 60)
-
-        terrain.add(gltf.scene, tree1, tree2, tree3)
-      },
-      undefined,
-      function (error) {
-        console.error(error)
-      }
-    )
-
-    GlbLoader.load(
-      ArchModel,
-      function (gltf) {
-        gltf.scene.scale.set(6, 6, 6)
-        gltf.scene.name = 'Arch'
-        terrain.add(gltf.scene)
-      },
-      undefined,
-      function (error) {
-        console.error(error)
-      }
-    )
-
-    GlbLoader.load(
-      PlateModel,
-      function (gltf) {
-        gltf.scene.scale.set(6, 6, 6)
-        gltf.scene.position.set(6, 1, 6)
-        gltf.scene.name = 'Plate'
-        terrain.add(gltf.scene)
-      },
-      undefined,
-      function (error) {
-        console.error(error)
-      }
-    )
-
-    GlbLoader.load(
-      StoneModel,
-      function (gltf) {
-        gltf.scene.position.set(6, 2, 6)
-        gltf.scene.scale.set(40, 40, 40)
-        gltf.scene.name = 'Stone'
-        terrain.add(gltf.scene)
-      },
-      undefined,
-      function (error) {
-        console.error(error)
-      }
-    )
   }
 
   /**
@@ -226,7 +186,6 @@ export default class World extends Component {
     gui.add(effectController, 'inclination', 0, 1, 0.0001).onChange(guiChanged)
     gui.add(effectController, 'azimuth', 0, 1, 0.0001).onChange(guiChanged)
     gui.add(effectController, 'exposure', 0, 1, 0.0001).onChange(guiChanged)
-
     guiChanged()
   }
 
@@ -247,5 +206,45 @@ export default class World extends Component {
     ])
     texture.encoding = sRGBEncoding
     scene.background = texture
+  }
+
+  /**
+   * Generate ground mesh
+   **/
+  generateLandscape ({ glbLoader, terrain }) {
+    // this.invokeModel({
+    //   glbLoader,
+    //   terrain,
+    //   model: {
+    //     name: 'Landscape',
+    //     mesh: LandscapeModel,
+    //     position: { z: -5.16105, x: 32.2207, y: 5.03212 },
+    //     scaleRatio: { z: 23.5452, x: 23.5452, y: 0.803786 }
+    //   }
+    // })
+    // glbLoader.load(
+    //   TerrainModel,
+    //   function (gltf) {
+    //     gltf.scene.scale.set(6, 6, 6)
+    //     gltf.scene.name = 'Ground'
+    //     terrain.add(gltf.scene)
+    //   },
+    //   undefined,
+    //   function (error) {
+    //     console.error(error)
+    //   }
+    // )
+  }
+
+  /**
+   * Generate environment meshes
+   **/
+  generateEnvironment ({ glbLoader, terrain }) {
+    const modelsToLoad = WorldConfiguration()
+    this.invokesModels({
+      glbLoader,
+      terrain,
+      models: modelsToLoad
+    })
   }
 }

@@ -1,6 +1,6 @@
 import * as THREE from 'three'
 import Camera from '../Camera/index'
-import SquareEventArea from '../SquareEventArea'
+import SquareEventArea from '../EventArea/SquareEventArea'
 import { Entity, EntityManager } from '../EntityComponent/index'
 import Pause from '../Pause'
 import Player from '../Player/index'
@@ -59,7 +59,7 @@ export default class Game {
       sizes: this.sizes,
       renderer: this.renderer,
       targetToFollow: playerEntity,
-      typeOfCamera: 'thirdPersonView'
+      typeOfCamera: 'freeView'
     }))
     pauseEntity.addComponent(new Pause())
     eventAreaEntity.addComponent(new SquareEventArea({
@@ -68,10 +68,10 @@ export default class Game {
         console.log('HOLA BUENOS DIAS AMIGO')
       },
       area: {
-        A: {x: 4, z: 8},
-        B: {x: 8, z: 8},
-        C: {x: 4, z: 4},
-        D: {x: 8, z: 4}}
+        A: { x: 4, z: 8 },
+        B: { x: 8, z: 8 },
+        C: { x: 4, z: 4 },
+        D: { x: 8, z: 4 }}
     }))
 
     this.entityManager.add(worldEntity, 'worldEntity')

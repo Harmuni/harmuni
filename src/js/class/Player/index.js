@@ -4,7 +4,7 @@ import PlayerAnimationsProxy from './PlayerAnimationsProxy/index'
 import PlayerFSM from './PlayerFSM/index'
 import ControllerInput from '../ControllerInput/index'
 import { Component } from '../EntityComponent/index'
-import { LumaCharacter, LumaIdle, LumaRun, LumaWalk } from '../../../assets/meshes'
+import { LumaCharacter, LumaIdle, LumaRun, LumaWalk, SkaljordCharacter, SkaljordIdle, SkaljordRun, SkaljordWalk } from '../../../assets/meshes'
 
 export default class Player extends Component {
   constructor ({ scene, terrain }) {
@@ -24,64 +24,66 @@ export default class Player extends Component {
     this.velocity = new Vector3(0, 0, 0)
     this.bones = {}
 
-    this.loadModels({ meshScale: 0.03 })
+    const fbxLoader = new FBXLoader()
+    this.loadModels({ fbxLoader, scaleRatio: 0.1 })
   }
 
-  loadModels ({ meshScale = 1 }) {
-    const loader = new FBXLoader()
-    loader.load(LumaCharacter, (fbx) => {
-      console.log('fbx test', fbx)
-      this.target = fbx
+  loadModels ({ fbxLoader, scaleRatio = 1 }) {
+    fbxLoader.load(
+      LumaCharacter,
+      (fbx) => {
+        console.log('fbx test', fbx)
+        this.target = fbx
+        this.target.scale.setScalar(scaleRatio)
+        this.scene.add(this.target)
 
-      this.target.scale.setScalar(meshScale)
-      this.scene.add(this.target)
-
-      for (const b of this.target.children[1].skeleton.bones) {
-        this.bones[b.name] = b
-      }
-
-      this.target.traverse(c => {
-        c.castShadow = true
-        c.receiveShadow = true
-        if (c.material && c.material.map) {
-          c.material.map.encoding = sRGBEncoding
+        for (const b of this.target.children[0].skeleton.bones) {
+          this.bones[b.name] = b
         }
-      })
 
-      this.broadcast({
-        topic: 'load.character',
-        model: this.target,
-        bones: this.bones
-      })
+        this.target.traverse(c => {
+          c.castShadow = true
+          c.receiveShadow = true
+          if (c.material && c.material.map) {
+            c.material.map.encoding = sRGBEncoding
+          }
+        })
 
-      this.mixer = new AnimationMixer(this.target)
-      this.manager = new LoadingManager()
-      this.manager.onLoad = () => {
-        this.stateMachine.setState('idle')
-      }
+        this.broadcast({
+          topic: 'load.character',
+          model: this.target,
+          bones: this.bones
+        })
 
-      const animationLoad = ({ animationName, fbxAnimation }) => {
-        const clip = fbxAnimation.animations[0]
-        const action = this.mixer.clipAction(clip)
-
-        // Store the animation clip and animation action into a dictionary called this.animations
-        this.animations[animationName] = {
-          clip: clip,
-          action: action
+        this.mixer = new AnimationMixer(this.target)
+        this.manager = new LoadingManager()
+        this.manager.onLoad = () => {
+          this.stateMachine.setState('idle')
         }
-      }
 
-      const loader = new FBXLoader(this.manager)
-      loader.load(LumaWalk, (fbxAnimation) => {
-        animationLoad({ animationName: 'walk', fbxAnimation })
-      })
-      loader.load(LumaRun, (fbxAnimation) => {
-        animationLoad({ animationName: 'run', fbxAnimation })
-      })
-      loader.load(LumaIdle, (fbxAnimation) => {
-        animationLoad({ animationName: 'idle', fbxAnimation })
-      })
-    })
+        const animationLoad = ({ animationName, fbxAnimation }) => {
+          const clip = fbxAnimation.animations[0]
+          const action = this.mixer.clipAction(clip)
+
+          // Store the animation clip and animation action into a dictionary called this.animations
+          this.animations[animationName] = {
+            clip: clip,
+            action: action
+          }
+        }
+
+        const loader = new FBXLoader(this.manager)
+        loader.load(LumaWalk, (fbxAnimation) => {
+          animationLoad({ animationName: 'walk', fbxAnimation })
+        })
+        loader.load(LumaRun, (fbxAnimation) => {
+          animationLoad({ animationName: 'run', fbxAnimation })
+        })
+        loader.load(LumaIdle, (fbxAnimation) => {
+          animationLoad({ animationName: 'idle', fbxAnimation })
+        })
+      }
+    )
   }
 
   update (timeInSeconds) {
