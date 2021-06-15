@@ -1,4 +1,4 @@
-import { Plant1Model, Plant2Model, Plant4Model, Plant5Model, Plant7Model, Stone10Model, Stone11Model, Stone13Model, Stone14Model, Stone15Model, Stone16Model, Stone18Model, Stone20Model, Stone2Model, Stone3Model, Stone4Model, Stone7Model, Stone8Model, Stone9Model, Tree1Model, Tree2Model, Tree3Model, Tree4Model, Tree5Model } from '../../assets/meshes'
+import { Plant1Model, Plant2Model, Plant4Model, Plant5Model, Plant6Model, Plant7Model, Stone10Model, Stone11Model, Stone12Model, Stone13Model, Stone14Model, Stone15Model, Stone16Model, Stone17Model, Stone18Model, Stone20Model, Stone2Model, Stone3Model, Stone4Model, Stone7Model, Stone8Model, Stone9Model, Tree1Model, Tree2Model, Tree3Model, Tree4Model, Tree5Model } from '../../assets/meshes'
 
 export default () => {
   return {
@@ -247,15 +247,15 @@ export default () => {
         1: { position: { z: -16.3062, x: -5.91866, y: 5.82797 } }
       }
     },
-    // stone5: {
-    //   name: 'stone_5',
-    //   mesh: Stone5Model,
-    //   position: { z: -7.14633, x: 22.0889, y: 5.82692 },
-    //   scaleRatio: { z: 0.337648, x: 0.51932, y: 0.51932 },
-    //   clones: {
-    //     1: { position: { z: 10.7121, x: -10.0092, y: 5.33664 } }
-    //   }
-    // },
+    stone5: {
+      name: 'stone_5',
+      mesh: Stone15Model,
+      position: { z: -7.14633, x: 22.0889, y: 5.82692 },
+      scaleRatio: { z: 0.337648, x: 0.51932, y: 0.51932 },
+      clones: {
+        1: { position: { z: 10.7121, x: -10.0092, y: 5.33664 } }
+      }
+    },
     stone7: {
       name: 'stone_7',
       mesh: Stone7Model,
@@ -308,26 +308,26 @@ export default () => {
         5: { position: { z: 5.72971, x: 3.50916, y: 5.25503 } }
       }
     },
-    // stone12: {
-    //   name: 'stone_12',
-    //   mesh: Stone12Model,
-    //   position: { z: -15.022, x: -4.03129, y: 5.33502 },
-    //   scaleRatio: 0.023468,
-    //   clones: {
-    //     1: { position: { z: -8.93777, x: -8.20821, y: 5.36154 } },
-    //     2: { position: { z: -15.022, x: 1.91415, y: 5.40397 } },
-    //     3: { position: { z: -7.71811, x: 11.1954, y: 5.61718 } },
-    //     4: { position: { z: -19.9322, x: 9.70643, y: 5.2207 } },
-    //     5: { position: { z: -16.8139, x: -5.17041, y: 5.25195 } },
-    //     6: { position: { z: -15.1198, x: 8.59476, y: 5.48155 } },
-    //     7: { position: { z: -19.1108, x: 15.8057, y: 5.30872 } },
-    //     8: { position: { z: -14.7665, x: 20.8149, y: 5.37877 } },
-    //     9: { position: { z: -9.72364, x: 1.20416, y: 5.54244 } },
-    //     10: { position: { z: 4.24432, x: 19.0417, y: 5.31603 } },
-    //     11: { position: { z: 0.704491, x: 20.8149, y: 5.37695 } },
-    //     12: { position: { z: -1.87108, x: 1.20416, y: 5.6794 } }
-    //   }
-    // },
+    stone12: {
+      name: 'stone_12',
+      mesh: Stone12Model,
+      position: { z: -15.022, x: -4.03129, y: 5.33502 },
+      scaleRatio: 0.023468,
+      clones: {
+        1: { position: { z: -8.93777, x: -8.20821, y: 5.36154 } },
+        2: { position: { z: -15.022, x: 1.91415, y: 5.40397 } },
+        3: { position: { z: -7.71811, x: 11.1954, y: 5.61718 } },
+        4: { position: { z: -19.9322, x: 9.70643, y: 5.2207 } },
+        5: { position: { z: -16.8139, x: -5.17041, y: 5.25195 } },
+        6: { position: { z: -15.1198, x: 8.59476, y: 5.48155 } },
+        7: { position: { z: -19.1108, x: 15.8057, y: 5.30872 } },
+        8: { position: { z: -14.7665, x: 20.8149, y: 5.37877 } },
+        9: { position: { z: -9.72364, x: 1.20416, y: 5.54244 } },
+        10: { position: { z: 4.24432, x: 19.0417, y: 5.31603 } },
+        11: { position: { z: 0.704491, x: 20.8149, y: 5.37695 } },
+        12: { position: { z: -1.87108, x: 1.20416, y: 5.6794 } }
+      }
+    },
     stone13: {
       name: 'stone_13',
       mesh: Stone13Model,
@@ -361,16 +361,16 @@ export default () => {
       position: { z: -5.60227, x: -10.5128, y: 6.11958 },
       scaleRatio: { z: 0.670766, x: 0.122018, y: 0.103105 }
     },
-    // stone17: {
-    //   name: 'stone_17',
-    //   mesh: Stone17Model,
-    //   position: { z: -19.3614, x: -2.61345, y: 5.54459 },
-    //   scaleRatio: { z: 0.35259, x: 0.352589, y: 0.436105 },
-    //   clones: {
-    //     1: { position: { z: -11.8608, x: 15.4688, y: 5.7572 } },
-    //     2: { position: { z: 10.2666, x: 12.5534, y: 5.37999 } }
-    //   }
-    // },
+    stone17: {
+      name: 'stone_17',
+      mesh: Stone17Model,
+      position: { z: -19.3614, x: -2.61345, y: 5.54459 },
+      scaleRatio: { z: 0.35259, x: 0.352589, y: 0.436105 },
+      clones: {
+        1: { position: { z: -11.8608, x: 15.4688, y: 5.7572 } },
+        2: { position: { z: 10.2666, x: 12.5534, y: 5.37999 } }
+      }
+    },
     stone18: {
       name: 'stone_18',
       mesh: Stone18Model,
@@ -418,12 +418,12 @@ export default () => {
       position: { z: -9.19929, x: -7.02459, y: 5.31888 },
       scaleRatio: 0.028531
     },
-    // plant6: {
-    //   name: 'plant_6',
-    //   mesh: Plant6Model,
-    //   position: { z: 11.7788, x: 0.694911, y: 5.16277 },
-    //   scaleRatio: 0.040252
-    // },
+    plant6: {
+      name: 'plant_6',
+      mesh: Plant6Model,
+      position: { z: 11.7788, x: 0.694911, y: 5.16277 },
+      scaleRatio: 0.040252
+    },
     plant7: {
       name: 'plant_7',
       mesh: Plant7Model,
