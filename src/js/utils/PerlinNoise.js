@@ -1,5 +1,5 @@
 const noise = `
-//Classic Perlin 3D Noise 
+//Classic Perlin 3D Noise
 //by Stefan Gustavson
 //
 //  Source https://gist.github.com/patriciogonzalezvivo/670c22f3966e662d2f83
