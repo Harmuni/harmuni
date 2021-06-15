@@ -8,7 +8,7 @@ import {
 import Pause from '../Pause'
 import Player from '../Player/index'
 import World from '../World/index'
-import io from 'socket.io-client'
+// import io from 'socket.io-client'
 
 export default class Game {
   /**
@@ -28,6 +28,14 @@ export default class Game {
     }
 
     this.entityManager = {}
+
+    /**
+     * Multiplayer properties
+     */
+    this.remotePlayers = [];
+    this.remoteColliders = []; // maybe not needed
+    this.initialisingPlayers = [];
+    this.remoteData = [];
 
     const game = this.launchGame()
     game !== 1 && console.error('Error rendering game')
@@ -58,7 +66,7 @@ export default class Game {
       scene: this.scene
     }))
 
-    
+
     // TODO : Si le joueur est un joueur local / principal on lui ajoute le composant player local, qui est géré de la même manière que le player classique
     // ici l'exemple avec le pattern class vu dans tuto mais à refactoriser 
     /**
@@ -67,11 +75,26 @@ export default class Game {
      *  if (player.initSocket !== undefined) player.initSocket()
      * }
      */
+    // TODO : piste pour développer le ciblage joueur local
+    // if (this.remotePlayers[id] == player.id ) {
+    //   playerEntity.addComponent(new PlayerLocal({
+    //     scene: this.scene,
+    //     terrain: worldEntity.components.World.terrain,
+    //     game: this
+    //   }))
+    // } else {
+    //   playerEntity.addComponent(new Player({
+    //     scene: this.scene,
+    //     terrain: worldEntity.components.World.terrain
+    //   }))
+    // }
+
 
     playerEntity.addComponent(new Player({
       scene: this.scene,
       terrain: worldEntity.components.World.terrain
     }))
+
     cameraEntity.addComponent(new Camera({
       scene: this.scene,
       sizes: this.sizes,
@@ -125,6 +148,78 @@ export default class Game {
       clock: new THREE.Clock()
     })
     return gameLoop
+  }
+
+  /**
+   * TODO : refactor & comment
+   * Accesseur pour obtenir un joueur remote d'après son id 
+   * @param {any} id 
+   * @returns {Object} // Player
+   */
+
+  getRemotePlayerById(id) {
+    if (this.remotePlayers === undefined || this.remotePlayers.length == 0) return;
+
+    const players = this.remotePlayers.filter(function (player) {
+      if (player.id == id) return true;
+    });
+
+    if (players.length == 0) return;
+
+    return players[0];
+  }
+
+  /**
+   * TODO : refactor & comment
+   * Méthode permettant de mettre à jour la liste des joueurs côté serveur 
+   * @param {number} dt 
+   * @returns {void}
+   */
+  updateRemotePlayers(dt) {
+    if (this.remoteData === undefined || this.remoteData.length == 0 || this.player === undefined || this.player.id === undefined) return;
+
+    const newPlayers = [];
+    const game = this;
+    //Get all remotePlayers from remoteData array
+    const remotePlayers = [];
+    const remoteColliders = [];
+
+    this.remoteData.forEach(function (data) {
+      if (game.player.id != data.id) {
+        //Is this player being initialised?
+        let iplayer;
+        game.initialisingPlayers.forEach(function (player) {
+          if (player.id == data.id) iplayer = player;
+        });
+        //If not being initialised check the remotePlayers array
+        if (iplayer === undefined) {
+          let rplayer;
+          game.remotePlayers.forEach(function (player) {
+            if (player.id == data.id) rplayer = player;
+          });
+          if (rplayer === undefined) {
+            //Initialise player
+            game.initialisingPlayers.push(new Player(game, data));
+          } else {
+            //Player exists
+            remotePlayers.push(rplayer);
+            remoteColliders.push(rplayer.collider);
+          }
+        }
+      }
+    });
+
+    this.scene.children.forEach(function (object) {
+      if (object.userData.remotePlayer && game.getRemotePlayerById(object.userData.id) == undefined) {
+        game.scene.remove(object);
+      }
+    });
+
+    this.remotePlayers = remotePlayers;
+    this.remoteColliders = remoteColliders;
+    this.remotePlayers.forEach(function (player) {
+      player.update(dt);
+    });
   }
 
   /**
