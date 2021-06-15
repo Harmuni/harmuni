@@ -57,7 +57,7 @@ export default class Game {
 
     const worldEntity = new Entity()
 
-    const playerEntity = new Entity()
+    const playerEntity = new Entity() // TODO : Refactoriser avec distinction localPlayer / remotePlayer pour éviter confusion
     const cameraEntity = new Entity()
     const pauseEntity = new Entity()
     const eventAreaEntity = new Entity()
@@ -68,7 +68,7 @@ export default class Game {
     }))
 
 
-    // TODO : Si le joueur est un joueur local / principal on lui ajoute le composant player local, qui est géré de la même manière que le player classique
+    //? Si le joueur est un joueur local / principal on lui ajoute le composant player local, qui est géré de la même manière que le player classique
     // ici l'exemple avec le pattern class vu dans tuto mais à refactoriser 
     /**
      * if(player.local) {
@@ -76,7 +76,7 @@ export default class Game {
      *  if (player.initSocket !== undefined) player.initSocket()
      * }
      */
-    // TODO : piste pour développer le ciblage joueur local
+    // // TODO : piste pour développer le ciblage joueur local
     // if (this.remotePlayers[id] == player.id ) {
     //   playerEntity.addComponent(new PlayerLocal({
     //     scene: this.scene,
@@ -90,10 +90,12 @@ export default class Game {
     //   }))
     // }
 
+    //? Piste privilégiée actuellement : initialiser le localPlayer pour chaque client, puis traiter les remotePlayers comme des Players
 
-    playerEntity.addComponent(new Player({
+    playerEntity.addComponent(new LocalPlayer({
       scene: this.scene,
-      terrain: worldEntity.components.World.terrain
+      terrain: worldEntity.components.World.terrain, 
+      game: this
     }))
 
     cameraEntity.addComponent(new Camera({
