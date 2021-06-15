@@ -1,4 +1,4 @@
-import { Plant1Model, Plant2Model, Plant4Model, Plant5Model, Plant7Model, Stone10Model, Stone11Model, Stone13Model, Stone14Model, Stone15Model, Stone16Model, Stone20Model, Stone2Model, Stone3Model, Stone4Model, Stone7Model, Stone8Model, Stone9Model, Tree1Model, Tree2Model, Tree3Model, Tree4Model, Tree5Model } from '../../assets/meshes'
+import { Plant1Model, Plant2Model, Plant4Model, Plant5Model, Plant7Model, Stone10Model, Stone11Model, Stone13Model, Stone14Model, Stone15Model, Stone16Model, Stone18Model, Stone20Model, Stone2Model, Stone3Model, Stone4Model, Stone7Model, Stone8Model, Stone9Model, Tree1Model, Tree2Model, Tree3Model, Tree4Model, Tree5Model } from '../../assets/meshes'
 
 export default () => {
   return {
@@ -371,12 +371,12 @@ export default () => {
     //     2: { position: { z: 10.2666, x: 12.5534, y: 5.37999 } }
     //   }
     // },
-    // stone18: {
-    //   name: 'stone_18',
-    //   mesh: Stone18Model,
-    //   position: { z: 11.9744, x: 1.44585, y: 5.35816 },
-    //   scaleRatio: { z: 0.156568, x: 0.374697, y: 0.274262 }
-    // },
+    stone18: {
+      name: 'stone_18',
+      mesh: Stone18Model,
+      position: { z: 11.9744, x: 1.44585, y: 5.35816 },
+      scaleRatio: { z: 0.156568, x: 0.374697, y: 0.274262 }
+    },
     stone20: {
       name: 'stone_20',
       mesh: Stone20Model,

@@ -6,6 +6,7 @@ import SkaljordCharacter from './character/skaljord_character.fbx'
 import SkaljordIdle from './character/skaljord_idle.fbx'
 import SkaljordRun from './character/skaljord_run.fbx'
 import SkaljordWalk from './character/skaljord_walk.fbx'
+import SkaljordMusic from './character/skaljord_music.fbx'
 
 import AppleModel from './map/artefacts/apple.glb'
 import BookModel from './map/artefacts/book.glb'
@@ -23,7 +24,7 @@ import Plant4Model from './map/plants/plant_4.glb'
 import Plant5Model from './map/plants/plant_5.glb'
 import Plant7Model from './map/plants/plant_7.glb'
 
-import Stone1Model from './map/stones/stone_1.glb'
+// import Stone1Model from './map/stones/stone_1.glb'
 import Stone2Model from './map/stones/stone_2.glb'
 import Stone3Model from './map/stones/stone_3.glb'
 import Stone4Model from './map/stones/stone_4.glb'
@@ -33,10 +34,13 @@ import Stone8Model from './map/stones/stone_8.glb'
 import Stone9Model from './map/stones/stone_9.glb'
 import Stone10Model from './map/stones/stone_10.glb'
 import Stone11Model from './map/stones/stone_11.glb'
+// import Stone12Model from './map/stones/stone_12.glb'
 import Stone13Model from './map/stones/stone_13.glb'
 import Stone14Model from './map/stones/stone_14.glb'
 import Stone15Model from './map/stones/stone_15.glb'
 import Stone16Model from './map/stones/stone_16.glb'
+// import Stone17Model from './map/stones/stone_17.glb'
+import Stone18Model from './map/stones/stone_18.glb'
 import Stone19Model from './map/stones/stone_19.glb'
 import Stone20Model from './map/stones/stone_20.glb'
 
@@ -64,15 +68,19 @@ export {
   SkaljordCharacter,
   SkaljordIdle,
   SkaljordRun,
+  SkaljordMusic,
   SkaljordWalk,
   Stone10Model,
   Stone11Model,
+  // Stone12Model,
   Stone13Model,
   Stone14Model,
   Stone15Model,
   Stone16Model,
+  // Stone17Model,
+  Stone18Model,
   Stone19Model,
-  Stone1Model,
+  // Stone1Model,
   Stone20Model,
   Stone2Model,
   Stone3Model,

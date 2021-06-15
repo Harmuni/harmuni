@@ -4,7 +4,7 @@ import PlayerAnimationsProxy from './PlayerAnimationsProxy/index'
 import PlayerFSM from './PlayerFSM/index'
 import ControllerInput from '../ControllerInput/index'
 import { Component } from '../EntityComponent/index'
-import { LumaCharacter, LumaIdle, LumaRun, LumaWalk, SkaljordCharacter, SkaljordIdle, SkaljordRun, SkaljordWalk } from '../../../assets/meshes'
+import { LumaCharacter, LumaIdle, LumaRun, LumaWalk, SkaljordCharacter, SkaljordIdle, SkaljordMusic, SkaljordRun, SkaljordWalk } from '../../../assets/meshes'
 
 export default class Player extends Component {
   constructor ({ scene, terrain }) {
@@ -30,7 +30,7 @@ export default class Player extends Component {
 
   loadModels ({ fbxLoader, scaleRatio = 1 }) {
     fbxLoader.load(
-      LumaCharacter,
+      SkaljordCharacter,
       (fbx) => {
         console.log('fbx test', fbx)
         this.target = fbx
@@ -73,14 +73,17 @@ export default class Player extends Component {
         }
 
         const loader = new FBXLoader(this.manager)
-        loader.load(LumaWalk, (fbxAnimation) => {
+        loader.load(SkaljordWalk, (fbxAnimation) => {
           animationLoad({ animationName: 'walk', fbxAnimation })
         })
-        loader.load(LumaRun, (fbxAnimation) => {
+        loader.load(SkaljordRun, (fbxAnimation) => {
           animationLoad({ animationName: 'run', fbxAnimation })
         })
-        loader.load(LumaIdle, (fbxAnimation) => {
+        loader.load(SkaljordIdle, (fbxAnimation) => {
           animationLoad({ animationName: 'idle', fbxAnimation })
+        })
+        loader.load(SkaljordMusic, (fbxAnimation) => {
+          animationLoad({ animationName: 'playMusic', fbxAnimation })
         })
       }
     )
