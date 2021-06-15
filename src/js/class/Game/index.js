@@ -1,17 +1,23 @@
 import * as THREE from 'three'
 import Camera from '../Camera/index'
 import SquareEventArea from '../SquareEventArea'
-import { Entity, EntityManager } from '../EntityComponent/index'
+import {
+  Entity,
+  EntityManager
+} from '../EntityComponent/index'
 import Pause from '../Pause'
 import Player from '../Player/index'
 import World from '../World/index'
+import io from 'socket.io-client'
 
 export default class Game {
   /**
    * @constructor of Game
    * @returns {void}
    */
-  constructor ({ canvas }) {
+  constructor({
+    canvas
+  }) {
     this.canvas = canvas
     this.renderer = {}
     this.camera = {}
@@ -31,7 +37,7 @@ export default class Game {
    * Launch the game, render app and refresh animations
    * @returns {void}
    */
-  launchGame () {
+  launchGame() {
     // Set render of app, default property of scene and default property of camera for threejs
     this.renderer = this.setRender()
     this.scene = this.setDefaultScene()
@@ -41,6 +47,7 @@ export default class Game {
     this.entityManager = new EntityManager()
 
     const worldEntity = new Entity()
+
     const playerEntity = new Entity()
     const cameraEntity = new Entity()
     const pauseEntity = new Entity()
@@ -50,6 +57,17 @@ export default class Game {
       renderer: this.renderer,
       scene: this.scene
     }))
+
+    
+    // TODO : Si le joueur est un joueur local / principal on lui ajoute le composant player local, qui est géré de la même manière que le player classique
+    // ici l'exemple avec le pattern class vu dans tuto mais à refactoriser 
+    /**
+     * if(player.local) {
+     *  // code où on init le perso
+     *  if (player.initSocket !== undefined) player.initSocket()
+     * }
+     */
+
     playerEntity.addComponent(new Player({
       scene: this.scene,
       terrain: worldEntity.components.World.terrain
@@ -68,10 +86,23 @@ export default class Game {
         console.log('HOLA BUENOS DIAS AMIGO')
       },
       area: {
-        A: {x: 4, z: 8},
-        B: {x: 8, z: 8},
-        C: {x: 4, z: 4},
-        D: {x: 8, z: 4}}
+        A: {
+          x: 4,
+          z: 8
+        },
+        B: {
+          x: 8,
+          z: 8
+        },
+        C: {
+          x: 4,
+          z: 4
+        },
+        D: {
+          x: 8,
+          z: 4
+        }
+      }
     }))
 
     this.entityManager.add(worldEntity, 'worldEntity')
@@ -90,7 +121,9 @@ export default class Game {
     this.camera = cameraEntity.components.Camera.threeCamera
 
     // Clock use to get second and Three clock use perfomance.now and date.now
-    const gameLoop = this.gameLoop({ clock: new THREE.Clock() })
+    const gameLoop = this.gameLoop({
+      clock: new THREE.Clock()
+    })
     return gameLoop
   }
 
@@ -98,7 +131,7 @@ export default class Game {
    * Method to set render, create canvas html and three renderer
    * @returns {Object} renderer
    */
-  setRender () {
+  setRender() {
     const canvas = document.getElementById('webgl')
     const renderer = new THREE.WebGLRenderer({
       canvas: canvas,
@@ -109,7 +142,7 @@ export default class Game {
     return renderer
   }
 
-  setDefaultCamera () {
+  setDefaultCamera() {
     const fov = 60
     const aspect = 1920 / 1080
     const near = 1.0
@@ -120,24 +153,32 @@ export default class Game {
     return camera
   }
 
-  setDefaultScene () {
+  setDefaultScene() {
     const scene = new THREE.Scene()
     scene.background = new THREE.Color(0xFFFFFF)
     scene.fog = new THREE.FogExp2(0x89b2eb, 0.002)
     return scene
   }
 
-  gameLoop ({ clock }) {
+  gameLoop({
+    clock
+  }) {
     // Render and refresh animation
     const deltaTime = clock.getDelta()
     return window.requestAnimationFrame((t) => {
-      this.gameLoop({ clock })
-      this.renderer?.render(this.scene, this.camera)
-      this.step({ deltaTime })
+      this.gameLoop({
+        clock
+      })
+      this.renderer ? .render(this.scene, this.camera)
+      this.step({
+        deltaTime
+      })
     })
   }
 
-  step ({ deltaTime }) {
+  step({
+    deltaTime
+  }) {
     // Update of entities
     this.entityManager.update(deltaTime)
   }

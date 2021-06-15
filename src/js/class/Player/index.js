@@ -5,6 +5,7 @@ import PlayerFSM from './PlayerFSM/index'
 import ControllerInput from '../ControllerInput/index'
 import { Component } from '../EntityComponent/index'
 import { LumaCharacter, LumaIdle, LumaRun, LumaWalk } from '../../../assets/meshes'
+// import io from 'socket.io-client'
 
 export default class Player extends Component {
   constructor ({ scene, terrain }) {
@@ -25,6 +26,7 @@ export default class Player extends Component {
     this.bones = {}
 
     this.loadModels({ meshScale: 0.03 })
+
   }
 
   loadModels ({ meshScale = 1 }) {
