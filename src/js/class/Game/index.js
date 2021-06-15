@@ -7,6 +7,7 @@ import {
 } from '../EntityComponent/index'
 import Pause from '../Pause'
 import Player from '../Player/index'
+import PlayerLocal from '../Player/PlayerLocal'
 import World from '../World/index'
 // import io from 'socket.io-client'
 
@@ -151,7 +152,7 @@ export default class Game {
   }
 
   /**
-   * TODO : refactor & comment
+   * TODO : refactor & comment DRAFT
    * Accesseur pour obtenir un joueur remote d'après son id 
    * @param {any} id 
    * @returns {Object} // Player
@@ -170,7 +171,7 @@ export default class Game {
   }
 
   /**
-   * TODO : refactor & comment
+   * TODO : refactor & comment DRAFT
    * Méthode permettant de mettre à jour la liste des joueurs côté serveur 
    * @param {number} dt 
    * @returns {void}
@@ -264,7 +265,7 @@ export default class Game {
       this.gameLoop({
         clock
       })
-      this.renderer ? .render(this.scene, this.camera)
+      this.renderer ?.render(this.scene, this.camera)
       this.step({
         deltaTime
       })
