@@ -27,7 +27,7 @@ export default class World extends Component {
     this.terrain.name = 'Terrain'
     this.scene.add(this.terrain)
     this.generateGround({ GlbLoader, terrain: this.terrain })
-    this.generateEnvironment({ GlbLoader, terrain: this.terrain })
+    // this.generateEnvironment({ GlbLoader, terrain: this.terrain })
   }
 
   /**
@@ -54,7 +54,8 @@ export default class World extends Component {
     GlbLoader.load(
       TerrainModel,
       function (gltf) {
-        gltf.scene.scale.set(6, 6, 6)
+        gltf.scene.scale.set(15, 15, 15)
+        gltf.scene.position.y = -1.5
         gltf.scene.name = 'Ground'
         terrain.add(gltf.scene)
       },

@@ -5,6 +5,7 @@ import { Entity, EntityManager } from '../EntityComponent/index'
 import Pause from '../Pause'
 import Player from '../Player/index'
 import World from '../World/index'
+import PlayerZone from '../PlayerZone'
 
 export default class Game {
   /**
@@ -43,6 +44,7 @@ export default class Game {
     const worldEntity = new Entity()
     const playerEntity = new Entity()
     const cameraEntity = new Entity()
+    const playerZoneEntity = new Entity()
     const pauseEntity = new Entity()
     const eventAreaEntity = new Entity()
 
@@ -61,6 +63,13 @@ export default class Game {
       targetToFollow: playerEntity,
       typeOfCamera: 'thirdPersonView'
     }))
+    playerZoneEntity.addComponent(new PlayerZone({
+      scene: this.scene,
+      player : playerEntity,
+      camera : cameraEntity,
+      renderer : this.renderer,
+      terrain: worldEntity.components.World.terrain
+    }))
     pauseEntity.addComponent(new Pause())
     eventAreaEntity.addComponent(new SquareEventArea({
       targetToEmit: playerEntity,
@@ -77,12 +86,14 @@ export default class Game {
     this.entityManager.add(worldEntity, 'worldEntity')
     this.entityManager.add(playerEntity, 'playerEntity')
     this.entityManager.add(cameraEntity, 'cameraEntity')
+    this.entityManager.add(playerZoneEntity, 'playerZoneEntity')
     this.entityManager.add(pauseEntity, 'pauseEntity')
     this.entityManager.add(eventAreaEntity, 'eventAreaEntity')
 
     console.log(worldEntity)
     console.log(playerEntity)
     console.log(cameraEntity)
+    console.log(playerZoneEntity)
     console.log(pauseEntity)
     console.log(eventAreaEntity)
 
@@ -134,6 +145,7 @@ export default class Game {
       this.gameLoop({ clock })
       this.renderer?.render(this.scene, this.camera)
       this.step({ deltaTime })
+      // this.entityManager.get('playerZoneEntity').components.PlayerZone.update()
     })
   }
 

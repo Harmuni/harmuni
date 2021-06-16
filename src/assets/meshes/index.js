@@ -11,7 +11,7 @@ import StoneModel from './map/artefacts/stone.glb'
 import WatchModel from './map/artefacts/watch.glb'
 import ColumnModel from './map/column.glb'
 import PlateModel from './map/plate.glb'
-import TerrainModel from './map/terrain.glb'
+import TerrainModel from './map/landscape.glb'
 import TreeModel from './map/tree.glb'
 
 export {
