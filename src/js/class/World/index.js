@@ -1,7 +1,8 @@
-import { ACESFilmicToneMapping, AmbientLight, CubeTextureLoader, DirectionalLight, Group, HemisphereLight, LoadingManager, sRGBEncoding, Vector3 } from 'three'
+import { ACESFilmicToneMapping, AmbientLight, CubeTextureLoader, DirectionalLight, Group, HemisphereLight, LoadingManager, Mesh, sRGBEncoding, Vector3 } from 'three'
 import { GUI } from 'three/examples/jsm/libs/dat.gui.module'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import { Sky } from 'three/examples/jsm/objects/Sky'
+import { BufferGeometryUtils } from 'three/examples/jsm/utils/BufferGeometryUtils.js'
 import { LandscapeModel } from '../../../assets/meshes'
 import { BackFace, DownFace, FrontFace, LeftFace, RightFace, UpFace } from '../../../assets/skybox'
 import WorldConfiguration from '../../constants/WorldConfiguration'
@@ -71,6 +72,65 @@ export default class World extends Component {
     )
   }
 
+  // invokeModel ({ glbLoader, terrain, model }) {
+  //   glbLoader.load(
+  //     model.mesh,
+  //     (gltf) => {
+  //       if (model.scaleRatio.x && model.scaleRatio.y && model.scaleRatio.z) {
+  //         gltf.scene.scale.set(model.scaleRatio.x, model.scaleRatio.y, model.scaleRatio.z)
+  //       } else if (model.scaleRatio) {
+  //         gltf.scene.scale.setScalar(model.scaleRatio)
+  //       }
+
+  //       if (model.rotation) {
+  //         gltf.scene.rotation.set(model.rotation.x, model.rotation.y, model.rotation.z)
+  //       }
+
+  //       gltf.scene.position.set(model.position.x, model.position.y, model.position.z)
+  //       gltf.scene.name = model.name
+
+  //       // if (!model.clones) {
+  //       //   terrain.add(gltf.scene)
+  //       // } else {
+  //       //   let bufferOfClones = []
+  //       //   bufferOfClones.push(gltf.scene)
+  //       //   bufferOfClones = this.clonesModel({
+  //       //     clones: model.clones,
+  //       //     terrain,
+  //       //     gltf,
+  //       //     bufferOfClones
+  //       //   })
+
+  //       //   bufferOfClones.map((clone, id1) => {
+  //       //     if (clone.type === 'Group') {
+  //       //       clone.children.map((cloneChild, id2) => {
+  //       //         if (cloneChild.type === 'Group') {
+  //       //           cloneChild.children.map((element, id3) => {
+  //       //             bufferOfClones.push(element)
+  //       //           })
+  //       //           delete cloneChild[id2]
+  //       //         } else if (cloneChild.geometry) {
+  //       //           bufferOfClones.push(cloneChild)
+  //       //         }
+  //       //       })
+  //       //       bufferOfClones.splice(id1, 1)
+  //       //     } else if (clone.geometry) {
+  //       //       bufferOfClones.push(clone)
+  //       //     }
+  //       //   })
+  //       //   console.log(bufferOfClones)
+  //       }
+
+  //       return 1
+  //     },
+  //     undefined,
+  //     (error) => {
+  //       console.error(error)
+  //       return -1
+  //     }
+  //   )
+  // }
+
   invokesModels ({ glbLoader, terrain, models }) {
     Object.keys(models).map((model, id) => {
       return this.invokeModel({
@@ -106,6 +166,54 @@ export default class World extends Component {
       return toClone
     })
   }
+
+  // clonesModel ({ clones, terrain, gltf, bufferOfClones }) {
+  //   Object.keys(clones).map((clone, id) => {
+  //     const toClone = gltf.scene.clone()
+  //     toClone.name = toClone.name + '-' + (id + 1)
+  //     toClone.position.set(
+  //       clones[clone].position.x,
+  //       clones[clone].position.y,
+  //       clones[clone].position.z
+  //     )
+  //     if (clones[clone].scale) {
+  //       if (clones[clone].scaleRatio.x && clones[clone].scaleRatio.y && clones[clone].scaleRatio.z) {
+  //         console.log(clones[clone])
+  //         toClone.scale.set(
+  //           clones[clone].scaleRatio.x,
+  //           clones[clone].scaleRatio.y,
+  //           clones[clone].scaleRatio.z
+  //         )
+  //       } else if (clones[clone].scale === Number) {
+  //         toClone.scale.setScalar(clones[clone].scaleRatio)
+  //       }
+  //     }
+      
+  //     // bufferOfClones.push(toClone)
+      
+  //     // toClone.children.map(c => {
+  //     //   if (c.type === 'Group') {
+  //     //     c.children.map(d => {
+  //     //       if (d.geometry) {
+  //     //         bufferOfClones.push(d)
+  //     //       }
+  //     //     })
+  //     //   } else if (c.geometry) {
+  //     //     const cloned = c.geometry.clone()
+  //     //     cloned.applyMatrix4(c.matrixWorld)
+  //     //     bufferOfClones.push(cloned)
+  //     //   }
+  //     // })
+  //     return 1
+  //   })
+  //   // console.log('bufferOfClones test ', bufferOfClones)
+
+  //   // const mergedClones = BufferGeometryUtils.mergeBufferGeometries(bufferOfClones, false)
+  //   // const meshMergedClones = new Mesh(mergedClones)
+  //   // terrain.add(meshMergedClones)
+
+  //   return toClone
+  // }
 
   /**
    * Generate lights
@@ -197,11 +305,9 @@ export default class World extends Component {
     gui.add(effectController, 'rayleigh', 0.0, 4, 0.001).onChange(guiChanged)
     gui.add(effectController, 'mieCoefficient', 0.0, 0.1, 0.001).onChange(guiChanged)
     gui.add(effectController, 'mieDirectionalG', 0.0, 1, 0.001).onChange(guiChanged)
-    // gui.add(effectController, 'elevation', 0.0, 1, 0.001).onChange(guiChanged)
     gui.add(effectController, 'luminance', 0.0, 20.0, 0.1).onChange(guiChanged)
     gui.add(effectController, 'inclination', 0, 1, 0.0001).onChange(guiChanged)
     gui.add(effectController, 'azimuth', 0, 1, 0.0001).onChange(guiChanged)
-    // gui.add(effectController, 'exposure', 0, 1, 0.0001).onChange(guiChanged)
     guiChanged()
   }
 
@@ -220,9 +326,6 @@ export default class World extends Component {
       LeftFace,
       RightFace
     ])
-    // const texture = loader?.load([
-    //   NishitaSkyTexture
-    // ])
     texture.encoding = sRGBEncoding
     scene.background = texture
   }
@@ -237,44 +340,10 @@ export default class World extends Component {
       model: {
         name: 'Landscape',
         mesh: LandscapeModel,
-        // position: { z: -5.16105, x: 32.2207, y: -5.03212 },
         position: { z: -4.34, x: 6.65, y: 0 },
-        // rotation: { z: 0.019026, x: 0.000226, y: 1.11539 },
-        // scaleRatio: { z: 23.5452, x: 23.5452, y: 0.803786 }
-        scaleRatio: 1.2
-
-        // position: { z: -5.16105, x: 32.2207, y: -5.03212 },
-        // rotation: { z: 0.019026, x: 0.000226, y: 1.11539 },
-        // scaleRatio: { z: 23.5452, x: 23.5452, y: 0.803786 }
+        scaleRatio: 1
       }
     })
-    // glbLoader.load(
-    //   LandscapeModel,
-    //   function (gltf) {
-    //     gltf.scene.name = 'Ground'
-    //     gltf.scene.scale.setScalar(1)
-    //     // gltf.scene.position.set(-5.16105, 32.2207, -5.03212)
-
-    //     // const a = new Euler(1.11539, 0.019026, 0.000226, 'XYZ')
-    //     // const b = new Vector3(1, 0, 1)
-    //     // b.applyEuler(a)
-    //     // gltf.scene.rotation(b)
-
-    //     // gltf.scene.rotationX(Math.degToRad(1.11539))
-    //     // gltf.scene.rotationY(Math.degToRad(0.019026))
-    //     // gltf.scene.rotationZ(Math.degToRad(0.000226))
-
-    //     gltf.scene.rotation.set(0, 0, 0)
-
-    //     // gltf.scene.lookAt(0, 0, 0)
-    //     // gltf.scene.applyMatrix4(terrain)
-    //     terrain.add(gltf.scene)
-    //   },
-    //   undefined,
-    //   function (error) {
-    //     console.error(error)
-    //   }
-    // )
   }
 
   /**

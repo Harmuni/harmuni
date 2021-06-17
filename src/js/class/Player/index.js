@@ -12,7 +12,7 @@ export default class Player extends Component {
     this.scene = scene
     this.terrain = terrain
 
-    this.acceleration = new Vector3(1, 0.25, 50.0)
+    this.acceleration = new Vector3(1, 0.25, 5.0)
     this.animations = {}
     this.decceleration = new Vector3(-0.0005, -0.0001, -5.0)
     this.input = new ControllerInput()
