@@ -1,4 +1,4 @@
-import { AmbientLight, CubeTextureLoader, DirectionalLight, Group, HemisphereLight, LoadingManager, sRGBEncoding, Vector3 } from 'three'
+import { ACESFilmicToneMapping, AmbientLight, CubeTextureLoader, DirectionalLight, Group, HemisphereLight, LoadingManager, sRGBEncoding, Vector3 } from 'three'
 import { GUI } from 'three/examples/jsm/libs/dat.gui.module'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import { Sky } from 'three/examples/jsm/objects/Sky'
@@ -26,6 +26,10 @@ export default class World extends Component {
     const glbLoader = new GLTFLoader(loaderManager)
 
     // Generate light and terrain
+    // const size = 100
+    // const divisions = 100
+    // const gridHelper = new GridHelper(size, divisions)
+    // this.scene.add(gridHelper)
     this.generateLight({ scene: this.scene })
     this.generateSkybox({ scene: this.scene, renderer: this.renderer, typeOfSkybox: 'skyShader' })
     this.generateLandscape({ glbLoader, terrain: this.terrain })
@@ -43,6 +47,9 @@ export default class World extends Component {
         }
 
         gltf.scene.position.set(model.position.x, model.position.y, model.position.z)
+        if (model.rotation) {
+          gltf.scene.rotation.set(model.rotation.x, model.rotation.y, model.rotation.z)
+        }
         gltf.scene.name = model.name
         terrain.add(gltf.scene)
 
@@ -123,6 +130,9 @@ export default class World extends Component {
    * @returns {void}
    */
   generateSkybox ({ scene, renderer, typeOfSkybox }) {
+    renderer.outputEncoding = sRGBEncoding
+    renderer.toneMapping = ACESFilmicToneMapping
+    renderer.toneMappingExposure = 1
     switch (typeOfSkybox) {
       case 'skyShader':
         this.setSkyShader({ scene, renderer })
@@ -151,12 +161,14 @@ export default class World extends Component {
 
     /// GUI CONTROLLERS SKY PARAMETERS
     const effectController = {
-      turbidity: 10,
-      rayleigh: 3,
-      mieCoefficient: 0.005,
-      mieDirectionalG: 0.7,
-      inclination: 0.49, // elevation / inclination
-      azimuth: 0.25, // Facing front,
+      turbidity: 3,
+      rayleigh: 0.685,
+      mieCoefficient: 0.02,
+      mieDirectionalG: 0.984,
+      luminance: 7,
+      inclination: 0.16,
+      elevation: 10,
+      azimuth: 0.37,
       exposure: renderer.toneMappingExposure
     }
 
@@ -174,6 +186,8 @@ export default class World extends Component {
       sun.y = Math.sin(phi) * Math.sin(theta)
       sun.z = Math.sin(phi) * Math.cos(theta)
 
+      sun.setFromSphericalCoords(1, phi, theta)
+
       uniforms.sunPosition.value.copy(sun)
       renderer.toneMappingExposure = effectController.exposure
     }
@@ -183,9 +197,11 @@ export default class World extends Component {
     gui.add(effectController, 'rayleigh', 0.0, 4, 0.001).onChange(guiChanged)
     gui.add(effectController, 'mieCoefficient', 0.0, 0.1, 0.001).onChange(guiChanged)
     gui.add(effectController, 'mieDirectionalG', 0.0, 1, 0.001).onChange(guiChanged)
+    // gui.add(effectController, 'elevation', 0.0, 1, 0.001).onChange(guiChanged)
+    gui.add(effectController, 'luminance', 0.0, 20.0, 0.1).onChange(guiChanged)
     gui.add(effectController, 'inclination', 0, 1, 0.0001).onChange(guiChanged)
     gui.add(effectController, 'azimuth', 0, 1, 0.0001).onChange(guiChanged)
-    gui.add(effectController, 'exposure', 0, 1, 0.0001).onChange(guiChanged)
+    // gui.add(effectController, 'exposure', 0, 1, 0.0001).onChange(guiChanged)
     guiChanged()
   }
 
@@ -204,6 +220,9 @@ export default class World extends Component {
       LeftFace,
       RightFace
     ])
+    // const texture = loader?.load([
+    //   NishitaSkyTexture
+    // ])
     texture.encoding = sRGBEncoding
     scene.background = texture
   }
@@ -212,21 +231,43 @@ export default class World extends Component {
    * Generate ground mesh
    **/
   generateLandscape ({ glbLoader, terrain }) {
-    // this.invokeModel({
-    //   glbLoader,
-    //   terrain,
-    //   model: {
-    //     name: 'Landscape',
-    //     mesh: LandscapeModel,
-    //     position: { z: -5.16105, x: 32.2207, y: 5.03212 },
-    //     scaleRatio: { z: 23.5452, x: 23.5452, y: 0.803786 }
-    //   }
-    // })
+    this.invokeModel({
+      glbLoader,
+      terrain,
+      model: {
+        name: 'Landscape',
+        mesh: LandscapeModel,
+        // position: { z: -5.16105, x: 32.2207, y: -5.03212 },
+        position: { z: -4.34, x: 6.65, y: 0 },
+        // rotation: { z: 0.019026, x: 0.000226, y: 1.11539 },
+        // scaleRatio: { z: 23.5452, x: 23.5452, y: 0.803786 }
+        scaleRatio: 1.2
+
+        // position: { z: -5.16105, x: 32.2207, y: -5.03212 },
+        // rotation: { z: 0.019026, x: 0.000226, y: 1.11539 },
+        // scaleRatio: { z: 23.5452, x: 23.5452, y: 0.803786 }
+      }
+    })
     // glbLoader.load(
-    //   TerrainModel,
+    //   LandscapeModel,
     //   function (gltf) {
-    //     gltf.scene.scale.set(6, 6, 6)
     //     gltf.scene.name = 'Ground'
+    //     gltf.scene.scale.setScalar(1)
+    //     // gltf.scene.position.set(-5.16105, 32.2207, -5.03212)
+
+    //     // const a = new Euler(1.11539, 0.019026, 0.000226, 'XYZ')
+    //     // const b = new Vector3(1, 0, 1)
+    //     // b.applyEuler(a)
+    //     // gltf.scene.rotation(b)
+
+    //     // gltf.scene.rotationX(Math.degToRad(1.11539))
+    //     // gltf.scene.rotationY(Math.degToRad(0.019026))
+    //     // gltf.scene.rotationZ(Math.degToRad(0.000226))
+
+    //     gltf.scene.rotation.set(0, 0, 0)
+
+    //     // gltf.scene.lookAt(0, 0, 0)
+    //     // gltf.scene.applyMatrix4(terrain)
     //     terrain.add(gltf.scene)
     //   },
     //   undefined,

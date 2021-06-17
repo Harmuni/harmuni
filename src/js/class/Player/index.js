@@ -25,7 +25,7 @@ export default class Player extends Component {
     this.bones = {}
 
     const fbxLoader = new FBXLoader()
-    this.loadModels({ fbxLoader, scaleRatio: 0.1 })
+    this.loadModels({ fbxLoader, scaleRatio: 0.01 })
   }
 
   loadModels ({ fbxLoader, scaleRatio = 1 }) {

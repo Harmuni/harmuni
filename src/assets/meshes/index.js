@@ -11,11 +11,9 @@ import SkaljordMusic from './character/skaljord_music.fbx'
 import AppleModel from './map/artefacts/apple.glb'
 import BookModel from './map/artefacts/book.glb'
 import CombModel from './map/artefacts/comb.glb'
-import DialModel from './map/artefacts/dial.glb'
 import StoneModel from './map/artefacts/stone.glb'
 import WatchModel from './map/artefacts/watch.glb'
-
-import LandscapeModel from './map/landscape.glb'
+import LandscapeModel from './map/terrain/landscape.glb'
 
 import Plant1Model from './map/plants/plant_1.glb'
 import Plant2Model from './map/plants/plant_2.glb'
@@ -29,6 +27,7 @@ import Stone1Model from './map/stones/stone_1.glb'
 import Stone2Model from './map/stones/stone_2.glb'
 import Stone3Model from './map/stones/stone_3.glb'
 import Stone4Model from './map/stones/stone_4.glb'
+import Stone5Model from './map/stones/stone_5.glb'
 import Stone6Model from './map/stones/stone_6.glb'
 import Stone7Model from './map/stones/stone_7.glb'
 import Stone8Model from './map/stones/stone_8.glb'
@@ -55,7 +54,6 @@ export {
   AppleModel,
   BookModel,
   CombModel,
-  DialModel,
   LumaCharacter,
   LumaIdle,
   LumaRun,
@@ -87,6 +85,7 @@ export {
   Stone2Model,
   Stone3Model,
   Stone4Model,
+  Stone5Model,
   Stone6Model,
   Stone7Model,
   Stone8Model,
