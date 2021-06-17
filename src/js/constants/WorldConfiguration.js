@@ -183,14 +183,12 @@ export default () => {
       name: 'stone_1',
       mesh: Stone1Model,
       scaleRatio: 1,
-      // scaleRatio: { z: 0.368277, x: 0.899137, y: 0 },
       position: { z: 5.45584, x: 22.9282, y: 0 }
     },
     stone2: {
       name: 'stone_2',
       mesh: Stone2Model,
       scaleRatio: 1,
-      // scaleRatio: { z: 0.238021, x: -0.283684, y: 0 },
       position: { z: 3.92005, x: -7.60588, y: 0 },
       clones: {
         1: { position: { z: 7.67981, x: 16.5005, y: 0 } }
@@ -200,45 +198,17 @@ export default () => {
       name: 'stone_3',
       mesh: Stone3Model,
       scaleRatio: 1,
-      // scaleRatio: { z: 0.102608, x: 0.098078, y: 0 },
       position: { z: 2.3694, x: 12.2615, y: 0 },
       clones: {
-        1: {
-          position: { z: 9.30867, x: 5.61827, y: 0 },
-          // scaleRatio: { z: 0.102608, x: 0.098078, y: 0 }
-        },
-        2: {
-          position: { z: 1.39796, x: -7.60588, y: 0 },
-          // scaleRatio: 0.102193
-        },
-        3: {
-          position: { z: -10.9595, x: 11.836, y: 0 },
-          // scaleRatio: { z: 0.102608, x: 0.098078, y: 0 }
-        },
-        4: {
-          position: { z: 3.82994, x: 19.0167, y: 0 },
-          // scaleRatio: { z: 0.102608, x: 0.098078, y: 0 }
-        },
-        5: {
-          position: { z: 5.75798, x: 3.428, y: 0 },
-          // scaleRatio: { z: 0.102608, x: 0.098078, y: 0 }
-        },
-        6: {
-          position: { z: 8.09337, x: 13.8158, y: 0 },
-          // scaleRatio: { z: 0.102608, x: 0.098078, y: 0 }
-        },
-        7: {
-          position: { z: -1.58812, x: -11.8849, y: 0 },
-          // scaleRatio: 0.102193
-        },
-        8: {
-          position: { z: 1.026, x: -0.055202, y: 0 },
-          // scaleRatio: { z: 0.102608, x: 0.098078, y: 0 }
-        },
-        9: {
-          position: { z: 9.47293, x: 5.59626, y: 0 },
-          // scaleRatio: { z: 0.148575, x: -0.026293, y: 0 }
-        }
+        1: { position: { z: 9.30867, x: 5.61827, y: 0 } },
+        2: { position: { z: 1.39796, x: -7.60588, y: 0 } },
+        3: { position: { z: -10.9595, x: 11.836, y: 0 } },
+        4: { position: { z: 3.82994, x: 19.0167, y: 0 } },
+        5: { position: { z: 5.75798, x: 3.428, y: 0 } },
+        6: { position: { z: 8.09337, x: 13.8158, y: 0 } },
+        7: { position: { z: -1.58812, x: -11.8849, y: 0 } },
+        8: { position: { z: 1.026, x: -0.055202, y: 0 } },
+        9: { position: { z: 9.47293, x: 5.59626, y: 0 } }
       }
     },
     stone4: {
@@ -246,7 +216,6 @@ export default () => {
       mesh: Stone4Model,
       scaleRatio: 1,
       position: { z: -7.14633, x: 22.0889, y: 0 },
-      // scaleRatio: { z: 0.320087, x: 0.248559, y: 0 },
       clones: {
         1: { position: { z: -16.3062, x: -5.91866, y: 0 } }
       }
@@ -255,15 +224,13 @@ export default () => {
       name: 'stone_5',
       mesh: Stone5Model,
       scaleRatio: 1,
-      position: { z: 10.7121, x: -10.0092, y: 0 },
-      // scaleRatio: 3
+      position: { z: 10.7121, x: -10.0092, y: 0 }
     },
     stone7: {
       name: 'stone_7',
       mesh: Stone7Model,
       scaleRatio: 1,
       position: { z: 5.23307, x: -7.60588, y: 0 },
-      // scaleRatio: { z: 0.055071, x: 0.090943, y: 0 },
       clones: {
         1: { position: { z: 10.7121, x: -10.0092, y: 0 } }
       }
@@ -272,22 +239,19 @@ export default () => {
       name: 'stone_8',
       mesh: Stone8Model,
       scaleRatio: 1,
-      position: { z: -1.76798, x: -7.60588, y: 0 },
-      // scaleRatio: { z: 0.055071, x: 0.090943, y: 0 }
+      position: { z: -1.76798, x: -7.60588, y: 0 }
     },
     stone9: {
       name: 'stone_9',
       mesh: Stone9Model,
       scaleRatio: 1,
       position: { z: -16.0439, x: -6.61739, y: 0 }
-      // scaleRatio: 1.09396
     },
     stone10: {
       name: 'stone_10',
       mesh: Stone10Model,
       scaleRatio: 1,
       position: { z: 10.0248, x: 2.94097, y: 0 },
-      // scaleRatio: 0.102193,
       clones: {
         1: { position: { z: -10.5098, x: 5.54174, y: 0 } }
       }
@@ -295,16 +259,12 @@ export default () => {
     stone11: {
       name: 'stone_11',
       mesh: Stone11Model,
-      position: { z: 5.43328, x: 16.8967, y: 0 },
-      // scaleRatio: 0.147857,
       scaleRatio: 1,
+      position: { z: 5.43328, x: 16.8967, y: 0 },
       clones: {
         1: { position: { z: 3.80167, x: 19.0978, y: 0 } },
         2: { position: { z: 8.06509, x: 13.8969, y: 0 } },
-        3: {
-          position: { z: 4.8055, x: 11.2125, y: 0 }
-          // scaleRatio: 0.193216
-        },
+        3: { position: { z: 4.8055, x: 11.2125, y: 0 } },
         4: { position: { z: 9.3177, x: 5.3755, y: 0 } },
         5: { position: { z: 5.72971, x: 3.50916, y: 0 } }
       }
@@ -312,9 +272,8 @@ export default () => {
     stone12: {
       name: 'stone_12',
       mesh: Stone12Model,
-      position: { z: -15.022, x: -4.03129, y: 0 },
-      // scaleRatio: 0.023468,
       scaleRatio: 1,
+      position: { z: -15.022, x: -4.03129, y: 0 },
       clones: {
         1: { position: { z: -8.93777, x: -8.20821, y: 0 } },
         2: { position: { z: -15.022, x: 1.91415, y: 0 } },
@@ -333,9 +292,8 @@ export default () => {
     stone13: {
       name: 'stone_13',
       mesh: Stone13Model,
-      position: { z: -10.7323, x: 11.8508, y: 0 },
-      // scaleRatio: { z: -0.061198, x: -0.061198, y: 0 },
       scaleRatio: 1,
+      position: { z: -10.7323, x: 11.8508, y: 0 },
       clones: {
         1: { position: { z: -6.54101, x: 13.2194, y: 0 } }
       }
@@ -343,9 +301,8 @@ export default () => {
     stone14: {
       name: 'stone_14',
       mesh: Stone14Model,
-      position: { z: 9.38241, x: 4.03124, y: 0},
-      // scaleRatio: { z: 0.050319, x: 0.022116, y: 0 },
       scaleRatio: 1,
+      position: { z: 9.38241, x: 4.03124, y: 0},
       clones: {
         1: { position: { z: 15.4121, x: 4.12881, y: 0 } }
       }
@@ -353,9 +310,8 @@ export default () => {
     stone15: {
       name: 'stone_15',
       mesh: Stone15Model,
-      position: { z: -0.768637, x: 1.93423, y: 0},
-      // scaleRatio: 0.258065,
       scaleRatio: 1,
+      position: { z: -0.768637, x: 1.93423, y: 0},
       clones: {
         1: { position: { z: 7.90048, x: 8.67311, y: 0} }
       }
@@ -363,16 +319,14 @@ export default () => {
     stone16: {
       name: 'stone_16',
       mesh: Stone16Model,
+      scaleRatio: 1,
       position: { z: -5.60227, x: -10.5128, y: 0 },
-      scaleRatio: 1
-      // scaleRatio: { z: 0.670766, x: 0.122018, y: 0 }
     },
     stone17: {
       name: 'stone_17',
       mesh: Stone17Model,
-      position: { z: -19.3614, x: -2.61345, y: 0 },
-      // scaleRatio: { z: 0.35259, x: 0.352589, y: 0 },
       scaleRatio: 1,
+      position: { z: -19.3614, x: -2.61345, y: 0 },
       clones: {
         1: { position: { z: -11.8608, x: 15.4688, y: 0} },
         2: { position: { z: 10.2666, x: 12.5534, y: 0 } }
@@ -381,30 +335,25 @@ export default () => {
     stone18: {
       name: 'stone_18',
       mesh: Stone18Model,
-      position: { z: 11.9744, x: 1.44585, y: 0 },
-      // scaleRatio: { z: 0.156568, x: 0.374697, y: 0 }
-      scaleRatio: 1
+      scaleRatio: 1,
+      position: { z: 11.9744, x: 1.44585, y: 0 }
     },
     stone20: {
       name: 'stone_20',
       mesh: Stone20Model,
-      position: { z: -5.92325, x: -0.852257, y: 0 },
-      // scaleRatio: { z: 0.068314, x: -0.012089, y: 0 },
       scaleRatio: 1,
+      position: { z: -5.92325, x: -0.852257, y: 0 },
       clones: {
         1: { position: { z: -0.704643, x: 10.0705, y: 0 } },
-        2: {
-          position: { z: 5.70305, x: 3.58778, y: 0 },
-          // scaleRatio: { z: 0.181871, x: -0.032186, y: 0 }
-        },
+        2: { position: { z: 5.70305, x: 3.58778, y: 0 } },
         3: { position: { z: -19.4338, x: -3.40196, y: 0 } }
       }
     },
     plant1: {
       name: 'plant_1',
       mesh: Plant1Model,
+      scaleRatio: 1,
       position: { z: 14.8494, x: 5.88585, y: 0 },
-      scaleRatio: 0.028531,
       clones: {
         1: { position: { z: -11.4527, x: -4.57248, y: 0 } },
         2: { position: { z: -11.4309, x: -4.66688, y: 0 } },
@@ -435,8 +384,8 @@ export default () => {
     plant2: {
       name: 'plant_2',
       mesh: Plant2Model,
+      scaleRatio: 1,
       position: { z: 14.8851, x: 5.77976, y: 0 },
-      scaleRatio: 0.01266,
       clones: {
         1: { position: { z: -9.23114, x: -7.03104, y: 0 } },
         2: { position: { z: 5.68536, x: 13.4711, y: 0 } },
@@ -472,8 +421,8 @@ export default () => {
     plant4: {
       name: 'plant_4',
       mesh: Plant4Model,
+      scaleRatio: 1,
       position: { z: -6.29629, x: -7.77645, y: 0 },
-      scaleRatio: 0.028531,
       clones: {
         1: { position: { z: -6.17539, x: -7.7916, y: 0 } }
       }
@@ -481,14 +430,14 @@ export default () => {
     plant5: {
       name: 'plant_5',
       mesh: Plant5Model,
-      position: { z: -9.19929, x: -7.02459, y: 0 },
-      scaleRatio: 0.028531
+      scaleRatio: 1,
+      position: { z: -9.19929, x: -7.02459, y: 0 }
     },
     plant6: {
       name: 'plant_6',
       mesh: Plant6Model,
+      scaleRatio: 1,
       position: { z: 11.7788, x: 0.694911, y: 0 },
-      scaleRatio: 0.040252,
       clones: {
         1: { position: { z: 11.9206, x: 0.576876, y: 0 } },
         2: { position: { z: 11.8229, x: 0.842912, y: 0 } },
@@ -499,8 +448,8 @@ export default () => {
     plant7: {
       name: 'plant_7',
       mesh: Plant7Model,
+      scaleRatio: 1,
       position: { z: -6.17539, x: -7.97695, y: 0 },
-      scaleRatio: 0.029768,
       clones: {
         1: { position: { z: 4.17222, x: -7.60644, y: 0 } },
         2: { position: { z: 11.8894, x: 0.83318, y: 0 } }
