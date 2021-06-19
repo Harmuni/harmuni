@@ -145,7 +145,7 @@ export default class Game {
       this.gameLoop({ clock })
       this.renderer?.render(this.scene, this.camera)
       this.step({ deltaTime })
-      // this.entityManager.get('playerZoneEntity').components.PlayerZone.update()
+      this.entityManager.get('playerZoneEntity').components.PlayerZone.update(deltaTime)
     })
   }
 

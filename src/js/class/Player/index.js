@@ -134,37 +134,37 @@ export default class Player extends Component {
       acc.multiplyScalar(2.0)
     }
 
-    const raycaster = new Raycaster()
+    // const raycaster = new Raycaster()
     if (this.input.keys.forward) {
       velocity.z += acc.z * timeInSeconds
 
-      const rayOrigin = new Vector3(
-        this.target.position.x,
-        this.target.position.y + 0.1,
-        this.target.position.z
-      )
+      // const rayOrigin = new Vector3(
+      //   this.target.position.x,
+      //   this.target.position.y + 0.1,
+      //   this.target.position.z
+      // )
 
-      const rayDirection = new Vector3(0, -1, 0.1)
-      rayDirection.normalize()
-      raycaster.set(rayOrigin, rayDirection)
-      if (this.terrain) {
-        const intersects = raycaster.intersectObjects(this.terrain.children, true)
-        for (const intersect of intersects) {
-          this.target.position.y = intersect.point.y + 0.1
-        }
-        // const distance = (x1, y1, x2, y2) => {
-        //   const xDist = x2 - x1
-        //   const yDist = y2 - y1
+      // const rayDirection = new Vector3(0, -1, 0.1)
+      // rayDirection.normalize()
+      // raycaster.set(rayOrigin, rayDirection)
+      // if (this.terrain) {
+      //   const intersects = raycaster.intersectObjects(this.terrain.children, true)
+      //   for (const intersect of intersects) {
+      //     this.target.position.y = intersect.point.y + 0.1
+      //   }
+      //   // const distance = (x1, y1, x2, y2) => {
+      //   //   const xDist = x2 - x1
+      //   //   const yDist = y2 - y1
 
-        //   return Math.sqrt(Math.pow(xDist, 2) + Math.pow(yDist, 2))
-        // }
+      //   //   return Math.sqrt(Math.pow(xDist, 2) + Math.pow(yDist, 2))
+      //   // }
 
-        // let distanceToObj = distance(controlObject.position.x, controlObject.position.z, poteau.position.x, poteau.position.z)
-        // if (distanceToObj <= 1.5) {
-        //   console.log("jetouche")
-        //   velocity.z = 0
-        // }
-      }
+      //   // let distanceToObj = distance(controlObject.position.x, controlObject.position.z, poteau.position.x, poteau.position.z)
+      //   // if (distanceToObj <= 1.5) {
+      //   //   console.log("jetouche")
+      //   //   velocity.z = 0
+      //   // }
+      // }
     }
 
     if (this.input.keys.backward) {

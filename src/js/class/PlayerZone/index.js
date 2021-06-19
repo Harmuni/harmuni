@@ -1,5 +1,10 @@
-import { Mesh , Vector3, BoxGeometry, CylinderGeometry, PlaneGeometry, MeshBasicMaterial, DoubleSide, ShaderMaterial, Color, FrontSide, AdditiveBlending} from 'three'
+import { Mesh ,Clock, Vector3, BoxGeometry, CylinderGeometry, PlaneGeometry, MeshBasicMaterial, DoubleSide, ShaderMaterial, Color, FrontSide, AdditiveBlending} from 'three'
+import { acceleratedRaycast, computeBoundsTree, disposeBoundsTree } from 'three-mesh-bvh'
 import { Component } from '../EntityComponent'
+
+// Mesh.prototype.raycast = acceleratedRaycast
+// BufferGeometry.prototype.computeBoundsTree = computeBoundsTree
+// BufferGeometry.prototype.disposeBoundsTree = disposeBoundsTree
 
 export default class PlayerZone extends Component {
   
@@ -15,21 +20,22 @@ export default class PlayerZone extends Component {
     this.crate = null
     this.crateGlow = null
     this.createZone({scene : this.scene, renderer: this.renderer, camera: this.camera, terrain: this.terrain, player: this.player })
-    // this.update = this.update()
-    // this.expandZone({ zone: this.zone, terrain: this.terrain, player: this.player })
+
   }
   
   createZone ({ scene, renderer, camera, terrain, player }) {
     // console.log(camera.components.Camera)
 
     //ZONE SHAPE
-    var cubeGeom = new CylinderGeometry( 15, 15, 5, 32 );
+    var cubeGeom = new CylinderGeometry( 15, 15, 5, 40 );
     var crateMaterial = new MeshBasicMaterial({color : 0xc72a3f, opacity: 0.5, transparent: true} )
     this.crate = new Mesh(cubeGeom, crateMaterial)
     this.crate.position.set(0,-1,0)
     this.crate.name="Crate"
+    // this.crate.geometry.computeBoundsTree()
     terrain.add(this.crate)
 
+    console.log(this.crate.geometry)
     //SHADER 
     function vertexShader() {
       return `
@@ -87,14 +93,22 @@ export default class PlayerZone extends Component {
     this.crateGlow.name="CrateGlow"
     terrain.add( this.crateGlow )
 
+    
+
   }
   
-  expandZone({ zone, zoneGlow }) {
-    // while ()
-  }
+  expandZone() {
+     this.crate.scale.x += 0.001
+     this.crate.scale.z += 0.001
+     this.crateGlow.scale.z += 0.001
+     this.crateGlow.scale.x += 0.001
+ }
 
-  update() {
-    // this.update()
+  update(deltaTime) {
+    // check if player if in zone and if they press btn
+    if (this.crate !== "null" && this.crate.scale.x < 3) {
+        this.expandZone(deltaTime) 
+    }
     // this.crateGlow.material.uniforms.viewVector.value = new Vector3().subVectors( this.camera.components.Camera.threeCamera.position, this.crateGlow.position )
   }
 
