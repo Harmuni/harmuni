@@ -5,6 +5,7 @@ import PlayerFSM from './PlayerFSM/index'
 import ControllerInput from '../ControllerInput/index'
 import { Component } from '../EntityComponent/index'
 import { LumaCharacter, LumaIdle, LumaRun, LumaWalk, SkaljordCharacter, SkaljordIdle, SkaljordMusic, SkaljordRun, SkaljordWalk } from '../../../assets/meshes'
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 
 export default class Player extends Component {
   constructor ({ scene, terrain }) {
@@ -74,6 +75,7 @@ export default class Player extends Component {
 
         const loader = new FBXLoader(this.manager)
         loader.load(SkaljordWalk, (fbxAnimation) => {
+          console.log('fbx walk', fbxAnimation)
           animationLoad({ animationName: 'walk', fbxAnimation })
         })
         loader.load(SkaljordRun, (fbxAnimation) => {
@@ -83,8 +85,14 @@ export default class Player extends Component {
           animationLoad({ animationName: 'idle', fbxAnimation })
         })
         loader.load(SkaljordMusic, (fbxAnimation) => {
+          console.log('fbx music', fbxAnimation)
           animationLoad({ animationName: 'playMusic', fbxAnimation })
         })
+        // const loaderOfSolution = new GLTFLoader(this.manager)
+        // loaderOfSolution.load(SkaljordMusic, (gltf) => {
+        //   console.log('glb music', gltf)
+        //   animationLoad({ animationName: 'playMusic', gltf })
+        // })
       }
     )
   }

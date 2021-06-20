@@ -31,5 +31,8 @@ export default class IdleState extends State {
     if (input.keys.forward || input.keys.backward) {
       this.parent.setState('walk')
     }
+    if (input.keys.r) {
+      this.parent.setState('playMusic')
+    }
   }
 }

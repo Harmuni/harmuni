@@ -13,7 +13,10 @@ import BookModel from './map/artefacts/book.glb'
 import CombModel from './map/artefacts/comb.glb'
 import StoneModel from './map/artefacts/stone.glb'
 import WatchModel from './map/artefacts/watch.glb'
+
 import LandscapeModel from './map/terrain/landscape.glb'
+import LakeModel from './map/terrain/lake.glb'
+import OceanModel from './map/terrain/ocean.glb'
 
 import Plant1Model from './map/plants/plant_1.glb'
 import Plant2Model from './map/plants/plant_2.glb'
@@ -50,14 +53,54 @@ import Tree3Model from './map/trees/tree_3.glb'
 import Tree4Model from './map/trees/tree_4.glb'
 import Tree5Model from './map/trees/tree_5.glb'
 
+import AltarModel from './map/architecture/altar.glb'
+import ArchModel from './map/architecture/arch.glb'
+import BoatModel from './map/architecture/boat.glb'
+import CatStatueModel from './map/architecture/cat_statue.glb'
+import Column1Model from './map/architecture/column_1.glb'
+import Column2Model from './map/architecture/column_2.glb'
+import Column3Model from './map/architecture/column_3.glb'
+import Column4Model from './map/architecture/column_4.glb'
+import DoorLeftModel from './map/architecture/door_left.glb'
+import DoorOutsideModel from './map/architecture/door_outside.glb'
+import DoorRightModel from './map/architecture/door_right.glb'
+import EagleStatueModel from './map/architecture/eagle_statue.glb'
+import KioskCommonModel from './map/architecture/kiosk_common.glb'
+import KioskLumaModel from './map/architecture/kiosk_luma.glb'
+import LampModel from './map/architecture/lamp.glb'
+import OwlStatueModel from './map/architecture/owl_statue.glb'
+import PierModel from './map/architecture/pier.glb'
+import PlateModel from './map/architecture/plate.glb'
+import SteleModel from './map/architecture/stele.glb'
+
 export {
+  AltarModel,
   AppleModel,
+  ArchModel,
+  BoatModel,
   BookModel,
+  CatStatueModel,
+  Column1Model,
+  Column2Model,
+  Column3Model,
+  Column4Model,
   CombModel,
+  DoorLeftModel,
+  DoorOutsideModel,
+  DoorRightModel,
+  EagleStatueModel,
+  KioskCommonModel,
+  KioskLumaModel,
+  LakeModel,
+  LampModel,
+  LandscapeModel,
   LumaCharacter,
   LumaIdle,
   LumaRun,
   LumaWalk,
+  OceanModel,
+  OwlStatueModel,
+  PierModel,
   Plant1Model,
   Plant2Model,
   Plant3Model,
@@ -65,11 +108,13 @@ export {
   Plant5Model,
   Plant6Model,
   Plant7Model,
+  PlateModel,
   SkaljordCharacter,
   SkaljordIdle,
-  SkaljordRun,
   SkaljordMusic,
+  SkaljordRun,
   SkaljordWalk,
+  SteleModel,
   Stone10Model,
   Stone11Model,
   Stone12Model,
@@ -91,7 +136,6 @@ export {
   Stone8Model,
   Stone9Model,
   StoneModel,
-  LandscapeModel,
   Tree1Model,
   Tree2Model,
   Tree3Model,

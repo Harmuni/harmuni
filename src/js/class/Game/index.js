@@ -71,7 +71,8 @@ export default class Game {
         A: { x: 4, z: 8 },
         B: { x: 8, z: 8 },
         C: { x: 4, z: 4 },
-        D: { x: 8, z: 4 }}
+        D: { x: 8, z: 4 }
+      }
     }))
 
     this.entityManager.add(worldEntity, 'worldEntity')
@@ -104,6 +105,7 @@ export default class Game {
       canvas: canvas,
       antialias: true
     })
+
     renderer.setSize(this.sizes.width, this.sizes.height)
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
     return renderer
@@ -130,11 +132,16 @@ export default class Game {
   gameLoop ({ clock }) {
     // Render and refresh animation
     const deltaTime = clock.getDelta()
-    return window.requestAnimationFrame((t) => {
+    const refresh = window.requestAnimationFrame((t) => {
       this.gameLoop({ clock })
       this.renderer?.render(this.scene, this.camera)
       this.step({ deltaTime })
     })
+    if (refresh >= 0) {
+      return 1
+    } else {
+      return -1
+    }
   }
 
   step ({ deltaTime }) {
