@@ -99,9 +99,11 @@ export default class Game {
     }))
 
     //! playerEntity.components.PlayerLocal.id vaut undefined !! Soit j'accède mal à la propriété, SOIT c'est que le serveur ne me renvoi pas l'id ? ou soucis du genre (70% sur que c'est ça)
-    console.log( 'playerEntity.id vaut', playerEntity.components.PlayerLocal.id);
-    // playerEntity.components.PlayerLocal.initSocket()
-    console.log( 'playerEntity.id vaut', playerEntity.components.PlayerLocal.id);
+
+    playerEntity.components.PlayerLocal.initSocket()
+    playerEntity.socketId = playerEntity.getComponent('PlayerLocal').getId()
+    console.log(playerEntity.components.PlayerLocal.getId());
+    console.log( 'playerEntity.id vaut', playerEntity.socketId);
 
     cameraEntity.addComponent(new Camera({
       scene: this.scene,
