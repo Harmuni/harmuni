@@ -92,14 +92,21 @@ export default class Game {
 
     //? Piste privilégiée actuellement : initialiser le localPlayer pour chaque client, puis traiter les remotePlayers comme des Players
 
-    playerEntity.addComponent(new LocalPlayer({
+    playerEntity.addComponent(new PlayerLocal({
       scene: this.scene,
       terrain: worldEntity.components.World.terrain, 
       game: this
     }))
 
+    //! playerEntity.components.PlayerLocal.id vaut undefined !! Soit j'accède mal à la propriété, SOIT c'est que le serveur ne me renvoi pas l'id ? ou soucis du genre (70% sur que c'est ça)
+    console.log( 'playerEntity.id vaut', playerEntity.components.PlayerLocal.id);
+    // playerEntity.components.PlayerLocal.initSocket()
+    console.log( 'playerEntity.id vaut', playerEntity.components.PlayerLocal.id);
+
     cameraEntity.addComponent(new Camera({
       scene: this.scene,
+  
+      // Store the animation clip and animation action into a dictionary called this.an
       sizes: this.sizes,
       renderer: this.renderer,
       targetToFollow: playerEntity,
@@ -132,7 +139,7 @@ export default class Game {
     }))
 
     this.entityManager.add(worldEntity, 'worldEntity')
-    this.entityManager.add(playerEntity, 'playerEntity')
+    this.entityManager.add(playerEntity, 'playerEntity') // TODO : renommer en playerlocal / identifier clairement le local player 
     this.entityManager.add(cameraEntity, 'cameraEntity')
     this.entityManager.add(pauseEntity, 'pauseEntity')
     this.entityManager.add(eventAreaEntity, 'eventAreaEntity')

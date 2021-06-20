@@ -1,10 +1,10 @@
 import { AnimationMixer, LoadingManager, Quaternion, sRGBEncoding, Vector3, Raycaster } from 'three'
 import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader.js'
-import PlayerAnimationsProxy from './PlayerAnimationsProxy/index'
-import PlayerFSM from './PlayerFSM/index'
-import ControllerInput from '../ControllerInput/index'
-import { Component } from '../EntityComponent/index'
-import { LumaCharacter, LumaIdle, LumaRun, LumaWalk } from '../../../assets/meshes'
+import PlayerAnimationsProxy from '../PlayerAnimationsProxy/index'
+import PlayerFSM from '../PlayerFSM/index'
+import ControllerInput from '../../ControllerInput/index'
+import { Component } from '../../EntityComponent/index'
+import { LumaCharacter, LumaIdle, LumaRun, LumaWalk } from '../../../../assets/meshes'
 import io from 'socket.io-client'
 
 
@@ -25,26 +25,36 @@ export default class PlayerLocal extends Component {
       this.target = null
       this.velocity = new Vector3(0, 0, 0)
       this.bones = {}
+      this.id // ajouté par moi, à voir 
   
       this.loadModels({ meshScale: 0.03 })
 
       /**
        * domaine que doit écouter le socket : 
        */
-      const socket = io.connect('ws://localhost:2002')
-      const player = this
+      const socket = io.connect('http://localhost:2002')
+      // todo : repasser codebase playerlocal avec la ref à this : player ci dessous
+      // const player = this //? le probleme du undefined ne semble pas provenir de la ref player 
 
       // setId s'applique quand le socket est crée coté serveur, et renvoi l'ID au client
       socket.on('setId', data => {
-        player.id = data.id
+        console.log('socket triggered');
+        this.id = data.id //! vaut undefined
+        console.log('this.id vaut', this.id);
       })
       
+      socket.on('remoteData', data => {
+        game.remoteData = data
+        console.log('game.remoteData vaut', game.remoteData);
+      })
       /**
        * La premiere chose que l'on fait est de trouver l'ID qui nous ai renvoyé par le serveur dans le tableau "remotePlayers" qui liste les joueurs que connait le serveur
        */
-      socket.on('remoteData', data => {
+
+      // todo: vérifier que cette socket action soit OK 
+      socket.on('deletePlayer', data => {
         const players = game.remotePlayers.filter( player => {
-          if (player.id == data.id) {
+          if (this.id == data.id) {
             return player
           }
         })
@@ -70,28 +80,29 @@ export default class PlayerLocal extends Component {
     }
 
     initSocket() {
+        console.log('entre dans initSocket()');
         this.socket.emit('init', {
             /**
              * TODO: Refactoriser le modèle de donnée 
              */
             model: this.model, 
             color: this.color, // pour zone, à voir/refactor
-            x: this.object.position.x,
-            y: this.object.position.y,
-            z: this.object.position.z,
-            h: this.object.rotation.y, 
-            pb: this.object.rotation.x
+            x: this.position.x,
+            y: this.position.y,
+            z: this.position.z,
+            h: 'this.rotation.y', 
+            pb: 'this.rotation.x'
         })
     }
 
     updateSocket() {
         if (this.socket !== undefined) {
             this.socket.emit('update', {
-                x: this.object.position.x,
-                y: this.object.position.y,
-                z: this.object.position.z,
-                h: this.object.rotation.y, 
-                pb: this.object.rotation.x,
+                x: this.position.x,
+                y: this.position.y,
+                z: this.position.z,
+                h: 'this.rotation.y', 
+                pb: 'this.rotation.x',
                 action: this.action // voir avec mixer d'anim (par defaut idle)
             })
         }
