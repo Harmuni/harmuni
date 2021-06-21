@@ -470,34 +470,34 @@ export default () => {
       name: 'lake',
       mesh: LakeModel,
       scaleRatio: 1,
-      position: { z: -8.87839, x: 14.0986, y: -0.5 }
-      // position: { z: -11, x: 2, y: -0.5 }
+      position: { z: -8.87839, x: 14.0986, y: -0.5 },
+      rotation: { z: 0, x: 0, y: (0 + 90) }
     },
-    // ocean: {
-    //   name: 'ocean',
-    //   mesh: OceanModel,
-    //   scaleRatio: 1,
-    //   rotation: { z: 0, x: 0, y: 44.5566 },
-    //   position: { z: 7, x: -5, y: -1.75 },
-    //   clones: {
-    //     1: {
-    //       rotation: { z: 0, x: 0, y: 89.75 },
-    //       position: { z: 20, x: 8.5, y: -1.75 }
-    //     },
-    //     2: {
-    //       rotation: { z: 0, x: 0, y: 100 },
-    //       position: { z: 10, x: 22, y: -1.75 }
-    //     },
-    //     3: {
-    //       rotation: { z: 0, x: 0, y: 100 },
-    //       position: { z: -10, x: -10, y: -1.75 }
-    //     },
-    //     4: {
-    //       rotation: { z: 0, x: 0, y: 1.562 },
-    //       position: { z: -18, x: 3.3, y: -1.75 }
-    //     }
-    //   }
-    // },
+    ocean: {
+      name: 'ocean',
+      mesh: OceanModel,
+      scaleRatio: 1,
+      position: { z: -10.8158, x: -0.655412, y: -1.75 },
+      rotation: { z: 0, x: 0, y: (44.5566 + 90) },
+      clones: {
+        1: {
+          position: { z: 6.17156, x: -4.52184, y: -1.75 },
+          rotation: { z: 0, x: 0, y: (132.278 + 90) }
+        },
+        2: {
+          position: { z: -19.179, x: 19.8061, y: -1.75 },
+          rotation: { z: 0, x: 0, y: (132.278 + 90) }
+        },
+        3: {
+          position: { z: -0.269232, x: 27.7425, y: -1.75 },
+          rotation: { z: 0, x: 0, y: (88.5633 + 90) }
+        },
+        4: {
+          position: { z: -3.48184, x: -14.7299, y: -1.75 },
+          rotation: { z: 0, x: 0, y: (88.7471 + 90) }
+        }
+      }
+    },
     altar: {
       name: 'altar',
       mesh: AltarModel,
@@ -652,33 +652,60 @@ export default () => {
       name: 'boat',
       mesh: BoatModel,
       scaleRatio: 1,
-      position: { z: 10.1659, x: -4.76008, y: 0 }
+      position: { z: 10.1659, x: -4.76008, y: -0.5 },
+      rotation: { z: 0, x: 0, y: -44.2346 }
     },
     arch: {
       name: 'arch',
       mesh: ArchModel,
       scaleRatio: 1,
       position: { z: -7.40124, x: -2.23076, y: 0 },
+      rotation: { z: 0, x: 0, y: -51.9134 },
       clones: {
-        1: { position: { z: -8.46461, x: -2.98167, y: 0 } },
-        2: { position: { z: -5.47352, x: -7.2117, y: 0 } },
-        3: { position: { z: -4.42156, x: -6.44488, y: 0 } },
-        4: { position: { z: -15.3647, x: 3.79359, y: 0 } },
-        5: { position: { z: -14.9984, x: 4.95798, y: 0 } },
-        6: { position: { z: 3.20016, x: -4.10814, y: 0 } },
-        7: { position: { z: -15.1811, x: 12.1407, y: 0 } },
-        8: { position: { z: 3.90104, x: 15.8449, y: 0 } }
+        1: {
+          position: { z: -8.46461, x: -2.98167, y: 0 },
+          rotation: { z: 0, x: 0, y: -51.9134 }
+        },
+        2: {
+          position: { z: -5.47352, x: -7.2117, y: 0 },
+          rotation: { z: 0, x: 0, y: -51.0519 }
+        },
+        3: {
+          position: { z: -4.42156, x: -6.44488, y: 0 },
+          rotation: { z: 0, x: 0, y: -51.0519 }
+        },
+        4: {
+          position: { z: -15.3647, x: 3.79359, y: 0 },
+          rotation: { z: 0.331597, x: -1.14914, y: -19.5539 }
+        },
+        5: {
+          position: { z: -14.9984, x: 4.95798, y: 0 },
+          rotation: { z: 1.05213, x: -2.39491, y: -18.1504 }
+        },
+        6: {
+          position: { z: 3.20016, x: -4.10814, y: 0 },
+          rotation: { z: 0, x: 0, y: 112.383 }
+        },
+        7: {
+          position: { z: -15.1811, x: 12.1407, y: 0 },
+          rotation: { z: 0, x: 0, y: 112.383 }
+        },
+        8: {
+          position: { z: 3.90104, x: 15.8449, y: 0 },
+          rotation: { z: 0, x: 0, y: 112.383 }
+        }
       }
     },
     pier: {
       name: 'pier',
       mesh: PierModel,
-      scaleRatio: 0.5,
+      scaleRatio: 1,
       position: { z: 8.38487, x: -4.41869, y: 0 },
+      rotation: { z: 0, x: 0, y: (58.2024 + 90) },
       clones: {
         1: {
           position: { z: -11.3189, x: 14.3556, y: 0 },
-          rotation: { z: 0, x: 0, y: 89.985 }
+          rotation: { z: 0, x: 0, y: (89.985 + 90) }
         }
       }
     }

@@ -8,7 +8,7 @@ import { BackFace, DownFace, FrontFace, LeftFace, RightFace, UpFace } from '../.
 import WorldConfiguration from '../../constants/WorldConfiguration'
 import { Component } from '../EntityComponent'
 import { NormalMapColumn3 } from '../../../assets/textures'
-import { RepeatWrapping, WrapAroundEnding } from 'three/build/three.module'
+import { MathUtils } from 'three/build/three.module'
 export default class World extends Component {
   /**
    * @constructor of World
@@ -34,7 +34,7 @@ export default class World extends Component {
     // const gridHelper = new GridHelper(size, divisions)
     // this.scene.add(gridHelper)
     this.generateLight({ scene: this.scene })
-    this.generateSkybox({ scene: this.scene, renderer: this.renderer, typeOfSkybox: 'skyShader' })
+    this.generateSkybox({ scene: this.scene, renderer: this.renderer, typeOfSkybox: 'skyTexture' })
     this.generateLandscape({ glbLoader, terrain: this.terrain })
     this.generateEnvironment({ glbLoader, terrain: this.terrain })
   }
@@ -62,9 +62,9 @@ export default class World extends Component {
 
         if (model.rotation) {
           gltf.scene.rotation.set(
-            Math.degToRad(model.rotation.x),
-            Math.degToRad(model.rotation.y),
-            Math.degToRad(model.rotation.z)
+            MathUtils.degToRad(model.rotation.x),
+            MathUtils.degToRad(model.rotation.y),
+            MathUtils.degToRad(model.rotation.z)
           )
         }
 
@@ -102,7 +102,6 @@ export default class World extends Component {
             gltf,
             modelBuffer
           })
-          // // this.mergeModel({ modelToMerge: gltf.scene, modelBuffer })
           // console.log('modelBuffer Final', modelBuffer)
           // const mergedClones = BufferGeometryUtils.mergeBufferGeometries(modelBuffer, false)
           // const meshMergedClones = new Mesh(mergedClones)
@@ -128,7 +127,7 @@ export default class World extends Component {
       const toClone = gltf.scene.clone()
       toClone.name = toClone.name + '-' + (id + 1)
 
-      if (model.position) {
+      if (clones[clone].position) {
         toClone.position.set(
           clones[clone].position.x,
           clones[clone].position.y,
@@ -136,11 +135,11 @@ export default class World extends Component {
         )
       }
 
-      if (model.rotation) {
+      if (clones[clone].rotation) {
         toClone.rotation.set(
-          Math.degToRad(model.rotation.x),
-          Math.degToRad(model.rotation.y),
-          Math.degToRad(model.rotation.z)
+          MathUtils.degToRad(clones[clone].rotation.x),
+          MathUtils.degToRad(clones[clone].rotation.y),
+          MathUtils.degToRad(clones[clone].rotation.z)
         )
       }
 
@@ -166,60 +165,10 @@ export default class World extends Component {
       //   }
       // })
 
-      // this.mergeModel({ modelToMerge: toClone, modelBuffer })
-
       return 1
     })
     return 1
   }
-
-  // mergeModel ({ modelToMerge, modelBuffer }) {
-  //   modelToMerge.children.map(model => {
-  //     if (model.type === 'Group') {
-  //       model.children.map(model2 => {
-  //         if (model2.geometry) {
-  //           modelBuffer.push(model2)
-  //         }
-  //         return 1
-  //       })
-  //     } else if (model.geometry) {
-  //       const cloned = model.geometry.clone()
-  //       cloned.applyMatrix4(model.matrixWorld)
-  //       modelBuffer.push(cloned)
-  //     }
-
-  //     return 1
-  //   })
-  //   return modelBuffer
-
-  //   // console.error('Error merging models', modelsBuffer)
-  //   // return -1
-  // }
-
-  // mergeModel ({ modelToMerge, modelBuffer }) {
-  //   modelToMerge.children.map(child => {
-  //     if (child.geometry) {
-  //       const geometry = child.geometry.clone()
-  //       geometry.applyMatrix4(child.matrixWorld)
-  //       modelBuffer.push(geometry)
-  //       return 1
-  //     } else if (child.type === 'Group') {
-  //       child.children.map(child2 => {
-  //         if (child2.geometry) {
-  //           modelBuffer.push(child2)
-  //         }
-  //         return 1
-  //       })
-  //     } else if (child.type === 'Object3D') {
-  //       console.log('Le reste', child)
-  //       const object3d = child.clone()
-  //       object3d.applyMatrix4(child.matrixWorld)
-  //       modelBuffer.push(object3d)
-  //     }
-  //     return 1
-  //   })
-  //   return modelBuffer
-  // }
 
   /**
    * Generate lights
