@@ -8,7 +8,7 @@ import { LumaCharacter, LumaIdle, LumaRun, LumaWalk } from '../../../assets/mesh
 // import io from 'socket.io-client'
 
 export default class Player extends Component {
-  constructor ({ scene, terrain }) {
+  constructor ({ scene, terrain, options, game }) {
     super()
     this.scene = scene
     this.terrain = terrain
@@ -24,14 +24,40 @@ export default class Player extends Component {
     this.target = null
     this.velocity = new Vector3(0, 0, 0)
     this.bones = {}
+    this.local = true
+    this.model = LumaCharacter
+    this.id
 
-    this.loadModels({ meshScale: 0.03 })
+    if (options === undefined) {
+      console.log('player local');
+    } else if (typeof options == 'object') {
+      this.local = false
+      this.options = options
+      this.id = options.id
+      this.model = options.model //'Viking'
+    }
+
+    const player = this
+
+    if (this.local) {
+      this.loadModels({ meshScale: 0.03 })
+      if (player.initSocket !== undefined) player.initSocket()
+    } else {
+      player.object.userData.id = player.id
+      player.object.userData.remotePlayer = true
+      const players = game.initialisingPlayers.splice(game.initialisingPlayers.indexOf(this), 1)
+      game.remotePlayers.push(players[0])
+    }
+
+    
 
   }
 
   loadModels ({ meshScale = 1 }) {
+
+
     const loader = new FBXLoader()
-    loader.load(LumaCharacter, (fbx) => {
+    loader.load(this.model, (fbx) => {
       console.log('fbx test', fbx)
       this.target = fbx
 

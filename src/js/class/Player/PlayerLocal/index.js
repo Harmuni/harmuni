@@ -33,18 +33,17 @@ export default class PlayerLocal extends Component {
        * domaine que doit écouter le socket : 
        */
       const socket = io.connect('http://localhost:2002')
-      // todo : repasser codebase playerlocal avec la ref à this : player ci dessous
       const player = this //? le probleme du undefined ne semble pas provenir de la ref player 
 
       // setId s'applique quand le socket est crée coté serveur, et renvoi l'ID au client
-      socket.on('setId', data => {
+      socket.on('setId', function(data) {
         console.log('socket triggered');
         player.id = data.id 
         console.log('this.id vaut', this.id);
         console.log('player.id vaut', player.id);
       })
       
-      socket.on('remoteData', data => {
+      socket.on('remoteData', function(data) {
         game.remoteData = data
         console.log('game.remoteData vaut', game.remoteData);
       })
@@ -53,7 +52,7 @@ export default class PlayerLocal extends Component {
        */
 
       // todo: vérifier que cette socket action soit OK 
-      socket.on('deletePlayer', data => {
+      socket.on('deletePlayer', function(data) {
         const players = game.remotePlayers.filter( player => {
           if (player.id == data.id) {
             return player
@@ -66,7 +65,7 @@ export default class PlayerLocal extends Component {
                 game.scene.remove(players[0].object)
             }
         } else {
-            index = game.initialisingPlayers.indexOf(players[0])
+            let index = game.initialisingPlayers.indexOf(players[0])
             if (index != -1) {
                 const player = game.initialisingPlayers[index]
                 player.deleted = true
@@ -294,6 +293,8 @@ export default class PlayerLocal extends Component {
   
       this.parent.setPosition(this.position)
       this.parent.setQuaternion(this.target.quaternion)
+      this.updateSocket();
+
     }
   }
   

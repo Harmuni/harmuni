@@ -33,6 +33,7 @@ export default class Game {
     /**
      * Multiplayer properties
      */
+    this.player = {}
     this.remotePlayers = [];
     this.remoteColliders = []; // maybe not needed
     this.initialisingPlayers = [];
@@ -101,9 +102,9 @@ export default class Game {
     //! playerEntity.components.PlayerLocal.id vaut undefined !! Soit j'accède mal à la propriété, SOIT c'est que le serveur ne me renvoi pas l'id ? ou soucis du genre (70% sur que c'est ça)
 
     playerEntity.components.PlayerLocal.initSocket()
-    playerEntity.socketId = playerEntity.getComponent('PlayerLocal').getId()
+    playerEntity.id = playerEntity.getComponent('PlayerLocal').getId()
     console.log(playerEntity.components.PlayerLocal.getId());
-    console.log( 'playerEntity.id vaut', playerEntity.socketId);
+    console.log( 'playerEntity.id vaut', playerEntity.id);
 
     cameraEntity.addComponent(new Camera({
       scene: this.scene,
@@ -145,6 +146,10 @@ export default class Game {
     this.entityManager.add(cameraEntity, 'cameraEntity')
     this.entityManager.add(pauseEntity, 'pauseEntity')
     this.entityManager.add(eventAreaEntity, 'eventAreaEntity')
+
+    // raccourci/ref vers l'entité player dans le manager
+    this.player = this.entityManager.get('playerEntity')
+
 
     console.log(worldEntity)
     console.log(playerEntity)
@@ -188,8 +193,11 @@ export default class Game {
    * @returns {void}
    */
   updateRemotePlayers(dt) {
-    if (this.remoteData === undefined || this.remoteData.length == 0 || this.player === undefined || this.player.id === undefined) return;
+    if (this.remoteData === undefined || this.remoteData.length == 0 || this.player === undefined || this.player.id === undefined) {
+      return
+    }
 
+    console.log('this.player vaut', this.player);
     const newPlayers = [];
     const game = this;
     //Get all remotePlayers from remoteData array
@@ -199,23 +207,23 @@ export default class Game {
     this.remoteData.forEach(function (data) {
       if (game.player.id != data.id) {
         //Is this player being initialised?
-        let iplayer;
+        let localPlayer;
         game.initialisingPlayers.forEach(function (player) {
-          if (player.id == data.id) iplayer = player;
+          if (player.id == data.id) localPlayer = player;
         });
         //If not being initialised check the remotePlayers array
-        if (iplayer === undefined) {
-          let rplayer;
+        if (localPlayer === undefined) {
+          let remotePlayer;
           game.remotePlayers.forEach(function (player) {
-            if (player.id == data.id) rplayer = player;
+            if (player.id == data.id) remotePlayer = player;
           });
-          if (rplayer === undefined) {
+          if (remotePlayer === undefined) {
             //Initialise player
             game.initialisingPlayers.push(new Player(game, data));
           } else {
             //Player exists
-            remotePlayers.push(rplayer);
-            remoteColliders.push(rplayer.collider);
+            remotePlayers.push(remotePlayer);
+            remoteColliders.push(remotePlayer.collider);
           }
         }
       }
@@ -270,8 +278,15 @@ export default class Game {
   gameLoop({
     clock
   }) {
+
+    const game = this
+
     // Render and refresh animation
     const deltaTime = clock.getDelta()
+
+    this.updateRemotePlayers(deltaTime)
+
+
     return window.requestAnimationFrame((t) => {
       this.gameLoop({
         clock
