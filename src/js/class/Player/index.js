@@ -1,14 +1,35 @@
-import { AnimationMixer, LoadingManager, Quaternion, sRGBEncoding, Vector3, Raycaster } from 'three'
-import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader.js'
+import {
+  AnimationMixer,
+  LoadingManager,
+  Quaternion,
+  sRGBEncoding,
+  Vector3,
+  Raycaster
+} from 'three'
+import {
+  FBXLoader
+} from 'three/examples/jsm/loaders/FBXLoader.js'
 import PlayerAnimationsProxy from './PlayerAnimationsProxy/index'
 import PlayerFSM from './PlayerFSM/index'
 import ControllerInput from '../ControllerInput/index'
-import { Component } from '../EntityComponent/index'
-import { LumaCharacter, LumaIdle, LumaRun, LumaWalk } from '../../../assets/meshes'
-// import io from 'socket.io-client'
+import {
+  Component
+} from '../EntityComponent/index'
+import {
+  LumaCharacter,
+  LumaIdle,
+  LumaRun,
+  LumaWalk
+} from '../../../assets/meshes'
+import io from 'socket.io-client'
 
 export default class Player extends Component {
-  constructor ({ scene, terrain, options, game }) {
+  constructor({
+    scene,
+    terrain,
+    options,
+    game
+  }) {
     super()
     this.scene = scene
     this.terrain = terrain
@@ -20,13 +41,18 @@ export default class Player extends Component {
     this.manager = {}
     this.mixer = {}
     this.position = new Vector3(0, 0, 0)
-    this.stateMachine = new PlayerFSM({ proxy: new PlayerAnimationsProxy({ animations: this.animations }) })
+    this.stateMachine = new PlayerFSM({
+      proxy: new PlayerAnimationsProxy({
+        animations: this.animations
+      })
+    })
     this.target = null
     this.velocity = new Vector3(0, 0, 0)
     this.bones = {}
     this.local = true
     this.model = LumaCharacter
     this.id
+    this.socket
 
     if (options === undefined) {
       console.log('player local');
@@ -40,7 +66,9 @@ export default class Player extends Component {
     const player = this
 
     if (this.local) {
-      this.loadModels({ meshScale: 0.03 })
+      this.loadModels({
+        meshScale: 0.03
+      })
       if (player.initSocket !== undefined) player.initSocket()
     } else {
       player.object.userData.id = player.id
@@ -49,11 +77,89 @@ export default class Player extends Component {
       game.remotePlayers.push(players[0])
     }
 
-    
+    /**
+     * domaine que doit écouter le socket : 
+     */
+    this.socket = io.connect('http://localhost:2002')
+
+    // setId s'applique quand le socket est crée coté serveur, et renvoi l'ID au client
+    this.socket.on('setId', function (data) {
+      console.log('socket triggered');
+      player.id = data.id
+      console.log('this.id vaut', this.id);
+      console.log('player.id vaut', player.id);
+    })
+
+    this.socket.on('remoteData', function (data) {
+      game.remoteData = data
+      console.log('game.remoteData vaut', game.remoteData);
+    })
+    /**
+     * La premiere chose que l'on fait est de trouver l'ID qui nous ai renvoyé par le serveur dans le tableau "remotePlayers" qui liste les joueurs que connait le serveur
+     */
+
+    // todo: vérifier que cette socket action soit OK 
+    this.socket.on('deletePlayer', function (data) {
+      const players = game.remotePlayers.filter(player => {
+        if (player.id == data.id) {
+          return player
+        }
+      })
+      if (players.length > 0) {
+        let index = game.remotePlayers.indexOf(players[0])
+        if (index != 1) {
+          game.remotePlayers.splice(index, 1)
+          game.scene.remove(players[0].object)
+        }
+      } else {
+        let index = game.initialisingPlayers.indexOf(players[0])
+        if (index != -1) {
+          const player = game.initialisingPlayers[index]
+          player.deleted = true
+          game.initialisingPlayers.splice(index, 1)
+
+        }
+      }
+    })
+
+    // this.socket = socket
 
   }
 
-  loadModels ({ meshScale = 1 }) {
+  initSocket() {
+    console.log('entre dans initSocket(), this socket vaut :: ', this.socket);
+    this.socket.emit('init', {
+      /**
+       * TODO: Refactoriser le modèle de donnée 
+       */
+      model: this.model,
+      color: this.color, // pour zone, à voir/refactor
+      x: this.position.x,
+      y: this.position.y,
+      z: this.position.z,
+      h: 'this.rotation.y',
+      pb: 'this.rotation.x'
+    })
+
+    this.getId()
+  }
+
+  updateSocket() {
+    if (this.socket !== undefined) {
+      this.socket.emit('update', {
+        x: this.position.x,
+        y: this.position.y,
+        z: this.position.z,
+        h: 'this.rotation.y',
+        pb: 'this.rotation.x',
+        action: this.action // voir avec mixer d'anim (par defaut idle)
+      })
+    }
+  }
+
+  loadModels({
+    meshScale = 1
+  }) {
 
 
     const loader = new FBXLoader()
@@ -88,7 +194,10 @@ export default class Player extends Component {
         this.stateMachine.setState('idle')
       }
 
-      const animationLoad = ({ animationName, fbxAnimation }) => {
+      const animationLoad = ({
+        animationName,
+        fbxAnimation
+      }) => {
         const clip = fbxAnimation.animations[0]
         const action = this.mixer.clipAction(clip)
 
@@ -101,24 +210,36 @@ export default class Player extends Component {
 
       const loader = new FBXLoader(this.manager)
       loader.load(LumaWalk, (fbxAnimation) => {
-        animationLoad({ animationName: 'walk', fbxAnimation })
+        animationLoad({
+          animationName: 'walk',
+          fbxAnimation
+        })
       })
       loader.load(LumaRun, (fbxAnimation) => {
-        animationLoad({ animationName: 'run', fbxAnimation })
+        animationLoad({
+          animationName: 'run',
+          fbxAnimation
+        })
       })
       loader.load(LumaIdle, (fbxAnimation) => {
-        animationLoad({ animationName: 'idle', fbxAnimation })
+        animationLoad({
+          animationName: 'idle',
+          fbxAnimation
+        })
       })
     })
   }
 
-  update (timeInSeconds) {
+  update(timeInSeconds) {
     if (!this.stateMachine.currentState) {
       return
     }
 
     // const input = this.getComponent('controllerInput')
-    this.stateMachine.update({ timeElapsed: timeInSeconds, input: this.input })
+    this.stateMachine.update({
+      timeElapsed: timeInSeconds,
+      input: this.input
+    })
 
     if (this.mixer) {
       this.mixer.update(timeInSeconds)
@@ -135,8 +256,8 @@ export default class Player extends Component {
 
     const currentState = this.stateMachine.currentState
     if (currentState.name !== 'walk' &&
-        currentState.name !== 'run' &&
-        currentState.name !== 'idle') {
+      currentState.name !== 'run' &&
+      currentState.name !== 'idle') {
       return
     }
 
@@ -234,5 +355,7 @@ export default class Player extends Component {
 
     this.parent.setPosition(this.position)
     this.parent.setQuaternion(this.target.quaternion)
+    this.updateSocket();
+
   }
 }

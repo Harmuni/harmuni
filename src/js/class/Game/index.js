@@ -7,8 +7,8 @@ import {
 } from '../EntityComponent/index'
 import Pause from '../Pause'
 import Player from '../Player/index'
-import PlayerLocal from '../Player/PlayerLocal'
 import World from '../World/index'
+import PlayerLocal from '../Player/PlayerLocal'
 // import io from 'socket.io-client'
 
 export default class Game {
@@ -48,6 +48,10 @@ export default class Game {
    * @returns {void}
    */
   launchGame() {
+
+    console.log('DANS LAUNCHGAME() :: this.remotePlayers vaut :: ', this.remotePlayers);
+    console.log('DANS LAUNCHGAME() :: this.initialisingPlayers vaut :: ', this.initialisingPlayers);
+
     // Set render of app, default property of scene and default property of camera for threejs
     this.renderer = this.setRender()
     this.scene = this.setDefaultScene()
@@ -58,7 +62,11 @@ export default class Game {
 
     const worldEntity = new Entity()
 
-    const playerEntity = new Entity() // TODO : Refactoriser avec distinction localPlayer / remotePlayer pour éviter confusion
+    const localPlayerEntity = new Entity()
+
+    for (let i = 0; i < 2; i++) {
+        this.remotePlayers.push(new Entity())
+    }
     const cameraEntity = new Entity()
     const pauseEntity = new Entity()
     const eventAreaEntity = new Entity()
@@ -69,55 +77,38 @@ export default class Game {
     }))
 
 
-    //? Si le joueur est un joueur local / principal on lui ajoute le composant player local, qui est géré de la même manière que le player classique
-    // ici l'exemple avec le pattern class vu dans tuto mais à refactoriser 
-    /**
-     * if(player.local) {
-     *  // code où on init le perso
-     *  if (player.initSocket !== undefined) player.initSocket()
-     * }
-     */
-    // // TODO : piste pour développer le ciblage joueur local
-    // if (this.remotePlayers[id] == player.id ) {
-    //   playerEntity.addComponent(new PlayerLocal({
-    //     scene: this.scene,
-    //     terrain: worldEntity.components.World.terrain,
-    //     game: this
-    //   }))
-    // } else {
-    //   playerEntity.addComponent(new Player({
-    //     scene: this.scene,
-    //     terrain: worldEntity.components.World.terrain
-    //   }))
-    // }
-
-    //? Piste privilégiée actuellement : initialiser le localPlayer pour chaque client, puis traiter les remotePlayers comme des Players
-
-    playerEntity.addComponent(new PlayerLocal({
+    localPlayerEntity.addComponent(new PlayerLocal({
       scene: this.scene,
-      terrain: worldEntity.components.World.terrain, 
+      terrain: worldEntity.components.World.terrain,
       game: this
     }))
 
-    //! playerEntity.components.PlayerLocal.id vaut undefined !! Soit j'accède mal à la propriété, SOIT c'est que le serveur ne me renvoi pas l'id ? ou soucis du genre (70% sur que c'est ça)
 
-    playerEntity.components.PlayerLocal.initSocket()
-    playerEntity.id = playerEntity.getComponent('PlayerLocal').getId()
-    console.log(playerEntity.components.PlayerLocal.getId());
-    console.log( 'playerEntity.id vaut', playerEntity.id);
+    localPlayerEntity.components.PlayerLocal.initSocket()
+    // console.log('localPlayerEntity.components.PlayerLocal :: ', localPlayerEntity.components.PlayerLocal);
+    localPlayerEntity.id = localPlayerEntity.getComponent('PlayerLocal').getId()
+    // console.log('localPlayerEntity.id vaut', localPlayerEntity.id);
 
+    this.remotePlayers.forEach((remotePlayer) => {
+      remotePlayer.addComponent(new PlayerLocal({
+        scene: this.scene,
+        terrain: worldEntity.components.World.terrain,
+        game: this
+      }))
+  
+    })
     cameraEntity.addComponent(new Camera({
       scene: this.scene,
-  
+
       // Store the animation clip and animation action into a dictionary called this.an
       sizes: this.sizes,
       renderer: this.renderer,
-      targetToFollow: playerEntity,
+      targetToFollow: localPlayerEntity,
       typeOfCamera: 'thirdPersonView'
     }))
     pauseEntity.addComponent(new Pause())
     eventAreaEntity.addComponent(new SquareEventArea({
-      targetToEmit: playerEntity,
+      targetToEmit: localPlayerEntity,
       action: () => {
         console.log('HOLA BUENOS DIAS AMIGO')
       },
@@ -142,17 +133,23 @@ export default class Game {
     }))
 
     this.entityManager.add(worldEntity, 'worldEntity')
-    this.entityManager.add(playerEntity, 'playerEntity') // TODO : renommer en playerlocal / identifier clairement le local player 
+    this.entityManager.add(localPlayerEntity, 'localPlayerEntity') // TODO : renommer en playerlocal / identifier clairement le local player 
+
+    this.remotePlayers.forEach((remotePlayer) => {
+      this.entityManager.add(remotePlayer)
+      console.log('remotePlayer vaut :: ', remotePlayer);
+    })
+
     this.entityManager.add(cameraEntity, 'cameraEntity')
     this.entityManager.add(pauseEntity, 'pauseEntity')
     this.entityManager.add(eventAreaEntity, 'eventAreaEntity')
 
     // raccourci/ref vers l'entité player dans le manager
-    this.player = this.entityManager.get('playerEntity')
+    this.player = this.entityManager.get('localPlayerEntity')
 
 
     console.log(worldEntity)
-    console.log(playerEntity)
+    console.log(localPlayerEntity)
     console.log(cameraEntity)
     console.log(pauseEntity)
     console.log(eventAreaEntity)
@@ -175,6 +172,8 @@ export default class Game {
    */
 
   getRemotePlayerById(id) {
+    console.log('DANS getRemotePlayerById() :: this.remotePlayers vaut :: ', this.remotePlayers);
+    console.log('DANS LAUNCHGAME() :: this.initialisingPlayers vaut :: ', this.initialisingPlayers);
     if (this.remotePlayers === undefined || this.remotePlayers.length == 0) return;
 
     const players = this.remotePlayers.filter(function (player) {
@@ -193,50 +192,48 @@ export default class Game {
    * @returns {void}
    */
   updateRemotePlayers(dt) {
-    if (this.remoteData === undefined || this.remoteData.length == 0 || this.player === undefined || this.player.id === undefined) {
-      return
-    }
+    if (this.remoteData === undefined || this.remoteData.length == 0 || this.player === undefined || this.player.id === undefined) return;
 
-    console.log('this.player vaut', this.player);
     const newPlayers = [];
     const game = this;
     //Get all remotePlayers from remoteData array
     const remotePlayers = [];
-    const remoteColliders = [];
+    // const remoteColliders = [];
 
     this.remoteData.forEach(function (data) {
       if (game.player.id != data.id) {
         //Is this player being initialised?
-        let localPlayer;
+        let iplayer;
         game.initialisingPlayers.forEach(function (player) {
-          if (player.id == data.id) localPlayer = player;
+          if (player.id == data.id) iplayer = player;
         });
         //If not being initialised check the remotePlayers array
-        if (localPlayer === undefined) {
-          let remotePlayer;
+        if (iplayer === undefined) {
+          let rplayer;
           game.remotePlayers.forEach(function (player) {
-            if (player.id == data.id) remotePlayer = player;
+            if (player.id == data.id) rplayer = player;
           });
-          if (remotePlayer === undefined) {
+          if (rplayer === undefined) {
             //Initialise player
             game.initialisingPlayers.push(new Player(game, data));
           } else {
             //Player exists
-            remotePlayers.push(remotePlayer);
-            remoteColliders.push(remotePlayer.collider);
+            remotePlayers.push(rplayer);
+            // remoteColliders.push(rplayer.collider);
           }
         }
       }
     });
 
-    this.scene.children.forEach(function (object) {
-      if (object.userData.remotePlayer && game.getRemotePlayerById(object.userData.id) == undefined) {
-        game.scene.remove(object);
-      }
-    });
+    // this.scene.children.forEach(function (object) {
+    //   if (object.userData.remotePlayer && game.getRemotePlayerById(object.userData.id) == undefined) {
+    //     game.scene.remove(object);
+    //   }
+    // });
 
+    console.log('remotePlayers :: ', remotePlayers);
     this.remotePlayers = remotePlayers;
-    this.remoteColliders = remoteColliders;
+    // this.remoteColliders = remoteColliders;
     this.remotePlayers.forEach(function (player) {
       player.update(dt);
     });
@@ -280,12 +277,9 @@ export default class Game {
   }) {
 
     const game = this
-
+    console.log('enter game loop');
     // Render and refresh animation
     const deltaTime = clock.getDelta()
-
-    this.updateRemotePlayers(deltaTime)
-
 
     return window.requestAnimationFrame((t) => {
       this.gameLoop({
