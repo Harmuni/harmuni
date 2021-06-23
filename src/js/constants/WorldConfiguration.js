@@ -1412,7 +1412,7 @@ export default () => {
     kioskCommon: {
       name: 'kiosk_common',
       mesh: KioskCommonModel,
-      scaleRatio: 1,
+      scaleRatio: 0.5,
       position: { z: -3.76736, x: 5.62048, y: 0 },
       rotation: { z: 0.630218, x: -0.000001, y: (-180 + 90) }
     },
@@ -1556,21 +1556,21 @@ export default () => {
       mesh: DoorLeftModel,
       scaleRatio: 1,
       position: { z: -2.03023, x: 18.788, y: 0 },
-      rotation: { z: 90, x: 0, y: (0 + 90) }
+      rotation: { z: 0, x: 0, y: (90 + 90) }
     },
     doorOutside: {
       name: 'door_outside',
       mesh: DoorOutsideModel,
       scaleRatio: 1,
       position: { z: -2.03023, x: 18.788, y: 0 },
-      rotation: { z: 90, x: 0, y: (0 + 90) }
+      rotation: { z: 0, x: 0, y: (90 + 90) }
     },
     doorRight: {
       name: 'door_outside',
       mesh: DoorRightModel,
       scaleRatio: 1,
       position: { z: -2.03023, x: 18.788, y: 0 },
-      rotation: { z: 90, x: 0, y: (0 + 90) }
+      rotation: { z: 0, x: 0, y: (90 + 90) }
     },
     owlStatue: {
       name: 'owl_statue_part',
@@ -1627,7 +1627,7 @@ export default () => {
       mesh: ArchModel,
       scaleRatio: 1,
       position: { z: -7.40124, x: -2.23076, y: 0 },
-      rotation: { z: 0, x: 0, y: -51.9134 },
+      rotation: { z: 0, x: 0, y: (-51.9134 + 90) },
       clones: {
         1: {
           position: { z: -8.46461, x: -2.98167, y: 0 },
