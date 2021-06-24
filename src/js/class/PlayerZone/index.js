@@ -1,4 +1,4 @@
-import { Mesh ,Sphere,TorusKnotBufferGeometry, MeshStandardMaterial, SphereBufferGeometry,MeshPhongMaterial, Matrix4,Clock, Box3,Vector3, BufferGeometry, BoxGeometry, CylinderGeometry, PlaneGeometry, MeshBasicMaterial, DoubleSide, ShaderMaterial, Color, FrontSide, AdditiveBlending} from 'three'
+import { Mesh ,Sphere, MeshStandardMaterial, SphereBufferGeometry,MeshPhongMaterial, Matrix4, Vector3, BufferGeometry, BoxGeometry, CylinderGeometry, MeshBasicMaterial, DoubleSide, ShaderMaterial, Color, FrontSide, AdditiveBlending} from 'three'
 import { acceleratedRaycast, computeBoundsTree, disposeBoundsTree } from 'three-mesh-bvh'
 import { Component } from '../EntityComponent'
 import ControllerInput from '../ControllerInput/index'
@@ -90,6 +90,7 @@ export default class PlayerZone extends Component {
 
     //GLOW GEOM
     this.zoneGlowGeom = new CylinderGeometry( 15, 15, 100, 32 )
+    this.zoneGlowGeom.computeBoundingSphere()
     this.shapes.zoneGlow = new Mesh( this.zoneGlowGeom, glowMaterial )
     this.shapes.zoneGlow.scale.multiplyScalar(1.2)
     this.shapes.zoneGlow.name= "zoneGlow"
@@ -136,24 +137,25 @@ export default class PlayerZone extends Component {
 
 
     // this.sphere = new Sphere( new Vector3(this.zoneGlowGeom.boundingSphere.center.x, this.zoneGlowGeom.boundingSphere.center.y, this.zoneGlowGeom.boundingSphere.center.z), this.zoneGlowGeom.parameters.radiusTop )
-    this.sphere = new Sphere( undefined, this.zoneGlowGeom.parameters.radiusTop )
+    this.sphere = new Sphere( new Vector3(this.zoneGlowGeom.boundingSphere.center.x, this.zoneGlowGeom.boundingSphere.center.y, this.zoneGlowGeom.boundingSphere.center.z), this.zoneGlowGeom.parameters.radiusTop )
     this.sphere.applyMatrix4( this.transformMatrix )
         
   }
 
   expandZone () {
     
+    this.targetMesh.updateMatrixWorld()
+    this.shapes.zoneGlow.updateMatrixWorld()
     this.transformMatrix =
     new Matrix4()
     .copy( this.targetMesh.matrixWorld ).invert()
     .multiply( this.shapes.sphere.matrixWorld )
     
-    // console.log("ZoneGlowGeom",this.zoneGlow)
-    // this.sphere = new Sphere( new Vector3(this.shapes.zoneGlow.position.x, this.shapes.zoneGlow.position.y, this.shapes.zoneGlow.position.z), this.zoneGlowGeom.parameters.radiusTop )
-    // this.sphere.applyMatrix4( this.transformMatrix )
+    this.sphere = new Sphere( new Vector3(this.zoneGlowGeom.boundingSphere.center.x, this.zoneGlowGeom.boundingSphere.center.y, this.zoneGlowGeom.boundingSphere.center.z), this.zoneGlowGeom.parameters.radiusTop )
+    this.sphere.applyMatrix4( this.transformMatrix )
     
     const hit = this.targetMesh.geometry.boundsTree.intersectsSphere( this.targetMesh, this.sphere )
-
+    
     if(hit) {
       console.log("hit")
   
