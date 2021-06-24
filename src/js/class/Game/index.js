@@ -5,6 +5,7 @@ import SquareEventArea from '../EventArea/SquareEventArea'
 import Pause from '../Pause'
 import Player from '../Player/index'
 import PlayerZone from '../PlayerZone'
+import MusicPlayer from '../MusicPlayer'
 import World from '../World/index'
 
 export default class Game {
@@ -48,6 +49,7 @@ export default class Game {
     const playerZoneEntity = new Entity()
     const pauseEntity = new Entity()
     const eventAreaEntity = new Entity()
+    const musicPlayerEntity = new Entity()
 
     worldEntity.addComponent(new World({
       renderer: this.renderer,
@@ -70,6 +72,11 @@ export default class Game {
       terrain: worldEntity.components.World.terrain
     }))
     pauseEntity.addComponent(new Pause())
+    musicPlayerEntity.addComponent(new MusicPlayer({
+      civilisation: 'luma',
+      camera: this.camera,
+      scene: this.scene
+    }))
     eventAreaEntity.addComponent(new SquareEventArea({
       targetToEmit: playerEntity,
       action: () => {
@@ -89,6 +96,7 @@ export default class Game {
     this.entityManager.add(playerZoneEntity, 'playerZoneEntity')
     this.entityManager.add(pauseEntity, 'pauseEntity')
     this.entityManager.add(eventAreaEntity, 'eventAreaEntity')
+    this.entityManager.add(musicPlayerEntity, 'musicPlayerEntity')
 
     console.log(worldEntity)
     console.log(playerEntity)
