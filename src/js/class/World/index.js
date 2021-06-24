@@ -7,7 +7,6 @@ import { LandscapeModel } from '../../../assets/meshes'
 import { BackFace, DownFace, FrontFace, LeftFace, RightFace, UpFace } from '../../../assets/skybox'
 import WorldConfiguration from '../../constants/WorldConfiguration'
 import { Component } from '../EntityComponent'
-import { NormalMapColumn3 } from '../../../assets/textures'
 import { MathUtils } from 'three/build/three.module'
 export default class World extends Component {
   /**
@@ -24,21 +23,23 @@ export default class World extends Component {
     this.terrain.name = 'Terrain'
     this.scene.add(this.terrain)
 
-    // Loaders
+    // Loaders of models
     const loaderManager = new LoadingManager()
     const glbLoader = new GLTFLoader(loaderManager)
-
-    // Generate light and terrain
-    // const size = 100
-    // const divisions = 100
-    // const gridHelper = new GridHelper(size, divisions)
-    // this.scene.add(gridHelper)
-    this.generateLight({ scene: this.scene })
-    this.generateSkybox({ scene: this.scene, renderer: this.renderer, typeOfSkybox: 'skyTexture' })
-    this.generateLandscape({ glbLoader, terrain: this.terrain })
-    this.generateEnvironment({ glbLoader, terrain: this.terrain })
+    // Generate map elements
+    let isGenerate = true
+    isGenerate = this.generateLight({ scene: this.scene })
+    isGenerate = this.generateSkybox({ scene: this.scene, renderer: this.renderer, typeOfSkybox: 'skyShader' })
+    isGenerate = this.generateLandscape({ glbLoader, terrain: this.terrain })
+    isGenerate = this.generateEnvironment({ glbLoader, terrain: this.terrain })
+    console.assert(isGenerate, 'World generation failed')
   }
 
+  /**
+   * Invokes multiple models meshes
+   * @param {Object} { {Object} glbLoader, {Object} terrain, {Object} models }
+   * @returns {void}
+   */
   invokesModels ({ glbLoader, terrain, models }) {
     Object.keys(models).map((model, id) => {
       return this.invokeModel({
@@ -49,17 +50,25 @@ export default class World extends Component {
     })
   }
 
+
+  /**
+   * Invoke one model mesh
+   * @param {Object} { {Object} glbLoader, {Object} terrain, {Object} model }
+   * @returns {void}
+   */
   invokeModel ({ glbLoader, terrain, model }) {
     const modelBuffer = []
     glbLoader.load(
       model.mesh,
       (gltf) => {
+        // Add model scale ratio
         if (model.scaleRatio.x && model.scaleRatio.y && model.scaleRatio.z) {
           gltf.scene.scale.set(model.scaleRatio.x, model.scaleRatio.y, model.scaleRatio.z)
         } else if (model.scaleRatio) {
           gltf.scene.scale.setScalar(model.scaleRatio)
         }
 
+        // Add model rotation
         if (model.rotation) {
           gltf.scene.rotation.set(
             MathUtils.degToRad(model.rotation.x),
@@ -68,21 +77,22 @@ export default class World extends Component {
           )
         }
 
-        gltf.scene.traverse((obj) => {
-          if (obj.isMesh) {
-            if (model.texture) {
+        // Add model texture
+        if (model.texture) {
+          gltf.scene.traverse((obj) => {
+            if (obj.isMesh) {
               const loader = new TextureLoader()
-              const diffuse = loader.load(model.texture)
-              const nmap = loader.load(NormalMapColumn3)
+              const defaultColor = 0xFFFFFF
               const material = new MeshStandardMaterial({
-                color: 0xFFFFFF,
-                map: diffuse,
-                normalMap: nmap
+                color: defaultColor,
+                map: model.texture.map ? loader.load(model.texture.map) : null,
+                normalMap: model.texture.nMap ? loader.load(model.texture.nMap) : null,
+                aoMap: model.texture.aoMap ? loader.load(model.texture.aoMap) : null
               })
               obj.material = material
             }
-          }
-        })
+          })
+        }
 
         gltf.scene.position.set(model.position.x, model.position.y, model.position.z)
         gltf.scene.name = model.name
@@ -111,22 +121,28 @@ export default class World extends Component {
         } else {
           terrain.add(gltf.scene)
         }
-        return 1
+        return true
       },
       undefined,
       (error) => {
-        console.error(error)
-        return -1
+        console.error(`ERROR :: ${error} : Mesh is not loaded`)
+        return false
       }
     )
   }
 
+  /**
+   * Clones one type of model mesh
+   * @param {Object} { {Object} model, {Object} terrain, {Object} gltf }
+   * @returns {boolean}
+   */
   clonesModel ({ model, terrain, gltf, modelBuffer }) {
     const clones = model.clones
     Object.keys(clones).map((clone, id) => {
       const toClone = gltf.scene.clone()
       toClone.name = toClone.name + '-' + (id + 1)
 
+      // Apply position of clone
       if (clones[clone].position) {
         toClone.position.set(
           clones[clone].position.x,
@@ -135,6 +151,7 @@ export default class World extends Component {
         )
       }
 
+      // Apply rotation of clone
       if (clones[clone].rotation) {
         toClone.rotation.set(
           MathUtils.degToRad(clones[clone].rotation.x),
@@ -143,6 +160,7 @@ export default class World extends Component {
         )
       }
 
+      // Apply cale of clone
       if (clones[clone].scale) {
         if (clones[clone].scaleRatio.x && clones[clone].scaleRatio.y && clones[clone].scaleRatio.z) {
           console.log(clones[clone])
@@ -165,15 +183,15 @@ export default class World extends Component {
       //   }
       // })
 
-      return 1
+      return true
     })
-    return 1
+    return true
   }
 
   /**
-   * Generate lights
+   * Generate lights in the scene
    * @param {Object} {{Object} scene}
-   * @returns {void}
+   * @return {boolean}
    */
   generateLight ({ scene }) {
     const light = new DirectionalLight('#ffffff')
@@ -185,12 +203,13 @@ export default class World extends Component {
     scene.add(light)
     scene.add(ambientLight)
     scene.add(hemiLight)
+    return true
   }
 
   /**
    * Generate and select a type of skybox
-   * @param {Object} {{Object} scene, {Object} renderer, {Object} typeOfSkybox}
-   * @returns {void}
+   * @param {Object} { {Object} scene, {Object} renderer, {Object} typeOfSkybox }
+   * @return {boolean}
    */
   generateSkybox ({ scene, renderer, typeOfSkybox }) {
     renderer.outputEncoding = sRGBEncoding
@@ -207,11 +226,12 @@ export default class World extends Component {
         this.setSkyTexture({ scene })
         break
     }
+    return true
   }
 
   /**
    * Method to set sky shader for skybox
-   * @param {Object} {{Object} scene, {Object} renderer}
+   * @param {Object} { {Object} scene, {Object} renderer }
    * @returns {void}
    */
   setSkyShader ({ scene, renderer }) {
@@ -222,7 +242,7 @@ export default class World extends Component {
 
     const sun = new Vector3()
 
-    /// GUI CONTROLLERS SKY PARAMETERS
+    // Gui controllers for sky parameters
     const effectController = {
       turbidity: 3,
       rayleigh: 0.685,
@@ -287,6 +307,8 @@ export default class World extends Component {
 
   /**
    * Generate ground mesh
+   * @param {Object} { {Object} glbLoader, {Object} terrain }
+   * @return {boolean}
    **/
   generateLandscape ({ glbLoader, terrain }) {
     this.invokeModel({
@@ -299,10 +321,13 @@ export default class World extends Component {
         scaleRatio: 1
       }
     })
+    return true
   }
 
   /**
    * Generate environment meshes
+   * @param {Object} { {Object} glbLoader, {Object} terrain }
+   * @return {boolean}
    **/
   generateEnvironment ({ glbLoader, terrain }) {
     const modelsToLoad = WorldConfiguration()
@@ -311,5 +336,6 @@ export default class World extends Component {
       terrain,
       models: modelsToLoad
     })
+    return true
   }
 }

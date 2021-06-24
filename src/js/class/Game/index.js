@@ -59,7 +59,7 @@ export default class Game {
       sizes: this.sizes,
       renderer: this.renderer,
       targetToFollow: playerEntity,
-      typeOfCamera: 'freeView'
+      typeOfCamera: 'thirdPersonView'
     }))
     pauseEntity.addComponent(new Pause())
     eventAreaEntity.addComponent(new SquareEventArea({
@@ -125,7 +125,7 @@ export default class Game {
   setDefaultScene () {
     const scene = new THREE.Scene()
     scene.background = new THREE.Color(0xFFFFFF)
-    scene.fog = new THREE.FogExp2(0x89b2eb, 0.002)
+    scene.fog = new THREE.FogExp2(0xf1eae1, 0.08)
     return scene
   }
 

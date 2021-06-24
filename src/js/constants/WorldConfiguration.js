@@ -1,12 +1,17 @@
 import { AltarModel, ArchModel, BoatModel, CatStatueModel, Column1Model, Column2Model, Column3Model, Column4Model, DoorLeftModel, DoorOutsideModel, DoorRightModel, KioskCommonModel, KioskLumaModel, LakeModel, OceanModel, OwlStatueModel, PierModel, Plant1Model, Plant2Model, Plant4Model, Plant5Model, Plant6Model, Plant7Model, SteleModel, Stone10Model, Stone11Model, Stone12Model, Stone13Model, Stone14Model, Stone15Model, Stone16Model, Stone17Model, Stone18Model, Stone1Model, Stone20Model, Stone2Model, Stone3Model, Stone4Model, Stone5Model, Stone7Model, Stone8Model, Tree1Model, Tree2Model, Tree3Model, Tree4Model, Tree5Model } from '../../assets/meshes'
-import { DiffuseColumn3 } from '../../assets/textures'
+import { AoTree1Model, DiffuseColumn3Model, DiffuseTree1Model, NormalMapColumn3Model, NormalMapTree1Model } from '../../assets/textures'
 
 export default () => {
   return {
     tree1: {
       name: 'tree1',
       mesh: Tree1Model,
-      scaleRatio: 0.169884,
+      scaleRatio: 0.4,
+      texture: {
+        map: DiffuseTree1Model,
+        nMap: NormalMapTree1Model,
+        aoMap: AoTree1Model,
+      },
       position: { z: 0, x: 0.245187, y: 0 },
       rotation: { z: 0, x: 0, y: (0 + 90) },
       clones: {
@@ -126,7 +131,7 @@ export default () => {
     tree2: {
       name: 'tree_2',
       mesh: Tree2Model,
-      scaleRatio: 0.159311,
+      scaleRatio: 0.3,
       position: { z: 8.25919, x: 9.041, y: 0 },
       rotation: { z: 0, x: 0, y: (-33.8834 + 90) },
       clones: {
@@ -355,7 +360,7 @@ export default () => {
     tree3: {
       name: 'tree_3',
       mesh: Tree3Model,
-      scaleRatio: 0.17195,
+      scaleRatio: 0.5,
       position: { z: 7.99686, x: 7.98744, y: 0 },
       rotation: { z: 0, x: 0, y: (41.3413 + 90) },
       clones: {
@@ -444,7 +449,7 @@ export default () => {
     tree4: {
       name: 'tree_4',
       mesh: Tree4Model,
-      scaleRatio: 0.17195,
+      scaleRatio: 0.3,
       position: { z: -4.69189, x: -10.3555, y: 0 },
       rotation: { z: 0, x: 0, y: (98.571 + 90) },
       clones: {
@@ -505,7 +510,7 @@ export default () => {
     tree5: {
       name: 'tree_5',
       mesh: Tree5Model,
-      scaleRatio: 0.17195,
+      scaleRatio: 0.3,
       position: { z: 0.881225, x: -2.90709, y: 0 },
       rotation: { z: 0, x: 0, y: (-59.6308 + 90) },
       clones: {
@@ -1519,7 +1524,10 @@ export default () => {
     column3: {
       name: 'column_3',
       mesh: Column3Model,
-      texture: DiffuseColumn3,
+      texture: {
+        map: DiffuseColumn3Model,
+        nMap: NormalMapColumn3Model,
+      },
       scaleRatio: 1,
       position: { z: -13.3975, x: -0.776054, y: 0 },
       rotation: { z: 0, x: 0, y: (0 + 90) },
