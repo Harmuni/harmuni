@@ -1,7 +1,5 @@
 import FiniteStateMachine from '../../FiniteStateMachine/index'
-import WalkState from './States/WalkState/index'
-import IdleState from './States/IdleState/index'
-import RunState from './States/RunState/index'
+import { IdleState, PlayMusicState, RunState, WalkState } from './States'
 
 /**
  * Child of general FiniteStateMachine, serves to add character specifics states
@@ -14,5 +12,6 @@ export default class PlayerFSM extends FiniteStateMachine {
     this.addState('idle', IdleState)
     this.addState('walk', WalkState)
     this.addState('run', RunState)
+    this.addState('playMusic', PlayMusicState)
   }
 }

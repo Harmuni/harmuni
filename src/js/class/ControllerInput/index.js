@@ -5,6 +5,7 @@ export default class ControllerInput {
       backward: false,
       left: false,
       right: false,
+      r: false,
       space: false,
       shift: false,
       escape: false,
@@ -27,6 +28,9 @@ export default class ControllerInput {
         break
       case 68: // d
         this.keys.right = true
+        break
+      case 82: // r
+        this.keys.r = true
         break
       case 32: // SPACE
         this.keys.space = true
@@ -58,6 +62,9 @@ export default class ControllerInput {
         break
       case 68: // d
         this.keys.right = false
+        break
+      case 82: // r
+        this.keys.r = false
         break
       case 32: // SPACE
         this.keys.space = false

@@ -1,6 +1,6 @@
 import * as THREE from 'three'
 import Camera from '../Camera/index'
-import SquareEventArea from '../SquareEventArea'
+import SquareEventArea from '../EventArea/SquareEventArea'
 import { Entity, EntityManager } from '../EntityComponent/index'
 import Pause from '../Pause'
 import Player from '../Player/index'
@@ -76,10 +76,11 @@ export default class Game {
         console.log('HOLA BUENOS DIAS AMIGO')
       },
       area: {
-        A: {x: 4, z: 8},
-        B: {x: 8, z: 8},
-        C: {x: 4, z: 4},
-        D: {x: 8, z: 4}}
+        A: { x: 4, z: 8 },
+        B: { x: 8, z: 8 },
+        C: { x: 4, z: 4 },
+        D: { x: 8, z: 4 }
+      }
     }))
 
     this.entityManager.add(worldEntity, 'worldEntity')
@@ -114,6 +115,7 @@ export default class Game {
       canvas: canvas,
       antialias: true
     })
+
     renderer.setSize(this.sizes.width, this.sizes.height)
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
     return renderer
@@ -133,18 +135,23 @@ export default class Game {
   setDefaultScene () {
     const scene = new THREE.Scene()
     scene.background = new THREE.Color(0xFFFFFF)
-    scene.fog = new THREE.FogExp2(0x89b2eb, 0.002)
+    scene.fog = new THREE.FogExp2(0xf1eae1, 0.08)
     return scene
   }
 
   gameLoop ({ clock }) {
     // Render and refresh animation
     const deltaTime = clock.getDelta()
-    return window.requestAnimationFrame((t) => {
+    const refresh = window.requestAnimationFrame((t) => {
       this.gameLoop({ clock })
       this.renderer?.render(this.scene, this.camera)
       this.step({ deltaTime })
     })
+    if (refresh >= 0) {
+      return 1
+    } else {
+      return -1
+    }
   }
 
   step ({ deltaTime }) {

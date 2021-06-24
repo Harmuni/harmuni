@@ -75,17 +75,17 @@ export default class Camera extends Component {
   }
 
   generateThirdPersonCamera () {
-    this.fov = 60
+    this.fov = 40
     this.aspect = this.sizes.width / this.sizes.height
     this.near = 1.0
-    this.far = 1000.0
+    this.far = 100.0
     this.threeCamera = new THREE.PerspectiveCamera(
       this.fov,
       this.aspect,
       this.near,
       this.far
     )
-    this.threeCamera.position.set(25, 10, 25)
+    this.threeCamera.position.set(50, 10, 50)
     this.scene.add(this.threeCamera)
     // Position Controls
     this.currentPosition = new THREE.Vector3()
@@ -93,14 +93,14 @@ export default class Camera extends Component {
   }
 
   calculateIdealOffset () {
-    const idealOffset = new THREE.Vector3(0, 20, -35)
+    const idealOffset = new THREE.Vector3(0, 0.6, -1.75)
     idealOffset.applyQuaternion(this.targetToFollow.rotation)
     idealOffset.add(this.targetToFollow.position)
     return idealOffset
   }
 
   calculateIdealLookat () {
-    const idealLookat = new THREE.Vector3(0, 10, 50)
+    const idealLookat = new THREE.Vector3(0, 0.05, 50)
     idealLookat.applyQuaternion(this.targetToFollow.rotation)
     idealLookat.add(this.targetToFollow.position)
     return idealLookat
