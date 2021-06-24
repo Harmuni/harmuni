@@ -3,7 +3,7 @@ import { BufferGeometryUtils } from 'three/examples/jsm/utils/BufferGeometryUtil
 import { GUI } from 'three/examples/jsm/libs/dat.gui.module'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import { Sky } from 'three/examples/jsm/objects/Sky'
-import { LandscapeModel } from '../../../assets/meshes'
+import { LandscapeModel, LandscapeTexturedModel } from '../../../assets/meshes'
 import { BackFace, DownFace, FrontFace, LeftFace, RightFace, UpFace } from '../../../assets/skybox'
 import WorldConfiguration from '../../constants/WorldConfiguration'
 import { Component } from '../EntityComponent'
@@ -87,7 +87,7 @@ export default class World extends Component {
                 color: defaultColor,
                 map: model.texture.map ? loader.load(model.texture.map) : null,
                 normalMap: model.texture.nMap ? loader.load(model.texture.nMap) : null,
-                aoMap: model.texture.aoMap ? loader.load(model.texture.aoMap) : null
+                // aoMap: model.texture.aoMap ? loader.load(model.texture.aoMap) : null
               })
               obj.material = material
             }

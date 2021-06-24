@@ -15,6 +15,7 @@ import StoneModel from './map/artefacts/stone.glb'
 import WatchModel from './map/artefacts/watch.glb'
 
 import LandscapeModel from './map/terrain/landscape.glb'
+import LandscapeTexturedModel from './map/terrain/landscape_textured.glb'
 import LakeModel from './map/terrain/lake.glb'
 import OceanModel from './map/terrain/ocean.glb'
 
@@ -94,6 +95,7 @@ export {
   LakeModel,
   LampModel,
   LandscapeModel,
+  LandscapeTexturedModel,
   LumaCharacter,
   LumaIdle,
   LumaRun,

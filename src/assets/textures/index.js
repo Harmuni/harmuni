@@ -101,7 +101,7 @@ import NormalMapTree5Model from './zone_commune/map/trees/tree_5/nmap_tree_5.png
 // import NormalMapAltarModel from './zone_commune/map/architecture/altar.png'
 // import NormalMapArchModel from './zone_commune/map/architecture/arch.png'
 // import NormalMapBoatModel from './zone_commune/map/architecture/boat.png'
-import NormalMapCatStatueModel from './zone_commune/map/architecture/cat_statue/diffuse_cat_statue.png'
+import NormalMapCatStatueModel from './zone_commune/map/architecture/cat_statue/nmap_cat_statue.png'
 import NormalMapColumn1Model from './zone_commune/map/architecture/column_1/nmap_column_1.png'
 import NormalMapColumn2Model from './zone_commune/map/architecture/column_2/nmap_column_2.png'
 import NormalMapColumn3Model from './zone_commune/map/architecture/column_3/nmap_column_3.png'
@@ -119,6 +119,7 @@ import NormalMapColumn4Model from './zone_commune/map/architecture/column_4/nmap
 // import NormalMapSteleModel from './zone_commune/map/architecture/stele.png'
 
 import AoTree1Model from './zone_commune/map/trees/tree_1/ao_tree_1.png'
+import AoTree2Model from './zone_commune/map/trees/tree_2/ao_tree_2.png'
 
 export {
   // DiffuseAltarModel,
@@ -239,5 +240,6 @@ export {
   NormalMapTree4Model,
   NormalMapTree5Model,
   // NormalMapWatchModel,
-  AoTree1Model
+  AoTree1Model,
+  AoTree2Model
 }

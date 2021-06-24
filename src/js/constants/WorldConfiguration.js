@@ -1,5 +1,5 @@
 import { AltarModel, ArchModel, BoatModel, CatStatueModel, Column1Model, Column2Model, Column3Model, Column4Model, DoorLeftModel, DoorOutsideModel, DoorRightModel, KioskCommonModel, KioskLumaModel, LakeModel, OceanModel, OwlStatueModel, PierModel, Plant1Model, Plant2Model, Plant4Model, Plant5Model, Plant6Model, Plant7Model, SteleModel, Stone10Model, Stone11Model, Stone12Model, Stone13Model, Stone14Model, Stone15Model, Stone16Model, Stone17Model, Stone18Model, Stone1Model, Stone20Model, Stone2Model, Stone3Model, Stone4Model, Stone5Model, Stone7Model, Stone8Model, Tree1Model, Tree2Model, Tree3Model, Tree4Model, Tree5Model } from '../../assets/meshes'
-import { AoTree1Model, DiffuseColumn3Model, DiffuseTree1Model, NormalMapColumn3Model, NormalMapTree1Model } from '../../assets/textures'
+import { AoTree1Model, AoTree2Model, DiffuseColumn3Model, DiffuseTree1Model, DiffuseTree2Model, NormalMapColumn3Model, NormalMapTree1Model, NormalMapTree2Model } from '../../assets/textures'
 
 export default () => {
   return {
@@ -10,7 +10,7 @@ export default () => {
       texture: {
         map: DiffuseTree1Model,
         nMap: NormalMapTree1Model,
-        aoMap: AoTree1Model,
+        aoMap: AoTree1Model
       },
       position: { z: 0, x: 0.245187, y: 0 },
       rotation: { z: 0, x: 0, y: (0 + 90) },
@@ -131,6 +131,11 @@ export default () => {
     tree2: {
       name: 'tree_2',
       mesh: Tree2Model,
+      texture: {
+        map: DiffuseTree2Model,
+        nMap: NormalMapTree2Model,
+        aoMap: AoTree2Model
+      },
       scaleRatio: 0.3,
       position: { z: 8.25919, x: 9.041, y: 0 },
       rotation: { z: 0, x: 0, y: (-33.8834 + 90) },
