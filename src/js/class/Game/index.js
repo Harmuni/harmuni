@@ -77,6 +77,32 @@ export default class Game {
     }))
 
 
+    this.remoteData.forEach(function (data) {
+			if (game.player.id != data.id) {
+				//Is this player being initialised?
+				let localPlayer;
+				game.initialisingPlayers.forEach(function (player) {
+					if (player.id == data.id) localPlayer = player;
+				});
+				//If not being initialised check the remotePlayers array
+				if (localPlayer === undefined) {
+					let remotePlayer;
+					game.remotePlayers.forEach(function (player) {
+						if (player.id == data.id) remotePlayer = player;
+					});
+					if (remotePlayer === undefined) {
+						//Initialise player
+						game.initialisingPlayers.push(new Player(game, data));
+					} else {
+						//Player exists
+						remotePlayers.push(remotePlayer);
+						remoteColliders.push(remotePlayer.collider);
+					}
+				}
+			}
+		});
+
+
     localPlayerEntity.addComponent(new PlayerLocal({
       scene: this.scene,
       terrain: worldEntity.components.World.terrain,
@@ -85,9 +111,7 @@ export default class Game {
 
 
     localPlayerEntity.components.PlayerLocal.initSocket()
-    // console.log('localPlayerEntity.components.PlayerLocal :: ', localPlayerEntity.components.PlayerLocal);
     localPlayerEntity.id = localPlayerEntity.getComponent('PlayerLocal').getId()
-    // console.log('localPlayerEntity.id vaut', localPlayerEntity.id);
 
     this.remotePlayers.forEach((remotePlayer) => {
       remotePlayer.addComponent(new PlayerLocal({
@@ -201,15 +225,19 @@ export default class Game {
     // const remoteColliders = [];
 
     this.remoteData.forEach(function (data) {
+
       if (game.player.id != data.id) {
         //Is this player being initialised?
-        let iplayer;
+        let localPlayer;
         game.initialisingPlayers.forEach(function (player) {
-          if (player.id == data.id) iplayer = player;
+
+          if (player.id == data.id) localPlayer = player;
+
         });
+
         //If not being initialised check the remotePlayers array
-        if (iplayer === undefined) {
-          let rplayer;
+        if (localPlayer === undefined) {
+          let remotePlayer;
           game.remotePlayers.forEach(function (player) {
             if (player.id == data.id) rplayer = player;
           });

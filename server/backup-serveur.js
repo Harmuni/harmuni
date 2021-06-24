@@ -18,7 +18,7 @@ const io = require('socket.io')(http, {
  * Dès que l'on à une connexion socket, on définit un ensemble de valeurs personnalisée/custom qu'on nomme userData ...
  */
 io.sockets.on('connection', function(socket){
-	socket.userData = { x:0, y:0, z:0, heading:0 }; // ... avec des valeurs par défaut
+	socket.userData = { x:0, y:0, z:0 }; // ... avec des valeurs par défaut
  
 	console.log(`${socket.id} connected :: `);
 	
@@ -36,26 +36,18 @@ io.sockets.on('connection', function(socket){
 
 		// on initialise nos valeurs 
 		// console.log(`socket.init ${data.model}`);
-		socket.userData.model = data.model;
-		socket.userData.colour = data.colour;
-		socket.userData.x = data.x;
-		socket.userData.y = data.y;
-		socket.userData.z = data.z;
-		socket.userData.heading = data.h;
-		socket.userData.pb = data.pb, // pitch and bank (TODO / à préciser)
-		socket.userData.action = "Idle";
+		socket.userData.pos.x = data.x;
+		socket.userData.pos.y = data.y;
+		socket.userData.pos.z = data.z;
 		console.log('userData vaut', socket.userData);
 	});
 	
 	// L'évenement "update" est appellé par la fonction update() (RAF / draw) coté client (60x par secondes) 
 	socket.on('update', function(data){
 		// console.log('socket on update (entre)');
-		socket.userData.x = data.x;
-		socket.userData.y = data.y;
-		socket.userData.z = data.z;
-		socket.userData.heading = data.h;
-		socket.userData.pb = data.pb,
-		socket.userData.action = data.action;
+		socket.userData.pos.x = data.x;
+		socket.userData.pos.y = data.y;
+		socket.userData.pos.z = data.z;
 	});
 	
 	// socket.on('chat message', function(da

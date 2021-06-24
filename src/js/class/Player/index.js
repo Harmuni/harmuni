@@ -54,6 +54,8 @@ export default class Player extends Component {
     this.id
     this.socket
 
+
+    //! Refactor :: Juste un if local true/false
     if (options === undefined) {
       console.log('player local');
     } else if (typeof options == 'object') {
@@ -126,36 +128,30 @@ export default class Player extends Component {
 
   }
 
-  initSocket() {
-    console.log('entre dans initSocket(), this socket vaut :: ', this.socket);
-    this.socket.emit('init', {
-      /**
-       * TODO: Refactoriser le modèle de donnée 
-       */
-      model: this.model,
-      color: this.color, // pour zone, à voir/refactor
-      x: this.position.x,
-      y: this.position.y,
-      z: this.position.z,
-      h: 'this.rotation.y',
-      pb: 'this.rotation.x'
-    })
+  // initSocket() {
+  //   console.log('entre dans initSocket(), this socket vaut :: ', this.socket);
+  //   this.socket.emit('init', {
+  //     pos: {
+  //       x: this.position.x,
+  //       y: this.position.y,
+  //       z: this.position.z,
+  //     }
+  //   })
 
-    this.getId()
-  }
+  // //broadcast
+  // }
 
-  updateSocket() {
-    if (this.socket !== undefined) {
-      this.socket.emit('update', {
-        x: this.position.x,
-        y: this.position.y,
-        z: this.position.z,
-        h: 'this.rotation.y',
-        pb: 'this.rotation.x',
-        action: this.action // voir avec mixer d'anim (par defaut idle)
-      })
-    }
-  }
+  // updateSocket() {
+  //   if (this.socket !== undefined) {
+  //     this.socket.emit('update', {
+  //       pos: {
+  //         x: this.position.x,
+  //         y: this.position.y,
+  //         z: this.position.z,
+  //       }
+  //     })
+  //   }
+  // }
 
   loadModels({
     meshScale = 1
@@ -286,11 +282,11 @@ export default class Player extends Component {
     const raycaster = new Raycaster()
     if (this.input.keys.forward) {
       velocity.z += acc.z * timeInSeconds
-
+      // Passer userData (coté serveur) pos.x/y/z pour remplacer target
       const rayOrigin = new Vector3(
-        this.target.position.x,
-        this.target.position.y + 0.1,
-        this.target.position.z
+        this.socket.userData.pos.x,
+        this.socket.userData.pos.y + 0.1,
+        this.socket.userData.pos.z
       )
 
       const rayDirection = new Vector3(0, -1, 0.1)

@@ -20,34 +20,22 @@ const USERS = [];
 
 class ConnectedUser {
   constructor(socket) {
-    this.pos = [Math.random() * 20, 0, Math.random() * 20];
     this.socket = socket; 
-    this.socket.emit('pos', this.pos)
-    console.log(USERS);
+   
+    console.log('socket USERS array :: ', USERS);
 
     for (let i = 0; i < USERS.length; ++i) {
       USERS[i].socket.emit('pos', this.pos); 
       this.socket.emit('pos', USERS[i].pos); 
 
     }
-    // this.socket.on('pos', (d) => {
-    //   this.pos = [...d];
-    //   this.spamEveryone();
-    // });
-
   }
 
-  spamEveryone() {
-    this.socket.emit('pos', [this.id, this.pos]);
 
-    // for (let i = 0; i < USERS.length; ++i) {
-    //   USERS[i].socket.emit('pos', [USERS[i].id, USERS[i].character, USERS[i].pos]); 
-    // }
-  }
 }
 
 io.on('connection', (socket) => {
-  console.log(`${socket.id} is connected`);
+//   console.log(`${socket.id} is connected`);
   USERS.push(new ConnectedUser(socket));
   socket.on('disconnect', () => {
     console.log('user disconnected');
