@@ -2750,6 +2750,11 @@ text-table@^0.2.0:
   resolved "https://registry.yarnpkg.com/text-table/-/text-table-0.2.0.tgz#7f5ee823ae805207c00af2df4a84ec3fcfa570b4"
   integrity sha1-f17oI66AUgfACvLfSoTsP8+lcLQ=
 
+three-mesh-bvh@^0.4.0:
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/three-mesh-bvh/-/three-mesh-bvh-0.4.0.tgz#5b0c53925986e85e64ead2bce65933dee8bc936b"
+  integrity sha512-76tvmdM+fMlRQIg2yxBDPuQ035fqE0PrnJ+Sn5ZU33lujgRwlFtDUkZzjvdFv51bfVBVaDnUTBoV5o/P0tflJA==
+
 three@^0.127.0:
   version "0.127.0"
   resolved "https://registry.yarnpkg.com/three/-/three-0.127.0.tgz#c463f4d41b2c735dcf8e9e51a388815e80cd3791"

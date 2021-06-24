@@ -78,7 +78,7 @@ export default class SquareEventArea extends Component {
       this.targetToEmit.position.z >= this.area.C.z &&
       this.targetToEmit.position.z <= this.area.A.z
     ) {
-      this.action()
+      // this.action()
     }
 
   }
