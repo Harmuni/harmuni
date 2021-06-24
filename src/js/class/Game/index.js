@@ -16,6 +16,7 @@ export default class Game {
     this.canvas = canvas
     this.renderer = {}
     this.camera = {}
+    this.player = {}
     this.scene = {}
     this.sizes = {
       width: window.innerWidth,
@@ -64,10 +65,8 @@ export default class Game {
       typeOfCamera: 'thirdPersonView'
     }))
     playerZoneEntity.addComponent(new PlayerZone({
-      scene: this.scene,
       player : playerEntity,
       camera : cameraEntity,
-      renderer : this.renderer,
       terrain: worldEntity.components.World.terrain
     }))
     pauseEntity.addComponent(new Pause())
@@ -145,7 +144,6 @@ export default class Game {
       this.gameLoop({ clock })
       this.renderer?.render(this.scene, this.camera)
       this.step({ deltaTime })
-      this.entityManager.get('playerZoneEntity').components.PlayerZone.update(deltaTime)
     })
   }
 
