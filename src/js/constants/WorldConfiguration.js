@@ -1531,7 +1531,7 @@ export default () => {
       mesh: Column3Model,
       texture: {
         map: DiffuseColumn3Model,
-        nMap: NormalMapColumn3Model,
+        nMap: NormalMapColumn3Model
       },
       scaleRatio: 1,
       position: { z: -13.3975, x: -0.776054, y: 0 },

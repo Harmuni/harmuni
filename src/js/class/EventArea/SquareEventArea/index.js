@@ -1,4 +1,3 @@
-import { dot, vector } from '../../../helpers'
 import { Component } from '../../EntityComponent'
 
 export default class SquareEventArea extends Component {
@@ -11,11 +10,12 @@ export default class SquareEventArea extends Component {
     console.log(this.area)
     Object.keys(this.area).map((element, id) => {
       console.log(element, this.area[element].x)
+      return true
     })
   }
 
   update (timeInSeconds) {
-    //console.log('pos', this.targetToEmit.position.x, this.targetToEmit.position.z)
+    // console.log('pos', this.targetToEmit.position.x, this.targetToEmit.position.z)
 
     // if (this.targetToEmit.position.x < this.area.a) {
     //   this.action()
@@ -23,13 +23,12 @@ export default class SquareEventArea extends Component {
 
     // this.targetToEmit.position.y < this.area.a.y &&
     // this.targetToEmit.position.y > this.area.c.y
-    if(this.checkPlayerIsInArea()){
+    if (this.checkPlayerIsInArea()) {
       this.action()
     }
   }
 
-  checkPlayerIsInArea() {
-
+  checkPlayerIsInArea () {
     // if (this.area.c.x) {
     //   //positive
     //   this.area.c.x > 0
@@ -40,7 +39,7 @@ export default class SquareEventArea extends Component {
     //   // mix
     // }
 
-    //positive good for positive
+    // positive good for positive
     // if (
     //   this.targetToEmit.position.x >= this.area.c.x &&
     //   this.targetToEmit.position.x <= this.area.d.x &&
@@ -71,7 +70,6 @@ export default class SquareEventArea extends Component {
     //   return false
     // }
 
-
     if (
       this.targetToEmit.position.x >= this.area.C.x &&
       this.targetToEmit.position.x <= this.area.D.x &&
@@ -80,6 +78,5 @@ export default class SquareEventArea extends Component {
     ) {
       // this.action()
     }
-
   }
 }

@@ -8,7 +8,6 @@ BufferGeometry.prototype.computeBoundsTree = computeBoundsTree
 BufferGeometry.prototype.disposeBoundsTree = disposeBoundsTree
 
 export default class PlayerZone extends Component {
-
   constructor ({ player, camera, terrain }) {
     super()
     this.player = player
@@ -27,19 +26,22 @@ export default class PlayerZone extends Component {
     this.sphere = null
     this.shapes = {}
 
-    this.init({ camera: this.camera})
+    this.init({ camera: this.camera })
   }
 
-  init(camera) {
-
-    //ZONE SHAPE
-    const zoneGeom = new CylinderGeometry( 15, 15, 5, 40 )
-    const zoneMaterial = new MeshBasicMaterial({color : 0xc72a3f, opacity: 0.5, transparent: true} )
+  init (camera) {
+    // ZONE SHAPE
+    const zoneGeom = new CylinderGeometry(1, 1, 5, 40)
+    const zoneMaterial = new MeshBasicMaterial({
+      color: 0xc72a3f,
+      opacity: 0.5,
+      transparent: true
+    })
     this.shapes.zone = new Mesh(zoneGeom, zoneMaterial)
-    this.shapes.zone.name = "Zone"
+    this.shapes.zone.name = 'Zone'
 
-    //SHADER
-    function vertexShader() {
+    // SHADER
+    function vertexShader () {
       return `
       uniform vec3 viewVector;
       uniform float c;
@@ -56,7 +58,7 @@ export default class PlayerZone extends Component {
       `
     }
 
-    function fragmentShader() {
+    function fragmentShader () {
       return `
         uniform vec3 glowColor;
         varying float intensity;
@@ -69,112 +71,108 @@ export default class PlayerZone extends Component {
       `
     }
 
-    //SHADER SHAPE
-    const glowMaterial = new ShaderMaterial(
-      {
-          uniforms:
-        {
-          "c":   { type: "f", value: 1.0 },
-          "p":   { type: "f", value: 1.4 },
-          glowColor: { type: "c", value: new Color(0xc72a3f) },
-          viewVector: { type: "v3", value: camera.camera.components.Camera.threeCamera.position }
-        },
-        vertexShader:   vertexShader(),
-        fragmentShader: fragmentShader(),
-        side: FrontSide,
-        blending: AdditiveBlending,
-        transparent: true
-      }
-    )
+    // SHADER SHAPE
+    const glowMaterial = new ShaderMaterial({
+      uniforms: {
+        c: { type: 'f', value: 1.0 },
+        p: { type: 'f', value: 1.4 },
+        glowColor: { type: 'c', value: new Color(0xc72a3f) },
+        viewVector: { type: 'v3', value: camera.camera.components.Camera.threeCamera.position }
+      },
+      vertexShader: vertexShader(),
+      fragmentShader: fragmentShader(),
+      side: FrontSide,
+      blending: AdditiveBlending,
+      transparent: true
+    })
 
-    //GLOW GEOM
-    this.zoneGlowGeom = new CylinderGeometry( 15, 15, 100, 32 )
+    // GLOW GEOM
+    this.zoneGlowGeom = new CylinderGeometry(1, 1, 100, 32)
     this.zoneGlowGeom.computeBoundingSphere()
-    this.shapes.zoneGlow = new Mesh( this.zoneGlowGeom, glowMaterial )
+    this.shapes.zoneGlow = new Mesh(this.zoneGlowGeom, glowMaterial)
     this.shapes.zoneGlow.scale.multiplyScalar(1.2)
-    this.shapes.zoneGlow.name= "zoneGlow"
+    this.shapes.zoneGlow.name = 'zoneGlow'
 
-    //DEBUG HIT
-    this.shapes.sphere = new Mesh( new SphereBufferGeometry( 3, 50, 50 ), new MeshStandardMaterial( {
-      metalness: 0.1,
-      transparent: true,
-      opacity: 0,
-      premultipliedAlpha: true
-    } ) )
+    // DEBUG HIT
+    this.shapes.sphere = new Mesh(
+      new SphereBufferGeometry(3, 50, 50),
+      new MeshStandardMaterial({
+        metalness: 0.1,
+        transparent: true,
+        opacity: 0,
+        premultipliedAlpha: true
+      })
+    )
   }
 
   createZone () {
     const pos = this.player.position
     this.zoneIsCreated = true
 
-    this.shapes.zoneGlow.position.set(pos.x,50,pos.z)
-    this.shapes.zone.position.set(pos.x,-1,pos.z)
-    this.shapes.sphere.position.set(pos.x,0, pos.z)
+    this.shapes.zoneGlow.position.set(pos.x, 50, pos.z)
+    this.shapes.zone.position.set(pos.x, -1.75, pos.z)
+    this.shapes.sphere.position.set(pos.x, 0, pos.z)
 
     // add created zones to terrain
-    this.terrain.add(  this.shapes.zoneGlow )
-    this.terrain.add(  this.shapes.zone )
-    this.terrain.add( this.shapes.sphere )
+    this.terrain.add(this.shapes.zoneGlow)
+    this.terrain.add(this.shapes.zone)
+    this.terrain.add(this.shapes.sphere)
 
     // player collision shape
     const targetGeometry = this.player.components.Player.target.children[0].geometry
-    const targetMaterial = new MeshPhongMaterial( { color: 0xffffff, opacity: 0, transparent: true } )
+    const targetMaterial = new MeshPhongMaterial({
+      color: 0xffffff,
+      opacity: 0,
+      transparent: true
+    })
 
-    this.targetMesh = new Mesh( targetGeometry, targetMaterial )
+    this.targetMesh = new Mesh(targetGeometry, targetMaterial)
     this.targetMesh.geometry.computeBoundsTree()
-    this.targetMesh.position.set(pos.x,0,pos.z)
-    this.targetMesh.rotateX(- Math.PI / 2)
-    this.targetMesh.scale.set(3,3,3)
-    this.terrain.add( this.targetMesh )
+    this.targetMesh.position.set(pos.x, 0, pos.z)
+    this.targetMesh.rotateX(-Math.PI / 2)
+    this.targetMesh.scale.set(3, 3, 3)
+    this.terrain.add(this.targetMesh)
 
-    this.transformMatrix =
-      new Matrix4()
-      .copy( this.targetMesh.matrixWorld ).invert()
-      .multiply( this.shapes.sphere.matrixWorld )
+    this.transformMatrix = new Matrix4()
+      .copy(this.targetMesh.matrixWorld).invert()
+      .multiply(this.shapes.sphere.matrixWorld)
 
-    this.sphere = new Sphere( undefined, 1 )
-    this.sphere.applyMatrix4( this.transformMatrix )
-
+    this.sphere = new Sphere(undefined, 1)
+    this.sphere.applyMatrix4(this.transformMatrix)
   }
 
   expandZone () {
+    this.transformMatrix = new Matrix4()
+      .copy(this.targetMesh.matrixWorld).invert()
+      .multiply(this.shapes.sphere.matrixWorld)
 
-    this.transformMatrix =
-		new Matrix4()
-		    .copy( this.targetMesh.matrixWorld ).invert()
-			.multiply( this.shapes.sphere.matrixWorld )
+    this.sphere = new Sphere(undefined, this.zoneGlowGeom.parameters.radiusTop)
+    this.sphere.applyMatrix4(this.transformMatrix)
 
-		this.sphere = new Sphere( undefined, this.zoneGlowGeom.parameters.radiusTop )
-		this.sphere.applyMatrix4( this.transformMatrix )
+    const hit = this.targetMesh.geometry.boundsTree.intersectsSphere(this.targetMesh, this.sphere)
 
-    const hit = this.targetMesh.geometry.boundsTree.intersectsSphere( this.targetMesh, this.sphere )
-
-    if(hit) {
-      console.log("hit")
-
+    if (hit) {
+      console.log('hit')
       this.shapes.zone.scale.x += 0.001
       this.shapes.zone.scale.z += 0.001
       this.shapes.zoneGlow.scale.z += 0.001
       this.shapes.zoneGlow.scale.x += 0.001
-
     } else {
-      console.log("pas hit")
+      console.log('pas hit')
     }
   }
 
-  update() {
-
+  update (timeInSeconds) {
     if (this.input.keys.zone) {
-      this.zoneIsCreated == false
+      this.zoneIsCreated === false
         ? this.createZone()
         : this.expandZone()
     }
 
-    if(this.zoneIsCreated) {
+    if (this.zoneIsCreated) {
       const pos = this.player.position
-      this.targetMesh.position.set(pos.x,0,pos.z)
+      this.targetMesh.position.set(pos.x, 0, pos.z)
       this.targetMesh.updateMatrixWorld()
     }
   }
-
 }

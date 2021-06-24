@@ -1,11 +1,11 @@
-import * as THREE from 'three'
+import { Clock, Color, FogExp2, PerspectiveCamera, Scene, WebGLRenderer } from 'three'
 import Camera from '../Camera/index'
-import SquareEventArea from '../EventArea/SquareEventArea'
 import { Entity, EntityManager } from '../EntityComponent/index'
+import SquareEventArea from '../EventArea/SquareEventArea'
 import Pause from '../Pause'
 import Player from '../Player/index'
-import World from '../World/index'
 import PlayerZone from '../PlayerZone'
+import World from '../World/index'
 
 export default class Game {
   /**
@@ -65,8 +65,8 @@ export default class Game {
       typeOfCamera: 'thirdPersonView'
     }))
     playerZoneEntity.addComponent(new PlayerZone({
-      player : playerEntity,
-      camera : cameraEntity,
+      player: playerEntity,
+      camera: cameraEntity,
       terrain: worldEntity.components.World.terrain
     }))
     pauseEntity.addComponent(new Pause())
@@ -101,7 +101,7 @@ export default class Game {
     this.camera = cameraEntity.components.Camera.threeCamera
 
     // Clock use to get second and Three clock use perfomance.now and date.now
-    const gameLoop = this.gameLoop({ clock: new THREE.Clock() })
+    const gameLoop = this.gameLoop({ clock: new Clock() })
     return gameLoop
   }
 
@@ -111,7 +111,7 @@ export default class Game {
    */
   setRender () {
     const canvas = document.getElementById('webgl')
-    const renderer = new THREE.WebGLRenderer({
+    const renderer = new WebGLRenderer({
       canvas: canvas,
       antialias: true
     })
@@ -126,16 +126,16 @@ export default class Game {
     const aspect = 1920 / 1080
     const near = 1.0
     const far = 1000.0
-    const camera = new THREE.PerspectiveCamera(fov, aspect, near, far)
+    const camera = new PerspectiveCamera(fov, aspect, near, far)
     camera.position.set(75, 20, 0)
     camera.lookAt(0, 20, 0)
     return camera
   }
 
   setDefaultScene () {
-    const scene = new THREE.Scene()
-    scene.background = new THREE.Color(0xFFFFFF)
-    scene.fog = new THREE.FogExp2(0xf1eae1, 0.08)
+    const scene = new Scene()
+    scene.background = new Color(0xFFFFFF)
+    scene.fog = new FogExp2(0xf1eae1, 0.08)
     return scene
   }
 

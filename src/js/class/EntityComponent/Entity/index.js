@@ -1,12 +1,12 @@
-import * as THREE from 'three'
+import { Quaternion, Vector3 } from 'three'
 
 export default class Entity {
   constructor () {
     this.name = null
     this.components = {}
 
-    this.position = new THREE.Vector3()
-    this.rotation = new THREE.Quaternion()
+    this.position = new Vector3()
+    this.rotation = new Quaternion()
     this.handlers = {}
     this.parent = null
   }
@@ -63,7 +63,7 @@ export default class Entity {
     this.position.copy(p)
     this.broadcast({
       topic: 'update.position',
-      value: this.position,
+      value: this.position
     })
   }
 
@@ -71,7 +71,7 @@ export default class Entity {
     this.rotation.copy(r)
     this.broadcast({
       topic: 'update.rotation',
-      value: this.rotation,
+      value: this.rotation
     })
   }
 
