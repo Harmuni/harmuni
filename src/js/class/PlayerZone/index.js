@@ -31,7 +31,7 @@ export default class PlayerZone extends Component {
 
   init (camera) {
     // ZONE SHAPE
-    const zoneGeom = new CylinderGeometry(1, 1, 5, 40)
+    const zoneGeom = new CylinderGeometry(0.3, 0.3, 1, 40)
     const zoneMaterial = new MeshBasicMaterial({
       color: 0xc72a3f,
       opacity: 0.5,
@@ -87,7 +87,7 @@ export default class PlayerZone extends Component {
     })
 
     // GLOW GEOM
-    this.zoneGlowGeom = new CylinderGeometry(1, 1, 100, 32)
+    this.zoneGlowGeom = new CylinderGeometry(0.3, 0.3, 100, 32)
     this.zoneGlowGeom.computeBoundingSphere()
     this.shapes.zoneGlow = new Mesh(this.zoneGlowGeom, glowMaterial)
     this.shapes.zoneGlow.scale.multiplyScalar(1.2)
@@ -110,7 +110,7 @@ export default class PlayerZone extends Component {
     this.zoneIsCreated = true
 
     this.shapes.zoneGlow.position.set(pos.x, 50, pos.z)
-    this.shapes.zone.position.set(pos.x, -1.75, pos.z)
+    this.shapes.zone.position.set(pos.x, -0.45, pos.z)
     this.shapes.sphere.position.set(pos.x, 0, pos.z)
 
     // add created zones to terrain
@@ -152,14 +152,12 @@ export default class PlayerZone extends Component {
     const hit = this.targetMesh.geometry.boundsTree.intersectsSphere(this.targetMesh, this.sphere)
 
     if (hit) {
-      console.log('hit')
-      this.shapes.zone.scale.x += 0.001
-      this.shapes.zone.scale.z += 0.001
-      this.shapes.zoneGlow.scale.z += 0.001
-      this.shapes.zoneGlow.scale.x += 0.001
-    } else {
-      console.log('pas hit')
+      this.shapes.zone.scale.x += 0.01
+      this.shapes.zone.scale.z += 0.01
+      this.shapes.zoneGlow.scale.z += 0.01
+      this.shapes.zoneGlow.scale.x += 0.01
     }
+
   }
 
   update (timeInSeconds) {
