@@ -11,11 +11,10 @@ import SkaljordMusic from './character/skaljord_music.fbx'
 import AppleModel from './map/artefacts/apple.glb'
 import BookModel from './map/artefacts/book.glb'
 import CombModel from './map/artefacts/comb.glb'
-import StoneModel from './map/artefacts/stone.glb'
+import RunestoneModel from './map/artefacts/runestone.glb'
 import WatchModel from './map/artefacts/watch.glb'
 
 import LandscapeModel from './map/terrain/landscape.glb'
-import LandscapeTexturedModel from './map/terrain/landscape_textured.glb'
 import LakeModel from './map/terrain/lake.glb'
 import OceanModel from './map/terrain/ocean.glb'
 
@@ -62,12 +61,13 @@ import Column1Model from './map/architecture/column_1.glb'
 import Column2Model from './map/architecture/column_2.glb'
 import Column3Model from './map/architecture/column_3.glb'
 import Column4Model from './map/architecture/column_4.glb'
-import DoorLeftModel from './map/architecture/door_left.glb'
-import DoorOutsideModel from './map/architecture/door_outside.glb'
-import DoorRightModel from './map/architecture/door_right.glb'
+import DoorModel from './map/architecture/door.glb'
 import EagleStatueModel from './map/architecture/eagle_statue.glb'
 import KioskCommonModel from './map/architecture/kiosk_common.glb'
 import KioskLumaModel from './map/architecture/kiosk_luma.glb'
+import KioskNeutralModel from './map/architecture/kiosk_neutral.glb'
+import KioskSkaljordModel from './map/architecture/kiosk_skaljord.glb'
+
 import LampModel from './map/architecture/lamp.glb'
 import OwlStatueModel from './map/architecture/owl_statue.glb'
 import PierModel from './map/architecture/pier.glb'
@@ -86,16 +86,15 @@ export {
   Column3Model,
   Column4Model,
   CombModel,
-  DoorLeftModel,
-  DoorOutsideModel,
-  DoorRightModel,
+  DoorModel,
   EagleStatueModel,
   KioskCommonModel,
   KioskLumaModel,
+  KioskNeutralModel,
+  KioskSkaljordModel,
   LakeModel,
   LampModel,
   LandscapeModel,
-  LandscapeTexturedModel,
   LumaCharacter,
   LumaIdle,
   LumaRun,
@@ -137,7 +136,7 @@ export {
   Stone7Model,
   Stone8Model,
   Stone9Model,
-  StoneModel,
+  RunestoneModel,
   Tree1Model,
   Tree2Model,
   Tree3Model,

@@ -1,5 +1,5 @@
-import { AltarModel, ArchModel, BoatModel, CatStatueModel, Column1Model, Column2Model, Column3Model, Column4Model, DoorLeftModel, DoorOutsideModel, DoorRightModel, KioskCommonModel, KioskLumaModel, LakeModel, OceanModel, OwlStatueModel, PierModel, Plant1Model, Plant2Model, Plant4Model, Plant5Model, Plant6Model, Plant7Model, SteleModel, Stone10Model, Stone11Model, Stone12Model, Stone13Model, Stone14Model, Stone15Model, Stone16Model, Stone17Model, Stone18Model, Stone1Model, Stone20Model, Stone2Model, Stone3Model, Stone4Model, Stone5Model, Stone7Model, Stone8Model, Tree1Model, Tree2Model, Tree3Model, Tree4Model, Tree5Model } from '../../assets/meshes'
-import { AoTree1Model, AoTree2Model, DiffuseColumn3Model, DiffuseTree1Model, DiffuseTree2Model, NormalMapColumn3Model, NormalMapTree1Model, NormalMapTree2Model } from '../../assets/textures'
+import { AltarModel, ArchModel, BoatModel, CatStatueModel, Column1Model, Column2Model, Column3Model, Column4Model, DoorModel, KioskCommonModel, KioskLumaModel, LakeModel, OceanModel, OwlStatueModel, PierModel, Plant1Model, Plant2Model, Plant4Model, Plant5Model, Plant6Model, Plant7Model, SteleModel, Stone10Model, Stone11Model, Stone12Model, Stone13Model, Stone14Model, Stone15Model, Stone16Model, Stone17Model, Stone18Model, Stone1Model, Stone3Model, Stone4Model, Stone5Model, Stone7Model, Stone8Model, Tree1Model, Tree2Model, Tree3Model, Tree4Model, Tree5Model } from '../../assets/meshes'
+import { DiffuseAltarModel, DiffuseArchModel, DiffuseBoatModel, DiffuseCatStatueModel, DiffuseColumn1Model, DiffuseColumn2Model, DiffuseColumn3Model, DiffuseColumn4Model, DiffuseDoorModel, DiffuseEagleStatueModel, DiffuseLakeModel, DiffuseOceanModel, DiffuseOwlStatueModel, DiffusePierModel, DiffusePlant1Model, DiffusePlant2Model, DiffusePlant4Model, DiffusePlant5Model, DiffusePlant6Model, DiffusePlant7Model, DiffuseSteleModel, DiffuseStone10Model, DiffuseStone11Model, DiffuseStone12Model, DiffuseStone13Model, DiffuseStone14Model, DiffuseStone15Model, DiffuseStone16Model, DiffuseStone17Model, DiffuseStone18Model, DiffuseStone1Model, DiffuseStone3Model, DiffuseStone4Model, DiffuseStone5Model, DiffuseStone7Model, DiffuseStone8Model, DiffuseTree1Model, DiffuseTree2Model, DiffuseTree3Model, DiffuseTree4Model, DiffuseTree5Model, NormalMapAltarModel, NormalMapArchModel, NormalMapBoatModel, NormalMapCatStatueModel, NormalMapColumn1Model, NormalMapColumn2Model, NormalMapColumn3Model, NormalMapColumn4Model, NormalMapDoorModel, NormalMapEagleStatueModel, NormalMapLakeModel, NormalMapOceanModel, NormalMapOwlStatueModel, NormalMapPierModel, NormalMapSteleModel, NormalMapStone10Model, NormalMapStone11Model, NormalMapStone12Model, NormalMapStone13Model, NormalMapStone17Model, NormalMapStone18Model, NormalMapStone1Model, NormalMapStone3Model, NormalMapStone4Model, NormalMapStone5Model, NormalMapStone7Model, NormalMapStone8Model, NormalMapTree1Model, NormalMapTree2Model, NormalMapTree3Model, NormalMapTree4Model, NormalMapTree5Model } from '../../assets/textures'
 
 export default () => {
   return {
@@ -9,8 +9,7 @@ export default () => {
       scaleRatio: 0.4,
       texture: {
         map: DiffuseTree1Model,
-        nMap: NormalMapTree1Model,
-        aoMap: AoTree1Model
+        nMap: NormalMapTree1Model
       },
       position: { z: 0, x: 0.245187, y: 0 },
       rotation: { z: 0, x: 0, y: (0 + 90) },
@@ -133,8 +132,7 @@ export default () => {
       mesh: Tree2Model,
       texture: {
         map: DiffuseTree2Model,
-        nMap: NormalMapTree2Model,
-        aoMap: AoTree2Model
+        nMap: NormalMapTree2Model
       },
       scaleRatio: 0.3,
       position: { z: 8.25919, x: 9.041, y: 0 },
@@ -365,6 +363,10 @@ export default () => {
     tree3: {
       name: 'tree_3',
       mesh: Tree3Model,
+      texture: {
+        map: DiffuseTree3Model,
+        nMap: NormalMapTree3Model
+      },
       scaleRatio: 0.5,
       position: { z: 7.99686, x: 7.98744, y: 0 },
       rotation: { z: 0, x: 0, y: (41.3413 + 90) },
@@ -454,6 +456,10 @@ export default () => {
     tree4: {
       name: 'tree_4',
       mesh: Tree4Model,
+      texture: {
+        map: DiffuseTree4Model,
+        nMap: NormalMapTree4Model
+      },
       scaleRatio: 0.3,
       position: { z: -4.69189, x: -10.3555, y: 0 },
       rotation: { z: 0, x: 0, y: (98.571 + 90) },
@@ -515,6 +521,10 @@ export default () => {
     tree5: {
       name: 'tree_5',
       mesh: Tree5Model,
+      texture: {
+        map: DiffuseTree5Model,
+        nMap: NormalMapTree5Model
+      },
       scaleRatio: 0.3,
       position: { z: 0.881225, x: -2.90709, y: 0 },
       rotation: { z: 0, x: 0, y: (-59.6308 + 90) },
@@ -648,26 +658,21 @@ export default () => {
     stone1: {
       name: 'stone_1',
       mesh: Stone1Model,
+      texture: {
+        map: DiffuseStone1Model,
+        nMap: NormalMapStone1Model
+      },
       scaleRatio: 1,
       position: { z: 5.45584, x: 22.9282, y: 2.25 },
       rotation: { z: 0, x: 0, y: (-116.946 + 90) }
     },
-    stone2: {
-      name: 'stone_2',
-      mesh: Stone2Model,
-      scaleRatio: 1,
-      position: { z: 3.92005, x: -7.60588, y: 0 },
-      rotation: { z: 0, x: 0, y: (0 + 90) },
-      clones: {
-        1: {
-          position: { z: 7.67981, x: 16.5005, y: 0 },
-          rotation: { z: 0, x: 0, y: (-48.8297 + 90) }
-        }
-      }
-    },
     stone3: {
       name: 'stone_3',
       mesh: Stone3Model,
+      texture: {
+        map: DiffuseStone3Model,
+        nMap: NormalMapStone3Model
+      },
       scaleRatio: 1,
       position: { z: 2.3694, x: 12.2615, y: 0 },
       rotation: { z: 0, x: 0, y: (188.622 + 90) },
@@ -711,12 +716,24 @@ export default () => {
         10: {
           position: { z: -16.0439, x: -6.61739, y: 0 },
           rotation: { z: 90, x: 0, y: (-27.5392 + 90) }
+        },
+        11: {
+          position: { z: 7.67981, x: 16.5005, y: 0 },
+          rotation: { z: 0, x: 0, y: (-48.8297 + 90) }
+        },
+        12: {
+          position: { z: 3.92005, x: -7.60588, y: 0 },
+          rotation: { z: 0, x: 0, y: (0 + 90) }
         }
       }
     },
     stone4: {
       name: 'stone_4',
       mesh: Stone4Model,
+      texture: {
+        map: DiffuseStone4Model,
+        nMap: NormalMapStone4Model
+      },
       scaleRatio: 1,
       position: { z: -7.14633, x: 22.0889, y: 0 },
       rotation: { z: 0, x: 0, y: (-120.545 + 90) },
@@ -730,6 +747,10 @@ export default () => {
     stone5: {
       name: 'stone_5',
       mesh: Stone5Model,
+      texture: {
+        map: DiffuseStone5Model,
+        nMap: NormalMapStone5Model
+      },
       scaleRatio: 1,
       position: { z: 10.7121, x: -10.0092, y: 0 },
       rotation: { z: 0, x: 0, y: (198.723 + 90) }
@@ -737,6 +758,10 @@ export default () => {
     stone7: {
       name: 'stone_7',
       mesh: Stone7Model,
+      texture: {
+        map: DiffuseStone7Model,
+        nMap: NormalMapStone7Model
+      },
       scaleRatio: 1,
       position: { z: 5.23307, x: -7.60588, y: 0 },
       rotation: { z: 0, x: 0, y: (0 + 90) },
@@ -750,6 +775,10 @@ export default () => {
     stone8: {
       name: 'stone_8',
       mesh: Stone8Model,
+      texture: {
+        map: DiffuseStone8Model,
+        nMap: NormalMapStone8Model
+      },
       scaleRatio: 1,
       position: { z: -1.76798, x: -7.60588, y: 0 },
       rotation: { z: 0, x: 0, y: (0 + 90) }
@@ -757,6 +786,10 @@ export default () => {
     stone10: {
       name: 'stone_10',
       mesh: Stone10Model,
+      texture: {
+        map: DiffuseStone10Model,
+        nMap: NormalMapStone10Model
+      },
       scaleRatio: 1,
       position: { z: 10.0248, x: 2.94097, y: 0 },
       rotation: { z: 0, x: 0, y: (0 + 90) },
@@ -770,6 +803,10 @@ export default () => {
     stone11: {
       name: 'stone_11',
       mesh: Stone11Model,
+      texture: {
+        map: DiffuseStone11Model,
+        nMap: NormalMapStone11Model
+      },
       scaleRatio: 1,
       position: { z: 5.43328, x: 16.8967, y: 0 },
       rotation: { z: 0.17335, x: 3.61907, y: (136.834 + 90) },
@@ -799,6 +836,10 @@ export default () => {
     stone12: {
       name: 'stone_12',
       mesh: Stone12Model,
+      texture: {
+        map: DiffuseStone12Model,
+        nMap: NormalMapStone12Model
+      },
       scaleRatio: 1,
       position: { z: -15.022, x: -4.03129, y: 0 },
       rotation: { z: -417.055, x: 9.41001, y: (5.57067 + 90) },
@@ -856,6 +897,10 @@ export default () => {
     stone13: {
       name: 'stone_13',
       mesh: Stone13Model,
+      texture: {
+        map: DiffuseStone13Model,
+        nMap: NormalMapStone13Model
+      },
       scaleRatio: 1,
       position: { z: -10.7323, x: 11.8508, y: 0 },
       rotation: { z: 0, x: -37.0571, y: (-63.6003 + 90) },
@@ -869,6 +914,10 @@ export default () => {
     stone14: {
       name: 'stone_14',
       mesh: Stone14Model,
+      texture: {
+        map: DiffuseStone14Model,
+        nMap: NormalMapStone13Model
+      },
       scaleRatio: 1,
       position: { z: 9.38241, x: 4.03124, y: 0 },
       rotation: { z: 0, x: 0, y: (152.077 + 90) },
@@ -882,6 +931,10 @@ export default () => {
     stone15: {
       name: 'stone_15',
       mesh: Stone15Model,
+      texture: {
+        map: DiffuseStone15Model,
+        nMap: NormalMapStone13Model
+      },
       scaleRatio: 1,
       position: { z: -0.768637, x: 1.93423, y: 0 },
       rotation: { z: 0, x: 0, y: (66.6915 + 90) },
@@ -895,6 +948,9 @@ export default () => {
     stone16: {
       name: 'stone_16',
       mesh: Stone16Model,
+      texture: {
+        map: DiffuseStone16Model,
+      },
       scaleRatio: 1,
       position: { z: -5.60227, x: -10.5128, y: 0 },
       rotation: { z: 0, x: 0, y: (26.1387 + 90) }
@@ -902,6 +958,10 @@ export default () => {
     stone17: {
       name: 'stone_17',
       mesh: Stone17Model,
+      texture: {
+        map: DiffuseStone17Model,
+        nMap: NormalMapStone17Model
+      },
       scaleRatio: 1,
       position: { z: -19.3614, x: -2.61345, y: 0 },
       rotation: { z: 0, x: 0, y: (-127.902 + 90) },
@@ -919,34 +979,20 @@ export default () => {
     stone18: {
       name: 'stone_18',
       mesh: Stone18Model,
+      texture: {
+        map: DiffuseStone18Model,
+        nMap: NormalMapStone18Model
+      },
       scaleRatio: 1,
       position: { z: 11.9744, x: 1.44585, y: 0 },
       rotation: { z: 0, x: 0, y: (-13.286 + 90) }
     },
-    stone20: {
-      name: 'stone_20',
-      mesh: Stone20Model,
-      scaleRatio: 1,
-      position: { z: -5.92325, x: -0.852257, y: 0 },
-      rotation: { z: 0, x: 0, y: (-193.357 + 90) },
-      clones: {
-        1: {
-          position: { z: -0.704643, x: 10.0705, y: 0 },
-          rotation: { z: 0, x: 0, y: (-193.357 + 90) }
-        },
-        2: {
-          position: { z: 5.70305, x: 3.58778, y: 0 },
-          rotation: { z: 0, x: 0, y: (-193.357 + 90) }
-        },
-        3: {
-          position: { z: -19.4338, x: -3.40196, y: 0 },
-          rotation: { z: 0, x: 0, y: (-193.357 + 90) }
-        }
-      }
-    },
     plant1: {
       name: 'plant_1',
       mesh: Plant1Model,
+      texture: {
+        map: DiffusePlant1Model
+      },
       scaleRatio: 1,
       position: { z: 14.8494, x: 5.88585, y: 2 },
       rotation: { z: 128.599, x: 143.72, y: (59.067 + 90) },
@@ -1056,6 +1102,9 @@ export default () => {
     plant2: {
       name: 'plant_2',
       mesh: Plant2Model,
+      texture: {
+        map: DiffusePlant2Model
+      },
       scaleRatio: 1,
       position: { z: 14.8851, x: 5.77976, y: 0 },
       rotation: { z: -24.1779, x: 31.1843, y: (-239.118 + 90) },
@@ -1181,6 +1230,9 @@ export default () => {
     plant4: {
       name: 'plant_4',
       mesh: Plant4Model,
+      texture: {
+        map: DiffusePlant4Model
+      },
       scaleRatio: 1,
       position: { z: -6.29629, x: -7.77645, y: 0 },
       rotation: { z: 17.2106, x: 33.7018, y: (-156.818 + 90) },
@@ -1194,6 +1246,9 @@ export default () => {
     plant5: {
       name: 'plant_5',
       mesh: Plant5Model,
+      texture: {
+        map: DiffusePlant5Model
+      },
       scaleRatio: 1,
       position: { z: -9.19929, x: -7.02459, y: 0 },
       rotation: { z: 176.095, x: 155.559, y: (-382.115 + 90) },
@@ -1303,6 +1358,9 @@ export default () => {
     plant6: {
       name: 'plant_6',
       mesh: Plant6Model,
+      texture: {
+        map: DiffusePlant6Model
+      },
       scaleRatio: 1,
       position: { z: 11.7788, x: 0.694911, y: 0 },
       rotation: { z: 55.9873, x: 49.5779, y: (17.3245 + 90) },
@@ -1328,6 +1386,9 @@ export default () => {
     plant7: {
       name: 'plant_7',
       mesh: Plant7Model,
+      texture: {
+        map: DiffusePlant7Model
+      },
       scaleRatio: 1,
       position: { z: -6.17539, x: -7.97695, y: 0 },
       rotation: { z: 17.2106, x: 33.7018, y: (-156.818 + 90) },
@@ -1345,6 +1406,10 @@ export default () => {
     lake: {
       name: 'lake',
       mesh: LakeModel,
+      texture: {
+        map: DiffuseLakeModel,
+        nmap: NormalMapLakeModel
+      },
       scaleRatio: 1,
       position: { z: -8.87839, x: 14.0986, y: -0.5 },
       rotation: { z: 0, x: 0, y: (0 + 90) }
@@ -1352,6 +1417,10 @@ export default () => {
     ocean: {
       name: 'ocean',
       mesh: OceanModel,
+      texture: {
+        map: DiffuseOceanModel,
+        nmap: NormalMapOceanModel
+      },
       scaleRatio: 1,
       position: { z: -10.8158, x: -0.655412, y: -1.75 },
       rotation: { z: 0, x: 0, y: (44.5566 + 90) },
@@ -1377,6 +1446,10 @@ export default () => {
     altar: {
       name: 'altar',
       mesh: AltarModel,
+      texture: {
+        map: DiffuseAltarModel,
+        nmap: NormalMapAltarModel
+      },
       scaleRatio: 1,
       position: { z: -3.3115, x: 0.375552, y: 0 },
       rotation: { z: 0, x: 0, y: (0 + 90) },
@@ -1422,7 +1495,7 @@ export default () => {
     kioskCommon: {
       name: 'kiosk_common',
       mesh: KioskCommonModel,
-      scaleRatio: 0.5,
+      scaleRatio: 0.35,
       position: { z: -3.76736, x: 5.62048, y: 0 },
       rotation: { z: 0.630218, x: -0.000001, y: (-180 + 90) }
     },
@@ -1450,6 +1523,10 @@ export default () => {
     stele: {
       name: 'stele',
       mesh: SteleModel,
+      texture: {
+        map: DiffuseSteleModel,
+        nmap: NormalMapSteleModel
+      },
       scaleRatio: 1,
       position: { z: 1.546, x: -2.61429, y: 0 },
       rotation: { z: 0, x: 0, y: (-28.8208 + 90) },
@@ -1495,6 +1572,10 @@ export default () => {
     column1: {
       name: 'column_1',
       mesh: Column1Model,
+      texture: {
+        map: DiffuseColumn1Model,
+        nmap: NormalMapColumn1Model
+      },
       scaleRatio: 1,
       position: { z: 0, x: 0, y: 0 },
       rotation: { z: 0, x: 0, y: (0 + 90) },
@@ -1512,6 +1593,10 @@ export default () => {
     column2: {
       name: 'column_2',
       mesh: Column2Model,
+      texture: {
+        map: DiffuseColumn2Model,
+        nmap: NormalMapColumn2Model
+      },
       scaleRatio: 1,
       position: { z: -8.09141, x: 7.28786, y: 0 },
       rotation: { z: 0, x: 0, y: (0 + 90) },
@@ -1550,6 +1635,10 @@ export default () => {
     column4: {
       name: 'column_4',
       mesh: Column4Model,
+      texture: {
+        map: DiffuseColumn4Model,
+        nmap: NormalMapColumn4Model
+      },
       scaleRatio: 1,
       position: { z: 3.47905, x: 0, y: 0 },
       rotation: { z: 0, x: 0, y: (0 + 90) },
@@ -1564,30 +1653,45 @@ export default () => {
         }
       }
     },
-    doorLeft: {
-      name: 'door_left',
-      mesh: DoorLeftModel,
-      scaleRatio: 1,
-      position: { z: -2.03023, x: 18.788, y: 0 },
-      rotation: { z: 0, x: 0, y: (90 + 90) }
-    },
-    doorOutside: {
+    door: {
       name: 'door_outside',
-      mesh: DoorOutsideModel,
+      mesh: DoorModel,
+      texture: {
+        map: DiffuseDoorModel,
+        nmap: NormalMapDoorModel
+      },
       scaleRatio: 1,
       position: { z: -2.03023, x: 18.788, y: 0 },
       rotation: { z: 0, x: 0, y: (90 + 90) }
     },
-    doorRight: {
-      name: 'door_outside',
-      mesh: DoorRightModel,
-      scaleRatio: 1,
-      position: { z: -2.03023, x: 18.788, y: 0 },
-      rotation: { z: 0, x: 0, y: (90 + 90) }
-    },
+    // doorLeft: {
+    //   name: 'door_left',
+    //   mesh: DoorLeftModel,
+    //   scaleRatio: 1,
+    //   position: { z: -2.03023, x: 18.788, y: 0 },
+    //   rotation: { z: 0, x: 0, y: (90 + 90) }
+    // },
+    // doorOutside: {
+    //   name: 'door_outside',
+    //   mesh: DoorOutsideModel,
+    //   scaleRatio: 1,
+    //   position: { z: -2.03023, x: 18.788, y: 0 },
+    //   rotation: { z: 0, x: 0, y: (90 + 90) }
+    // },
+    // doorRight: {
+    //   name: 'door_outside',
+    //   mesh: DoorRightModel,
+    //   scaleRatio: 1,
+    //   position: { z: -2.03023, x: 18.788, y: 0 },
+    //   rotation: { z: 0, x: 0, y: (90 + 90) }
+    // },
     owlStatue: {
       name: 'owl_statue_part',
       mesh: OwlStatueModel,
+      texture: {
+        map: DiffuseOwlStatueModel,
+        nmap: NormalMapOwlStatueModel
+      },
       scaleRatio: 1,
       position: { z: -9.6036, x: 18.788, y: 0 },
       rotation: { z: 0, x: 0, y: (0 + 90) }
@@ -1601,6 +1705,10 @@ export default () => {
     catStatue: {
       name: 'cat_statue_part',
       mesh: CatStatueModel,
+      texture: {
+        map: DiffuseCatStatueModel,
+        nmap: NormalMapCatStatueModel
+      },
       scaleRatio: 1,
       position: { z: -12.2942, x: 7.10393, y: 0 },
       rotation: { z: 0, x: 0, y: (0 + 90) }
@@ -1615,6 +1723,10 @@ export default () => {
     eagleStatue: {
       name: 'eagle_statue_part',
       mesh: CatStatueModel,
+      texture: {
+        map: DiffuseEagleStatueModel,
+        nmap: NormalMapEagleStatueModel
+      },
       scaleRatio: 1,
       position: { z: -7.27648, x: 2.00783, y: 0 },
       rotation: { z: 0, x: 0, y: (0 + 90) }
@@ -1631,6 +1743,10 @@ export default () => {
     boat: {
       name: 'boat',
       mesh: BoatModel,
+      texture: {
+        map: DiffuseBoatModel,
+        nmap: NormalMapBoatModel
+      },
       scaleRatio: 1,
       position: { z: 10.1659, x: -4.76008, y: -0.5 },
       rotation: { z: 0, x: 0, y: (-44.2346 + 90) }
@@ -1638,47 +1754,55 @@ export default () => {
     arch: {
       name: 'arch',
       mesh: ArchModel,
+      texture: {
+        map: DiffuseArchModel,
+        nmap: NormalMapArchModel
+      },
       scaleRatio: 1,
       position: { z: -7.40124, x: -2.23076, y: 0 },
-      rotation: { z: 0, x: 0, y: (-51.9134 + 90) },
+      rotation: { z: 0, x: 0, y: (-51.9134 + 0) },
       clones: {
         1: {
           position: { z: -8.46461, x: -2.98167, y: 0 },
-          rotation: { z: 0, x: 0, y: (-51.9134 + 90) }
+          rotation: { z: 0, x: 0, y: (-51.9134 + 0) }
         },
         2: {
           position: { z: -5.47352, x: -7.2117, y: 0 },
-          rotation: { z: 0, x: 0, y: (-51.0519 + 90) }
+          rotation: { z: 0, x: 0, y: (-51.0519 + 0) }
         },
         3: {
           position: { z: -4.42156, x: -6.44488, y: 0 },
-          rotation: { z: 0, x: 0, y: (-51.0519 + 90) }
+          rotation: { z: 0, x: 0, y: (-51.0519 + 0) }
         },
         4: {
           position: { z: -15.3647, x: 3.79359, y: 0 },
-          rotation: { z: 0.331597, x: -1.14914, y: (-19.5539 + 90) }
+          rotation: { z: 0.331597, x: -1.14914, y: (-19.5539 + 0) }
         },
         5: {
           position: { z: -14.9984, x: 4.95798, y: 0 },
-          rotation: { z: 1.05213, x: -2.39491, y: (-18.1504 + 90) }
+          rotation: { z: 1.05213, x: -2.39491, y: (-18.1504 + 0) }
         },
         6: {
           position: { z: 3.20016, x: -4.10814, y: 0 },
-          rotation: { z: 0, x: 0, y: (15.3636 + 90) }
+          rotation: { z: 0, x: 0, y: (15.3636 + 0) }
         },
         7: {
           position: { z: -15.1811, x: 12.1407, y: 0 },
-          rotation: { z: 0, x: 0, y: (78.0385 + 90) }
+          rotation: { z: 0, x: 0, y: (78.0385 + 0) }
         },
         8: {
           position: { z: 3.90104, x: 15.8449, y: 0 },
-          rotation: { z: 0, x: 0, y: (112.383 + 90) }
+          rotation: { z: 0, x: 0, y: (112.383 + 0) }
         }
       }
     },
     pier: {
       name: 'pier',
       mesh: PierModel,
+      texture: {
+        map: DiffusePierModel,
+        nmap: NormalMapPierModel
+      },
       scaleRatio: 1,
       position: { z: 8.38487, x: -4.41869, y: 0 },
       rotation: { z: 0, x: 0, y: (58.2024 + 90) },

@@ -149,7 +149,7 @@ export default class Game {
   setDefaultScene () {
     const scene = new Scene()
     scene.background = new Color(0xFFFFFF)
-    scene.fog = new FogExp2(0xf1eae1, 0.08)
+    scene.fog = new FogExp2(0x94a7a5, 0.08)
     return scene
   }
 

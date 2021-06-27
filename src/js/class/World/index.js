@@ -3,11 +3,12 @@ import { BufferGeometryUtils } from 'three/examples/jsm/utils/BufferGeometryUtil
 import { GUI } from 'three/examples/jsm/libs/dat.gui.module'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import { Sky } from 'three/examples/jsm/objects/Sky'
-import { LandscapeModel, LandscapeTexturedModel } from '../../../assets/meshes'
 import { BackFace, DownFace, FrontFace, LeftFace, RightFace, UpFace } from '../../../assets/skybox'
 import WorldConfiguration from '../../constants/WorldConfiguration'
 import { Component } from '../EntityComponent'
 import { MathUtils } from 'three/build/three.module'
+import { LandscapeModel } from '../../../assets/meshes'
+import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader'
 export default class World extends Component {
   /**
    * @constructor of World
@@ -25,12 +26,20 @@ export default class World extends Component {
 
     // Loaders of models
     const loaderManager = new LoadingManager()
+
     const glbLoader = new GLTFLoader(loaderManager)
+
+    const dracoLoader = new DRACOLoader()
+    dracoLoader.setDecoderConfig({ type: 'js' })
+    dracoLoader.setDecoderPath('https://www.gstatic.com/draco/v1/decoders/')
+    const glbCompressedLoader = new GLTFLoader(loaderManager)
+    glbCompressedLoader.setDRACOLoader(dracoLoader)
+
     // Generate map elements
     let isGenerate = true
     isGenerate = this.generateLight({ scene: this.scene })
     isGenerate = this.generateSkybox({ scene: this.scene, renderer: this.renderer, typeOfSkybox: 'skyShader' })
-    isGenerate = this.generateLandscape({ glbLoader, terrain: this.terrain })
+    isGenerate = this.generateLandscape({ glbLoader: glbCompressedLoader, terrain: this.terrain })
     isGenerate = this.generateEnvironment({ glbLoader, terrain: this.terrain })
     console.assert(isGenerate, 'World generation failed')
   }
@@ -49,7 +58,6 @@ export default class World extends Component {
       })
     })
   }
-
 
   /**
    * Invoke one model mesh
@@ -83,10 +91,14 @@ export default class World extends Component {
             if (obj.isMesh) {
               const loader = new TextureLoader()
               const defaultColor = 0xFFFFFF
+              const map = loader.load(model.texture.map)
+              const nmap = loader.load(model.texture.nMap)
+              map.flipY = false
+              nmap.flipY = false
               const material = new MeshStandardMaterial({
                 color: defaultColor,
-                map: model.texture.map ? loader.load(model.texture.map) : null,
-                normalMap: model.texture.nMap ? loader.load(model.texture.nMap) : null,
+                map: model.texture.map ? map : null,
+                normalMap: model.texture.nMap ? nmap : null
                 // aoMap: model.texture.aoMap ? loader.load(model.texture.aoMap) : null
               })
               obj.material = material
@@ -194,15 +206,15 @@ export default class World extends Component {
    * @return {boolean}
    */
   generateLight ({ scene }) {
-    const light = new DirectionalLight('#ffffff')
-    const ambientLight = new AmbientLight('#ffffff', 0.5)
-    const hemiLight = new HemisphereLight('0x0000ff', '0x00ff00', 0.6)
+    // const light = new DirectionalLight('#ffffff')
+    const ambientLight = new AmbientLight('#ffffff', 0.45)
+    // const hemiLight = new HemisphereLight('0xFFFFFF', '0x00ff00', 0.6)
 
-    light.position.set(0, 5, 5)
+    // light.position.set(0, 5, 5)
 
-    scene.add(light)
+    // scene.add(light)
     scene.add(ambientLight)
-    scene.add(hemiLight)
+    // scene.add(hemiLight)
     return true
   }
 
@@ -244,14 +256,14 @@ export default class World extends Component {
 
     // Gui controllers for sky parameters
     const effectController = {
-      turbidity: 3,
-      rayleigh: 0.685,
-      mieCoefficient: 0.02,
-      mieDirectionalG: 0.984,
-      luminance: 7,
-      inclination: 0.16,
+      turbidity: 20,
+      rayleigh: 1.466,
+      mieCoefficient: 0.013,
+      mieDirectionalG: 0.998,
+      luminance: 13,
+      inclination: 0.442,
       elevation: 10,
-      azimuth: 0.37,
+      azimuth: 0.2565,
       exposure: renderer.toneMappingExposure
     }
 
@@ -318,6 +330,7 @@ export default class World extends Component {
         name: 'Landscape',
         mesh: LandscapeModel,
         position: { z: -4.34, x: 6.65, y: 0 },
+        rotation: { z: 0, x: 0, y: (0 - 90) },
         scaleRatio: 1
       }
     })

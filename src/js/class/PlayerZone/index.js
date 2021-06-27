@@ -121,7 +121,7 @@ export default class PlayerZone extends Component {
     // player collision shape
     const targetGeometry = this.player.components.Player.target.children[0].geometry
     const targetMaterial = new MeshPhongMaterial({
-      color: 0xffffff,
+      color: 0xFFFFFF,
       opacity: 0,
       transparent: true
     })
