@@ -1,4 +1,4 @@
-import { ACESFilmicToneMapping, AmbientLight, CubeTextureLoader, DirectionalLight, Group, HemisphereLight, LoadingManager, Mesh, MeshBasicMaterial, MeshStandardMaterial, MirroredRepeatWrapping, sRGBEncoding, TextureLoader, Vector2, Vector3 } from 'three'
+import { ACESFilmicToneMapping, AmbientLight, CubeTextureLoader, DirectionalLight, Group, HemisphereLight, LoadingManager, Mesh, MeshBasicMaterial, MeshStandardMaterial, MeshToonMaterial, MirroredRepeatWrapping, sRGBEncoding, TextureLoader, Vector2, Vector3 } from 'three'
 import { BufferGeometryUtils } from 'three/examples/jsm/utils/BufferGeometryUtils'
 import { GUI } from 'three/examples/jsm/libs/dat.gui.module'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
@@ -95,12 +95,21 @@ export default class World extends Component {
               const nmap = loader.load(model.texture.nMap)
               map.flipY = false
               nmap.flipY = false
-              const material = new MeshStandardMaterial({
+              // const material = new MeshStandardMaterial({
+              //   color: defaultColor,
+              //   map: model.texture.map ? map : null,
+              //   normalMap: model.texture.nMap ? nmap : null
+              //   // aoMap: model.texture.aoMap ? loader.load(model.texture.aoMap) : null
+              // })
+              const material = new MeshToonMaterial({
                 color: defaultColor,
                 map: model.texture.map ? map : null,
-                normalMap: model.texture.nMap ? nmap : null
+                normalMap: model.texture.nMap ? nmap : null,
+                flatShading: false,
+                gradientMap: 'fiveTone'
                 // aoMap: model.texture.aoMap ? loader.load(model.texture.aoMap) : null
               })
+
               obj.material = material
             }
           })
@@ -208,13 +217,13 @@ export default class World extends Component {
   generateLight ({ scene }) {
     // const light = new DirectionalLight('#ffffff')
     const ambientLight = new AmbientLight('#ffffff', 0.45)
-    // const hemiLight = new HemisphereLight('0xFFFFFF', '0x00ff00', 0.6)
+    const hemiLight = new HemisphereLight('0xFFFFFF', '0x00ff00', 0.5)
 
     // light.position.set(0, 5, 5)
 
     // scene.add(light)
     scene.add(ambientLight)
-    // scene.add(hemiLight)
+    scene.add(hemiLight)
     return true
   }
 

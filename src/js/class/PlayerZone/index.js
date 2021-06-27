@@ -33,7 +33,7 @@ export default class PlayerZone extends Component {
     // ZONE SHAPE
     const zoneGeom = new CylinderGeometry(0.3, 0.3, 1, 40)
     const zoneMaterial = new MeshBasicMaterial({
-      color: 0xc72a3f,
+      color: 0xf2b2b,
       opacity: 0.5,
       transparent: true
     })
@@ -76,7 +76,7 @@ export default class PlayerZone extends Component {
       uniforms: {
         c: { type: 'f', value: 1.0 },
         p: { type: 'f', value: 1.4 },
-        glowColor: { type: 'c', value: new Color(0xc72a3f) },
+        glowColor: { type: 'c', value: new Color(0xf2b2b) },
         viewVector: { type: 'v3', value: camera.camera.components.Camera.threeCamera.position }
       },
       vertexShader: vertexShader(),
