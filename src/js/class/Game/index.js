@@ -7,14 +7,16 @@ import Player from '../Player/index'
 import PlayerZone from '../PlayerZone'
 import MusicPlayer from '../MusicPlayer'
 import World from '../World/index'
-
+import Multiplayer from '../Multiplayer'
 export default class Game {
   /**
    * @constructor of Game
    * @returns {void}
    */
-  constructor ({ canvas }) {
+  constructor ({ canvas, socket }) {
     this.canvas = canvas
+    this.socket = socket
+
     this.renderer = {}
     this.camera = {}
     this.player = {}
@@ -44,6 +46,7 @@ export default class Game {
     this.entityManager = new EntityManager()
 
     const worldEntity = new Entity()
+    const multiplayerEntity = new Entity()
     const playerEntity = new Entity()
     const cameraEntity = new Entity()
     const playerZoneEntity = new Entity()
@@ -57,7 +60,15 @@ export default class Game {
     }))
     playerEntity.addComponent(new Player({
       scene: this.scene,
-      terrain: worldEntity.components.World.terrain
+      terrain: worldEntity.components.World.terrain,
+      isLocal: true,
+      socket: this.socket
+    }))
+    multiplayerEntity.addComponent(new Multiplayer({
+      socket: this.socket,
+      scene: this.scene,
+      terrain: worldEntity.components.World.terrain,
+      entityManager: this.entityManager
     }))
     cameraEntity.addComponent(new Camera({
       scene: this.scene,
@@ -91,19 +102,14 @@ export default class Game {
     }))
 
     this.entityManager.add(worldEntity, 'worldEntity')
+    this.entityManager.add(multiplayerEntity, 'multiplayerEntity')
     this.entityManager.add(playerEntity, 'playerEntity')
     this.entityManager.add(cameraEntity, 'cameraEntity')
     this.entityManager.add(playerZoneEntity, 'playerZoneEntity')
     this.entityManager.add(pauseEntity, 'pauseEntity')
     this.entityManager.add(eventAreaEntity, 'eventAreaEntity')
     this.entityManager.add(musicPlayerEntity, 'musicPlayerEntity')
-
-    console.log(worldEntity)
-    console.log(playerEntity)
-    console.log(cameraEntity)
-    console.log(playerZoneEntity)
-    console.log(pauseEntity)
-    console.log(eventAreaEntity)
+    console.log('entityManager', this.entityManager)
 
     // Affect alias for new camera entity
     this.camera = cameraEntity.components.Camera.threeCamera

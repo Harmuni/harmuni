@@ -19,6 +19,7 @@
     "cssnano": "^5.0.0",
     "postcss": "^8.2.10",
     "postcss-preset-env": "^6.7.0",
+    "socket.io-client": "^4.1.2",
     "three": "^0.127.0",
     "three-mesh-bvh": "^0.4.0"
   }

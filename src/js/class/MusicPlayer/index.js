@@ -42,7 +42,7 @@ export default class MusicPlayer extends Component {
         musicToPlay.play()
       },
       (xhr) => {
-        console.log((xhr.loaded / xhr.total * 100) + '% loaded')
+        console.log((xhr.loaded / xhr.total * 100) + '% music is loaded')
       },
       (err) => {
         console.log('An error happened', err)
