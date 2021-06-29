@@ -1,0 +1,1 @@
+export default "/dist/assets/textures/neutral_zone/map/stones/stone_16/diffuse_stone_16.png";

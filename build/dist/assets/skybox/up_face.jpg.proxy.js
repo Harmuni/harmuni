@@ -1,0 +1,1 @@
+export default "/dist/assets/skybox/up_face.jpg";

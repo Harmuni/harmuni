@@ -1,0 +1,1 @@
+export default "/dist/assets/meshes/character/luma_run.fbx";

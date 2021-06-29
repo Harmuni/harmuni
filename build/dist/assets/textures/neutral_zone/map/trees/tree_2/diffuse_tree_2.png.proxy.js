@@ -1,0 +1,1 @@
+export default "/dist/assets/textures/neutral_zone/map/trees/tree_2/diffuse_tree_2.png";

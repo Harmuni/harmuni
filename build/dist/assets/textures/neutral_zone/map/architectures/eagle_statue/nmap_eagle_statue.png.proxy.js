@@ -1,0 +1,1 @@
+export default "/dist/assets/textures/neutral_zone/map/architectures/eagle_statue/nmap_eagle_statue.png";

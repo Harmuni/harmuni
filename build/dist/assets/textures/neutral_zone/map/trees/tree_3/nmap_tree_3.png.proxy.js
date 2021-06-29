@@ -1,0 +1,1 @@
+export default "/dist/assets/textures/neutral_zone/map/trees/tree_3/nmap_tree_3.png";

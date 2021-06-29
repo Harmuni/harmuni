@@ -1,0 +1,1 @@
+export default "/dist/assets/meshes/map/terrain/ocean.glb";

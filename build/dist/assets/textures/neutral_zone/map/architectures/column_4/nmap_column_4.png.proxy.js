@@ -1,0 +1,1 @@
+export default "/dist/assets/textures/neutral_zone/map/architectures/column_4/nmap_column_4.png";

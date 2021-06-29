@@ -1,0 +1,1 @@
+export default "/dist/assets/textures/common_zone/map/architectures/door/nmap_door.png";

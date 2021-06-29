@@ -1,0 +1,1 @@
+export default "/dist/assets/textures/neutral_zone/map/architectures/boat/nmap_boat.png";

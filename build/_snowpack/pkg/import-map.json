@@ -1,0 +1,15 @@
+{
+  "imports": {
+    "socket.io-client": "./socket.io-client.js",
+    "three": "./three.js",
+    "three-mesh-bvh": "./three-mesh-bvh.js",
+    "three/build/three.module": "./three/build/three.module.js",
+    "three/examples/jsm/controls/OrbitControls.js": "./three/examples/jsm/controls/OrbitControls.js",
+    "three/examples/jsm/libs/dat.gui.module": "./three/examples/jsm/libs/dat.gui.module.js",
+    "three/examples/jsm/loaders/DRACOLoader": "./three/examples/jsm/loaders/DRACOLoader.js",
+    "three/examples/jsm/loaders/FBXLoader.js": "./three/examples/jsm/loaders/FBXLoader.js",
+    "three/examples/jsm/loaders/GLTFLoader": "./three/examples/jsm/loaders/GLTFLoader.js",
+    "three/examples/jsm/objects/Sky": "./three/examples/jsm/objects/Sky.js",
+    "three/examples/jsm/utils/BufferGeometryUtils": "./three/examples/jsm/utils/BufferGeometryUtils.js"
+  }
+}

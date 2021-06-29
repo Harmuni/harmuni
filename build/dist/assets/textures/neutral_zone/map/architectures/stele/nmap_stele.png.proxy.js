@@ -1,0 +1,1 @@
+export default "/dist/assets/textures/neutral_zone/map/architectures/stele/nmap_stele.png";

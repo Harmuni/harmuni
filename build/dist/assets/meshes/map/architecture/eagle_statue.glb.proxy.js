@@ -1,0 +1,1 @@
+export default "/dist/assets/meshes/map/architecture/eagle_statue.glb";

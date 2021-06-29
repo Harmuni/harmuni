@@ -1,0 +1,1 @@
+export default "/dist/assets/meshes/map/stones/stone_5.glb";
