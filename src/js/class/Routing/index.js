@@ -9,12 +9,12 @@ export default class Routing {
     console.log(this.socket)
     this.rootDiv = rootDiv
     this.routes = {
-      'https://harmuni.netlify.app/': Home,
-      'https://harmuni.netlify.app/contact': Contact,
-      'https://harmuni.netlify.app/about': About,
-      'https://harmuni.netlify.app/play': Gamescreen,
-      'https://harmuni.netlify.app/play/home': Homescreen,
-      'https://harmuni.netlify.app/play/menu': Startscreen
+      '/': Home,
+      '/contact': Contact,
+      '/about': About,
+      '/play': Gamescreen,
+      '/play/home': Homescreen,
+      '/play/menu': Startscreen
     }
     if (this.routes[window.location.pathname]) {
       this.rootDiv.innerHTML = this.routes[window.location.pathname]
