@@ -12,7 +12,7 @@
     "start": "snowpack dev",
     "build": "snowpack build",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "deploy": "snowpack build && git add ./build/ && git commit -m 'deploy' && git push"
+    "deploy": "snowpack build && git add ./build/ && git commit -m 'deploy' && git push "
   },
   "dependencies": {
     "@snowpack/plugin-postcss": "^1.2.2",
