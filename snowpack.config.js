@@ -17,7 +17,7 @@ module.exports = {
     // "bundle": true,
   },
   packageOptions: {
-    namedExports: ['@three']
+    /* ... */
   },
   devOptions: {
     /* ... */
