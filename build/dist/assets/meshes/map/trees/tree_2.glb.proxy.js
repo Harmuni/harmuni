@@ -1,1 +1,0 @@
-export default "/dist/assets/meshes/map/trees/tree_2.glb";

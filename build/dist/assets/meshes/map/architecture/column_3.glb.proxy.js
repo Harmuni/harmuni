@@ -1,1 +1,0 @@
-export default "/dist/assets/meshes/map/architecture/column_3.glb";

@@ -1,1 +1,0 @@
-export default "/dist/assets/textures/neutral_zone/map/plants/plant_4/diffuse_plant_4.png";

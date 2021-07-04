@@ -1,1 +1,0 @@
-export default "/dist/assets/textures/nature/ocean/diffuse_ocean.png";

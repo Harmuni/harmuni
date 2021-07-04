@@ -1,1 +1,0 @@
-export default "/dist/assets/textures/common_zone/map/artefacts/watch/nmap_watch.png";

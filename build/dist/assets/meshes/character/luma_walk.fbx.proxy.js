@@ -1,1 +1,0 @@
-export default "/dist/assets/meshes/character/luma_walk.fbx";

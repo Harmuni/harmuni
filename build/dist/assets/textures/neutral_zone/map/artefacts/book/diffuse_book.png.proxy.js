@@ -1,1 +1,0 @@
-export default "/dist/assets/textures/neutral_zone/map/artefacts/book/diffuse_book.png";

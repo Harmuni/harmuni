@@ -1,1 +1,0 @@
-export default "/dist/assets/textures/neutral_zone/map/stones/stone_6/nmap_stone_6.png";

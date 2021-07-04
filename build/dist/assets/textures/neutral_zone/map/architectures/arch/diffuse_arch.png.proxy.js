@@ -1,1 +1,0 @@
-export default "/dist/assets/textures/neutral_zone/map/architectures/arch/diffuse_arch.png";

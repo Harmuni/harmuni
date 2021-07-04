@@ -1,1 +1,0 @@
-export default "/dist/assets/textures/neutral_zone/map/architectures/altar/diffuse_altar.png";

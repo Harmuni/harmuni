@@ -1,1 +1,0 @@
-export default "/dist/assets/meshes/map/terrain/lake.glb";

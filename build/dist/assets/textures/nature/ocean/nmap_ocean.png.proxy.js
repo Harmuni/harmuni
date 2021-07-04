@@ -1,1 +1,0 @@
-export default "/dist/assets/textures/nature/ocean/nmap_ocean.png";

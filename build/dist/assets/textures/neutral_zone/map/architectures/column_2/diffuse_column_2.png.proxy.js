@@ -1,1 +1,0 @@
-export default "/dist/assets/textures/neutral_zone/map/architectures/column_2/diffuse_column_2.png";

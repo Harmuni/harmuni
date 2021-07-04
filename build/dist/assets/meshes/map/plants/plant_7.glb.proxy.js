@@ -1,1 +1,0 @@
-export default "/dist/assets/meshes/map/plants/plant_7.glb";

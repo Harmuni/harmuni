@@ -1,1 +1,0 @@
-export default "/dist/assets/textures/nature/lake/nmap_lake.png";
